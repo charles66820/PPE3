@@ -1,16 +1,18 @@
 <?php
 namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Client;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class mainController
+class mainController extends AbstractController
 {
     public function getHome()
     {
-        $number = random_int(0, 100);
-
-        return new Response(
-            '<html><body>Lucky number: '.$number.'</body></html>'
+        $clients = $this->getDoctrine()->getRepository(Client::class)->findAll();
+        return $this->render('test.twig',
+            [
+                'clients'   =>  $clients
+            ]
         );
     }
 }
