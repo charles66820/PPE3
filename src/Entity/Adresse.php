@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Adresse
@@ -13,6 +15,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Adresse
 {
     /**
+     * @Assert\Type("int")
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 11,
+     *      minMessage = "Your id must be at least {{ limit }} characters long",
+     *      maxMessage = "Your id cannot be longer than {{ limit }} characters"
+     * )
      * @var int
      *
      * @ORM\Column(name="IDAdresse", type="integer", nullable=false)
@@ -22,6 +31,13 @@ class Adresse
     private $idadresse;
 
     /**
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 100,
+     *      minMessage = "Your address must be at least {{ limit }} characters long",
+     *      maxMessage = "Your address cannot be longer than {{ limit }} characters"
+     * )
      * @var string
      *
      * @ORM\Column(name="Voie", type="string", length=100, nullable=false)
@@ -29,6 +45,13 @@ class Adresse
     private $voie;
 
     /**
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 100,
+     *      minMessage = "Your address complement must be at least {{ limit }} characters long",
+     *      maxMessage = "Your address complement cannot be longer than {{ limit }} characters"
+     * )
      * @var string|null
      *
      * @ORM\Column(name="Complement", type="string", length=100, nullable=true)
@@ -36,6 +59,13 @@ class Adresse
     private $complement;
 
     /**
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 10,
+     *      minMessage = "Your zip code must be at least {{ limit }} characters long",
+     *      maxMessage = "Your zip code cannot be longer than {{ limit }} characters"
+     * )
      * @var string
      *
      * @ORM\Column(name="CodePostal", type="string", length=10, nullable=false)
@@ -43,6 +73,13 @@ class Adresse
     private $codepostal;
 
     /**
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 50,
+     *      minMessage = "Your city must be at least {{ limit }} characters long",
+     *      maxMessage = "Your city cannot be longer than {{ limit }} characters"
+     * )
      * @var string
      *
      * @ORM\Column(name="Ville", type="string", length=50, nullable=false)
@@ -50,6 +87,13 @@ class Adresse
     private $ville;
 
     /**
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 50,
+     *      minMessage = "Your country must be at least {{ limit }} characters long",
+     *      maxMessage = "Your country cannot be longer than {{ limit }} characters"
+     * )
      * @var string
      *
      * @ORM\Column(name="Pays", type="string", length=50, nullable=false)

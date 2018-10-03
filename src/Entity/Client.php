@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Client
@@ -15,6 +17,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Client
 {
     /**
+     * @Assert\Type("int")
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 11,
+     *      minMessage = "Your id must be at least {{ limit }} characters long",
+     *      maxMessage = "Your id cannot be longer than {{ limit }} characters"
+     * )
      * @var int
      *
      * @ORM\Column(name="IDClient", type="integer", nullable=false)
@@ -24,6 +33,14 @@ class Client
     private $idclient;
 
     /**
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 20,
+     *      minMessage = "Your pseudo must be at least {{ limit }} characters long",
+     *      maxMessage = "Your pseudo cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type("string")
+     * @Assert\NotBlank()
      * @var string
      *
      * @ORM\Column(name="Pseudo", type="string", length=20, nullable=false)
@@ -31,6 +48,17 @@ class Client
     private $pseudo;
 
     /**
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 100,
+     *      minMessage = "Your email must be at least {{ limit }} characters long",
+     *      maxMessage = "Your email cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\NotBlank()
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.",
+     *     checkMX = true
+     * )
      * @var string
      *
      * @ORM\Column(name="Email", type="string", length=100, nullable=false)
@@ -38,6 +66,13 @@ class Client
     private $email;
 
     /**
+     * @Assert\Length(
+     *      min = 6,
+     *      max = 50,
+     *      minMessage = "Your password must be at least {{ limit }} characters long",
+     *      maxMessage = "Your password cannot be longer than {{ limit }} characters"
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="MotDePasse", type="string", length=50, nullable=false)
@@ -45,6 +80,11 @@ class Client
     private $motdepasse;
 
     /**
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "Your last name cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type("string")
      * @var string|null
      *
      * @ORM\Column(name="Nom", type="string", length=50, nullable=true)
@@ -52,6 +92,11 @@ class Client
     private $nom;
 
     /**
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type("string")
      * @var string|null
      *
      * @ORM\Column(name="Prenom", type="string", length=50, nullable=true)
@@ -59,6 +104,13 @@ class Client
     private $prenom;
 
     /**
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 20,
+     *      minMessage = "Your gender must be at least {{ limit }} characters long",
+     *      maxMessage = "Your gender cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type("string")
      * @var string|null
      *
      * @ORM\Column(name="Civilite", type="string", length=20, nullable=true)
@@ -66,6 +118,13 @@ class Client
     private $civilite;
 
     /**
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 13,
+     *      minMessage = "Your phone number must be at least {{ limit }} characters long",
+     *      maxMessage = "Your phone number be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type("string")
      * @var string|null
      *
      * @ORM\Column(name="Telephone", type="string", length=13, nullable=true)
@@ -73,6 +132,13 @@ class Client
     private $telephone;
 
     /**
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 25,
+     *      minMessage = "Your avatar url number must be at least {{ limit }} characters long",
+     *      maxMessage = "Your avatar url be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type("string")
      * @var string
      *
      * @ORM\Column(name="AvatarUrl", type="string", length=25, nullable=false)

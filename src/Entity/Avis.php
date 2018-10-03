@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Avis
@@ -13,6 +15,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Avis
 {
     /**
+     * @Assert\Type("int")
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 11,
+     *      minMessage = "Your id must be at least {{ limit }} characters long",
+     *      maxMessage = "Your id cannot be longer than {{ limit }} characters"
+     * )
      * @var int
      *
      * @ORM\Column(name="IDAvis", type="integer", nullable=false)
@@ -29,6 +38,13 @@ class Avis
     private $dateavis = 'CURRENT_TIMESTAMP';
 
     /**
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 100,
+     *      minMessage = "Your title must be at least {{ limit }} characters long",
+     *      maxMessage = "Your title cannot be longer than {{ limit }} characters"
+     * )
      * @var string|null
      *
      * @ORM\Column(name="Titre", type="string", length=100, nullable=true)
@@ -36,6 +52,13 @@ class Avis
     private $titre;
 
     /**
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 1000,
+     *      minMessage = "Your description must be at least {{ limit }} characters long",
+     *      maxMessage = "Your description cannot be longer than {{ limit }} characters"
+     * )
      * @var string|null
      *
      * @ORM\Column(name="Description", type="string", length=1000, nullable=true)
@@ -43,6 +66,7 @@ class Avis
     private $description;
 
     /**
+     * @Assert\Type("int")
      * @var int|null
      *
      * @ORM\Column(name="Note", type="integer", nullable=true)
