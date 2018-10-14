@@ -4,6 +4,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Client;
+use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -11,6 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class mainController extends AbstractController
 {
+    /**
+     * @Route("/", name="homepage")
+     */
     public function getHome(Request $request)
     {
         $unClient = new Client();
@@ -41,5 +45,13 @@ class mainController extends AbstractController
                 'clients'   =>  $clients
             ]
         );
+    }
+
+    /**
+     * @Route("/test", name="test")
+     */
+    public function getTest()
+    {
+        return $this->render('base.html.twig', [] );
     }
 }
