@@ -59,9 +59,9 @@ class Produits
     private $descriptionproduit;
 
     /**
-     * @var \Souscategorie
+     * @var \Categorie
      *
-     * @ORM\ManyToOne(targetEntity="Souscategorie")
+     * @ORM\ManyToOne(targetEntity="Categorie")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="IdCategorie", referencedColumnName="IdCategorie")
      * })
@@ -158,12 +158,12 @@ class Produits
         return $this;
     }
 
-    public function getIdcategorie(): ?Souscategorie
+    public function getIdcategorie(): ?Categorie
     {
         return $this->idcategorie;
     }
 
-    public function setIdcategorie(?Souscategorie $idcategorie): self
+    public function setIdcategorie(?Categorie $idcategorie): self
     {
         $this->idcategorie = $idcategorie;
 
