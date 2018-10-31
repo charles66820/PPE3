@@ -50,9 +50,9 @@ class Command
     private $taxOnCommand;
 
     /**
-     * @var \Adresse
+     * @var \Address
      *
-     * @ORM\ManyToOne(targetEntity="Adresse")
+     * @ORM\ManyToOne(targetEntity="Address")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_address_delivery", referencedColumnName="id_address")
      * })
