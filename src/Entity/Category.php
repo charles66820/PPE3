@@ -35,4 +35,33 @@ class Category
      */
     private $categoryName;
 
+    public function getIdCategory(): ?int
+    {
+        return $this->id_category;
+    }
+
+    public function getCategoryTitle(): ?string
+    {
+        return $this->categoryTitle;
+    }
+
+    public function setCategoryTitle(string $categoryTitle): self
+    {
+        $this->categoryTitle = $categoryTitle;
+
+        return $this;
+    }
+
+    public function getCategoryName(): ?string
+    {
+        return $this->categoryName;
+    }
+
+    public function setCategoryName(string $categoryName): self
+    {
+        $this->categoryName = $categoryName;
+
+        return $this;
+    }
+
 }

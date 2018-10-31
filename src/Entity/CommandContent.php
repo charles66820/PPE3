@@ -71,4 +71,81 @@ class CommandContent
      * })
      */
     private $tax;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getUnitPriceHT()
+    {
+        return $this->unitPriceHT;
+    }
+
+    public function setUnitPriceHT($unitPriceHT): self
+    {
+        $this->unitPriceHT = $unitPriceHT;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getDiscount()
+    {
+        return $this->discount;
+    }
+
+    public function setDiscount($discount): self
+    {
+        $this->discount = $discount;
+
+        return $this;
+    }
+
+    public function getCommand(): ?Command
+    {
+        return $this->command;
+    }
+
+    public function setCommand(?Command $command): self
+    {
+        $this->command = $command;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    public function getTax(): ?Tax
+    {
+        return $this->tax;
+    }
+
+    public function setTax(?Tax $tax): self
+    {
+        $this->tax = $tax;
+
+        return $this;
+    }
 }

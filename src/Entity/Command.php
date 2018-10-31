@@ -68,4 +68,81 @@ class Command
      * })
      */
     private $client;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getTotalHT()
+    {
+        return $this->totalHT;
+    }
+
+    public function setTotalHT($totalHT): self
+    {
+        $this->totalHT = $totalHT;
+
+        return $this;
+    }
+
+    public function getShipping()
+    {
+        return $this->shipping;
+    }
+
+    public function setShipping($shipping): self
+    {
+        $this->shipping = $shipping;
+
+        return $this;
+    }
+
+    public function getTaxOnCommand()
+    {
+        return $this->taxOnCommand;
+    }
+
+    public function setTaxOnCommand($taxOnCommand): self
+    {
+        $this->taxOnCommand = $taxOnCommand;
+
+        return $this;
+    }
+
+    public function getAddressDelivery(): ?Adresse
+    {
+        return $this->addressDelivery;
+    }
+
+    public function setAddressDelivery(?Adresse $addressDelivery): self
+    {
+        $this->addressDelivery = $addressDelivery;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
 }

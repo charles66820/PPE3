@@ -66,4 +66,81 @@ class Product
      */
     private $idcategorie;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getUnitPriceHT(): ?float
+    {
+        return $this->unitPriceHT;
+    }
+
+    public function setUnitPriceHT(float $unitPriceHT): self
+    {
+        $this->unitPriceHT = $unitPriceHT;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(string $reference): self
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getIdcategorie(): ?Category
+    {
+        return $this->idcategorie;
+    }
+
+    public function setIdcategorie(?Category $idcategorie): self
+    {
+        $this->idcategorie = $idcategorie;
+
+        return $this;
+    }
+
 }

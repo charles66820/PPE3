@@ -27,4 +27,21 @@ class Tax
      * @ORM\Column(name="tax", type="float", precision=10, scale=2, nullable=false)
      */
     private $tax;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTax(): ?float
+    {
+        return $this->tax;
+    }
+
+    public function setTax(float $tax): self
+    {
+        $this->tax = $tax;
+
+        return $this;
+    }
 }
