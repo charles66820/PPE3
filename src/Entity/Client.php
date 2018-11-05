@@ -2,208 +2,118 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-
 
 /**
  * Client
  *
- * @ORM\Table(name="client", indexes={@ORM\Index(name="iddefaultadresse", columns={"iddefaultadresse"})})
+ * @ORM\Table(name="client", indexes={@ORM\Index(name="FK_client_idDefaultAddress", columns={"id_default_address"})})
  * @ORM\Entity
  */
 class Client
 {
     /**
-     * @Assert\Type("int")
-     * @Assert\Length(
-     *      min = 1,
-     *      max = 11,
-     *      minMessage = "Your id must be at least {{ limit }} characters long",
-     *      maxMessage = "Your id cannot be longer than {{ limit }} characters"
-     * )
      * @var int
      *
-     * @ORM\Column(name="IDClient", type="integer", nullable=false)
+     * @ORM\Column(name="id_client", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idclient;
+    private $id;
 
     /**
-     * @Assert\Length(
-     *      min = 2,
-     *      max = 20,
-     *      minMessage = "Your pseudo must be at least {{ limit }} characters long",
-     *      maxMessage = "Your pseudo cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\Type("string")
-     * @Assert\NotBlank()
      * @var string
      *
-     * @ORM\Column(name="Pseudo", type="string", length=20, nullable=false)
+     * @ORM\Column(name="login", type="string", length=20, nullable=false)
      */
-    private $pseudo;
+    private $login;
 
     /**
-     * @Assert\Length(
-     *      min = 5,
-     *      max = 100,
-     *      minMessage = "Your email must be at least {{ limit }} characters long",
-     *      maxMessage = "Your email cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\NotBlank()
-     * @Assert\Email(
-     *     message = "The email '{{ value }}' is not a valid email.",
-     *     checkMX = true
-     * )
      * @var string
      *
-     * @ORM\Column(name="Email", type="string", length=100, nullable=false)
+     * @ORM\Column(name="email", type="string", length=100, nullable=false)
      */
     private $email;
 
     /**
-     * @Assert\Length(
-     *      min = 6,
-     *      max = 50,
-     *      minMessage = "Your password must be at least {{ limit }} characters long",
-     *      maxMessage = "Your password cannot be longer than {{ limit }} characters"
-     * )
-     *
      * @var string
      *
-     * @ORM\Column(name="MotDePasse", type="string", length=50, nullable=false)
+     * @ORM\Column(name="password", type="string", length=50, nullable=false)
      */
-    private $motdepasse;
+    private $password;
 
     /**
-     * @Assert\Length(
-     *      max = 50,
-     *      maxMessage = "Your last name cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\Type("string")
      * @var string|null
      *
-     * @ORM\Column(name="Nom", type="string", length=50, nullable=true)
+     * @ORM\Column(name="last_name", type="string", length=50, nullable=true)
      */
-    private $nom;
+    private $lastName;
 
     /**
-     * @Assert\Length(
-     *      max = 50,
-     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\Type("string")
      * @var string|null
      *
-     * @ORM\Column(name="Prenom", type="string", length=50, nullable=true)
+     * @ORM\Column(name="first_name", type="string", length=50, nullable=true)
      */
-    private $prenom;
+    private $firstName;
 
     /**
-     * @Assert\Length(
-     *      min = 1,
-     *      max = 20,
-     *      minMessage = "Your gender must be at least {{ limit }} characters long",
-     *      maxMessage = "Your gender cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\Type("string")
      * @var string|null
      *
-     * @ORM\Column(name="Civilite", type="string", length=20, nullable=true)
+     * @ORM\Column(name="phone_number", type="string", length=13, nullable=true)
      */
-    private $civilite;
+    private $phoneNumber;
 
     /**
-     * @Assert\Length(
-     *      min = 1,
-     *      max = 13,
-     *      minMessage = "Your phone number must be at least {{ limit }} characters long",
-     *      maxMessage = "Your phone number be longer than {{ limit }} characters"
-     * )
-     * @Assert\Type("string")
-     * @var string|null
-     *
-     * @ORM\Column(name="Telephone", type="string", length=13, nullable=true)
-     */
-    private $telephone;
-
-    /**
-     * @Assert\Length(
-     *      min = 5,
-     *      max = 25,
-     *      minMessage = "Your avatar url number must be at least {{ limit }} characters long",
-     *      maxMessage = "Your avatar url be longer than {{ limit }} characters"
-     * )
-     * @Assert\Type("string")
      * @var string
      *
-     * @ORM\Column(name="AvatarUrl", type="string", length=25, nullable=false)
+     * @ORM\Column(name="avatar_url", type="string", length=2000, nullable=false)
      */
-    private $avatarurl;
+    private $avatarUrl = "https://randomuser.me/api/portraits/women/11.jpg";
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="DateCreation", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
+     * @ORM\Column(name="creation_date", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
      */
-    private $datecreation = 'CURRENT_TIMESTAMP';
+    private $creationDate;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="Actif", type="boolean", nullable=false)
+     * @ORM\Column(name="confirmed", type="boolean", nullable=false)
      */
-    private $actif = '0';
+    private $confirmed = false;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Token", type="string", length=40, nullable=false)
+     * @ORM\Column(name="token", type="string", length=40, nullable=true)
      */
     private $token;
 
     /**
-     * @var \Adresse
+     * @var \Address
      *
-     * @ORM\ManyToOne(targetEntity="Adresse")
+     * @ORM\ManyToOne(targetEntity="Address")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="iddefaultadresse", referencedColumnName="IDAdresse")
+     *   @ORM\JoinColumn(name="id_default_address", referencedColumnName="id_address")
      * })
      */
-    private $iddefaultadresse;
+    private $defaultAdresse;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Produits", mappedBy="idclient")
-     */
-    private $idproduit;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
+    public function getId(): ?int
     {
-        $this->idproduit = new \Doctrine\Common\Collections\ArrayCollection();
+        return $this->id;
     }
 
-    public function getIdclient(): ?int
+    public function getLogin(): ?string
     {
-        return $this->idclient;
+        return $this->login;
     }
 
-    public function getPseudo(): ?string
+    public function setLogin(string $login): self
     {
-        return $this->pseudo;
-    }
-
-    public function setPseudo(string $pseudo): self
-    {
-        $this->pseudo = $pseudo;
+        $this->login = $login;
 
         return $this;
     }
@@ -220,98 +130,86 @@ class Client
         return $this;
     }
 
-    public function getMotdepasse(): ?string
+    public function getPassword(): ?string
     {
-        return $this->motdepasse;
+        return $this->password;
     }
 
-    public function setMotdepasse(string $motdepasse): self
+    public function setPassword(string $password): self
     {
-        $this->motdepasse = $motdepasse;
+        $this->password = $password;
 
         return $this;
     }
 
-    public function getNom(): ?string
+    public function getLastName(): ?string
     {
-        return $this->nom;
+        return $this->lastName;
     }
 
-    public function setNom(?string $nom): self
+    public function setLastName(?string $lastName): self
     {
-        $this->nom = $nom;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
-    public function getPrenom(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->prenom;
+        return $this->firstName;
     }
 
-    public function setPrenom(?string $prenom): self
+    public function setFirstName(?string $firstName): self
     {
-        $this->prenom = $prenom;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
-    public function getCivilite(): ?string
+    public function getPhoneNumber(): ?string
     {
-        return $this->civilite;
+        return $this->phoneNumber;
     }
 
-    public function setCivilite(?string $civilite): self
+    public function setPhoneNumber(?string $phoneNumber): self
     {
-        $this->civilite = $civilite;
+        $this->phoneNumber = $phoneNumber;
 
         return $this;
     }
 
-    public function getTelephone(): ?string
+    public function getAvatarUrl(): ?string
     {
-        return $this->telephone;
+        return $this->avatarUrl;
     }
 
-    public function setTelephone(?string $telephone): self
+    public function setAvatarUrl(string $avatarUrl): self
     {
-        $this->telephone = $telephone;
+        $this->avatarUrl = $avatarUrl;
 
         return $this;
     }
 
-    public function getAvatarurl(): ?string
+    public function getCreationDate(): ?\DateTimeInterface
     {
-        return $this->avatarurl;
+        return $this->creationDate;
     }
 
-    public function setAvatarurl(string $avatarurl): self
+    public function setCreationDate(\DateTimeInterface $creationDate): self
     {
-        $this->avatarurl = $avatarurl;
+        $this->creationDate = $creationDate;
 
         return $this;
     }
 
-    public function getDatecreation(): ?\DateTimeInterface
+    public function getConfirmed(): ?bool
     {
-        return $this->datecreation;
+        return $this->confirmed;
     }
 
-    public function setDatecreation(\DateTimeInterface $datecreation): self
+    public function setConfirmed(bool $confirmed): self
     {
-        $this->datecreation = $datecreation;
-
-        return $this;
-    }
-
-    public function getActif(): ?bool
-    {
-        return $this->actif;
-    }
-
-    public function setActif(bool $actif): self
-    {
-        $this->actif = $actif;
+        $this->confirmed = $confirmed;
 
         return $this;
     }
@@ -321,51 +219,22 @@ class Client
         return $this->token;
     }
 
-    public function setToken(string $token): self
+    public function setToken(?string $token): self
     {
         $this->token = $token;
 
         return $this;
     }
 
-    public function getIddefaultadresse(): ?Adresse
+    public function getDefaultAdresse(): ?Address
     {
-        return $this->iddefaultadresse;
+        return $this->defaultAdresse;
     }
 
-    public function setIddefaultadresse(?Adresse $iddefaultadresse): self
+    public function setDefaultAdresse(?Address $defaultAdresse): self
     {
-        $this->iddefaultadresse = $iddefaultadresse;
+        $this->defaultAdresse = $defaultAdresse;
 
         return $this;
     }
-
-    /**
-     * @return Collection|Produits[]
-     */
-    public function getIdproduit(): Collection
-    {
-        return $this->idproduit;
-    }
-
-    public function addIdproduit(Produits $idproduit): self
-    {
-        if (!$this->idproduit->contains($idproduit)) {
-            $this->idproduit[] = $idproduit;
-            $idproduit->addIdclient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIdproduit(Produits $idproduit): self
-    {
-        if ($this->idproduit->contains($idproduit)) {
-            $this->idproduit->removeElement($idproduit);
-            $idproduit->removeIdclient($this);
-        }
-
-        return $this;
-    }
-
 }
