@@ -22,9 +22,9 @@ class Tax
     private $id;
 
     /**
-     * @var float
+     * @var string
      *
-     * @ORM\Column(name="tax", type="float", precision=10, scale=2, nullable=false)
+     * @ORM\Column(name="tax", type="decimal", precision=10, scale=2, nullable=false)
      */
     private $tax;
 
@@ -33,12 +33,12 @@ class Tax
         return $this->id;
     }
 
-    public function getTax(): ?float
+    public function getTax()
     {
         return $this->tax;
     }
 
-    public function setTax(float $tax): self
+    public function setTax($tax): self
     {
         $this->tax = $tax;
 

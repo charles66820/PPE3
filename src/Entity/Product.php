@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Product
  *
- * @ORM\Table(name="product", indexes={@ORM\Index(name="FK_product_idCategory", columns={"id_category"})})
+ * @ORM\Table(name="product", indexes={
+ *     @ORM\Index(name="FK_product_idCategory", columns={"id_category"})
+ * })
  * @ORM\Entity
  */
 class Product
@@ -65,6 +69,18 @@ class Product
      * })
      */
     private $idcategorie;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="ProductPicture", mappedBy="product")
+     */
+    private $pictures;
+
+    public function __construct()
+    {
+        $this->pictures = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -139,6 +155,37 @@ class Product
     public function setIdcategorie(?Category $idcategorie): self
     {
         $this->idcategorie = $idcategorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductPicture[]
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(ProductPicture $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+            $picture->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(ProductPicture $picture): self
+    {
+        if ($this->pictures->contains($picture)) {
+            $this->pictures->removeElement($picture);
+            // set the owning side to null (unless already changed)
+            if ($picture->getProduct() === $this) {
+                $picture->setProduct(null);
+            }
+        }
 
         return $this;
     }
