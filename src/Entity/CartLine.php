@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CartLine
- * @ORM\Table(name="CartLine", indexes={@ORM\Index(name="FK_cartLine_idProduct", columns={"id_product"}), @ORM\Index(name="FK_cartLine_idClient", columns={"id_client"})})
+ * @ORM\Table(name="cart_line", indexes={@ORM\Index(name="FK_cartLine_idProduct", columns={"id_product"}), @ORM\Index(name="FK_cartLine_idClient", columns={"id_client"})})
  * @ORM\Entity
  */
 class CartLine
