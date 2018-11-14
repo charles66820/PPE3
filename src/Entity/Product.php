@@ -77,9 +77,17 @@ class Product
      */
     private $pictures;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="CartLine", mappedBy="product")
+     */
+    private $clientCartLines;
+
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
+        $this->clientCartLines = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -190,4 +198,34 @@ class Product
         return $this;
     }
 
+    /**
+     * @return Collection|CartLine[]
+     */
+    public function getClientCartLines(): Collection
+    {
+        return $this->clientCartLines;
+    }
+
+    public function addClientCartLine(CartLine $clientCartLine): self
+    {
+        if (!$this->clientCartLines->contains($clientCartLine)) {
+            $this->clientCartLines[] = $clientCartLine;
+            $clientCartLine->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientCartLine(CartLine $clientCartLine): self
+    {
+        if ($this->clientCartLines->contains($clientCartLine)) {
+            $this->clientCartLines->removeElement($clientCartLine);
+            // set the owning side to null (unless already changed)
+            if ($clientCartLine->getProduct() === $this) {
+                $clientCartLine->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
 }

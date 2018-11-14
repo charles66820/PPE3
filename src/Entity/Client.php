@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -100,6 +102,18 @@ class Client
      * })
      */
     private $defaultAdresse;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="CartLine", mappedBy="client")
+     */
+    private $productCartLines;
+
+    public function __construct()
+    {
+        $this->productCartLines = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -237,4 +251,36 @@ class Client
 
         return $this;
     }
+
+    /**
+     * @return Collection|CartLine[]
+     */
+    public function getProductCartLines(): Collection
+    {
+        return $this->productCartLines;
+    }
+
+    public function addProductCartLine(CartLine $productCartLine): self
+    {
+        if (!$this->productCartLines->contains($productCartLine)) {
+            $this->productCartLines[] = $productCartLine;
+            $productCartLine->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductCartLine(CartLine $productCartLine): self
+    {
+        if ($this->productCartLines->contains($productCartLine)) {
+            $this->productCartLines->removeElement($productCartLine);
+            // set the owning side to null (unless already changed)
+            if ($productCartLine->getClient() === $this) {
+                $productCartLine->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
