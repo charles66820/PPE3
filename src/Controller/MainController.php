@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Product;
 
 class MainController extends AbstractController
 {
@@ -14,6 +15,7 @@ class MainController extends AbstractController
     {
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
+            'name' => 'estelle',
         ]);
     }
     /**
@@ -32,6 +34,20 @@ class MainController extends AbstractController
     {
         return $this->render('main/legal.html.twig', [
             'title' => 'Mentions legales',
+        ]);
+    }
+    /**
+     * @Route("/catalog", name="catalog")
+     */
+    public function getcatalog()
+    {
+        $products = $this->getDoctrine()
+            ->getRepository(Product::class)
+            ->findAll();
+
+        return $this->render('main/catalog.html.twig', [
+            'title' => 'Tous les produits',
+            'products' => $products,
         ]);
     }
 }

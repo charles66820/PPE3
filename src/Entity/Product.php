@@ -63,19 +63,33 @@ class Product
     /**
      * @var \Category
      *
-     * @ORM\ManyToOne(targetEntity="Category")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="products", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_category", referencedColumnName="id_category")
      * })
      */
-    private $idcategorie;
+    private $category;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="ProductPicture", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="ProductPicture", mappedBy="product", fetch="EAGER")
      */
     private $pictures;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Opinion", mappedBy="product", fetch="EAGER")
+     */
+    private $opinions;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Opinion", mappedBy="product", fetch="EAGER")
+     */
+    private $comments;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -88,6 +102,8 @@ class Product
     {
         $this->pictures = new ArrayCollection();
         $this->clientCartLines = new ArrayCollection();
+        $this->opinions = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -155,14 +171,14 @@ class Product
         return $this;
     }
 
-    public function getIdcategorie(): ?Category
+    public function getCategorie(): ?Category
     {
-        return $this->idcategorie;
+        return $this->categorie;
     }
 
-    public function setIdcategorie(?Category $idcategorie): self
+    public function setCategorie(?Category $categorie): self
     {
-        $this->idcategorie = $idcategorie;
+        $this->categorie = $categorie;
 
         return $this;
     }
@@ -228,4 +244,79 @@ class Product
 
         return $this;
     }
+
+    /**
+     * @return Collection|Opinion[]
+     */
+    public function getOpinions(): Collection
+    {
+        return $this->opinions;
+    }
+
+    public function addOpinion(Opinion $opinion): self
+    {
+        if (!$this->opinions->contains($opinion)) {
+            $this->opinions[] = $opinion;
+            $opinion->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOpinion(Opinion $opinion): self
+    {
+        if ($this->opinions->contains($opinion)) {
+            $this->opinions->removeElement($opinion);
+            // set the owning side to null (unless already changed)
+            if ($opinion->getProduct() === $this) {
+                $opinion->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Opinion[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Opinion $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Opinion $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getProduct() === $this) {
+                $comment->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
 }

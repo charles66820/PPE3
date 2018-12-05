@@ -1,0 +1,94 @@
+{% extends 'template.html.twig' %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="css/catalog.css">
+    <link rel="stylesheet" href="css/stars.css">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row" style="margin:0">
+            <div class="col-md-2 col-md-pull-10">
+                <div class="sidebar container mb-3">
+                    <div class="side">
+                        <h4>Price Range</h4>
+                        <form method="post">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="guests">Price from:</label>
+                                        <div class="form-field">
+                                            <i class="icon icon-arrow-down3"></i>
+                                            <select name="people" id="people" class="form-control">
+                                                <option value="#">1</option>
+                                                <option value="#">200</option>
+                                                <option value="#">300</option>
+                                                <option value="#">400</option>
+                                                <option value="#">1000</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="guests">Price to:</label>
+                                        <div class="form-field">
+                                            <i class="icon icon-arrow-down3"></i>
+                                            <select name="people" id="people" class="form-control">
+                                                <option value="#">2000</option>
+                                                <option value="#">4000</option>
+                                                <option value="#">6000</option>
+                                                <option value="#">8000</option>
+                                                <option value="#">10000</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="side">
+                        <div class="d-flex flex-wrap justify-content-center justify-content-md-start starscont">
+                            <a href="/catalogue.php?categorie=figurines&amp;type=nenedoroid&amp;stars=0">
+                                <span class="starsbox stars stars0">&amp;plus</span>
+                            </a>
+                            <a href="/catalogue.php?categorie=figurines&amp;type=nenedoroid&amp;stars=1">
+                                <span class="starsbox stars stars1">&amp;plus</span>
+                            </a>
+                            <a href="/catalogue.php?categorie=figurines&amp;type=nenedoroid&amp;stars=2">
+                                <span class="starsbox stars stars2">&amp;plus</span>
+                            </a>
+                            <a href="/catalogue.php?categorie=figurines&amp;type=nenedoroid&amp;stars=3">
+                                <span class="starsbox stars stars3">&amp;plus</span>
+                            </a>
+                            <a href="/catalogue.php?categorie=figurines&amp;type=nenedoroid&amp;stars=4">
+                                <span class="starsbox stars stars4">&amp;plus</span>
+                            </a>
+                            <a href="/catalogue.php?categorie=figurines&amp;type=nenedoroid&amp;stars=5">
+                                <span class="starsbox stars stars5"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10 col-md-push-2 d-flex flex-wrap justify-content-center justify-content-lg-start">
+                {% for product in products %}
+                    {{ dump(product) }}
+                    <a href="/produit/{{ product.id }}" class="articleElm rounded m-2">
+                        <div class="articleNom">
+                            {{ product.title }}
+                        </div>
+                        <div class="imgBox">
+                            <img src="{{ product.pictures[0].pictureName }}" alt="">
+                        </div>
+                        <div class="articleStars stars stars1"></div>
+                        <div class="articlePrix">
+                            {{ product.unitPriceHT }}
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
