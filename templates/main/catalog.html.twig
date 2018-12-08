@@ -73,7 +73,6 @@
             </div>
             <div class="col-md-10 col-md-push-2 d-flex flex-wrap justify-content-center justify-content-lg-start">
                 {% for product in products %}
-                    {{ dump(product) }}
                     <a href="/produit/{{ product.id }}" class="articleElm rounded m-2">
                         <div class="articleNom">
                             {{ product.title }}
@@ -81,7 +80,7 @@
                         <div class="imgBox">
                             <img src="{{ product.pictures[0].pictureName }}" alt="">
                         </div>
-                        <div class="articleStars stars stars1"></div>
+                        <div class="articleStars stars {{ product.GetStarsClass() }}"></div>
                         <div class="articlePrix">
                             {{ product.unitPriceHT }}
                         </div>
