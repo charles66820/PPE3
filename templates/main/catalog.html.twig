@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div>
         <div class="row" style="margin:0">
             <div class="col-md-2 col-md-pull-10">
                 <div class="sidebar container mb-3">
@@ -73,7 +73,7 @@
             </div>
             <div class="col-md-10 col-md-push-2 d-flex flex-wrap justify-content-center justify-content-lg-start">
                 {% for product in products %}
-                    <a href="/produit/{{ product.id }}" class="articleElm rounded m-2">
+                    <a href="{{ path("product", {'id':product.id}) }}" class="articleElm rounded m-2">
                         <div class="articleNom">
                             {{ product.title }}
                         </div>
@@ -82,7 +82,7 @@
                         </div>
                         <div class="articleStars stars {{ product.GetStarsClass() }}"></div>
                         <div class="articlePrix">
-                            {{ product.unitPriceHT }}
+                            {{ product.unitPriceHT }}€
                         </div>
                     </a>
                 {% endfor %}

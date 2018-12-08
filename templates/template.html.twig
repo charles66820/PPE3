@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <title>{{ title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="img/logoIcon.gif"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="icon" href="/img/logoIcon.gif"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
-    <link rel="stylesheet" href="fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="fonts/simple-line-icons.min.css">
-    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/fonts/simple-line-icons.min.css">
+    <link rel="stylesheet" href="/css/footer.css">
     {% block stylesheet %}{% endblock %}
 </head>
     <body>
     <nav class="navbar navbar-light navbar-expand-md">
         <div class="container">
-            <a class="navbar-brand" href="/">
-                <img width= "75" height="70" src="img/logoPoulpe.png"/>
+            <a class="navbar-brand" href="{{ path("home") }}">
+                <img width= "75" height="70" src="/img/logoPoulpe.png"/>
             </a>
             <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navcol-1">
-                <form class="form-inline navbar-left" action="/catalogue">
+                <form class="form-inline navbar-left" action="{{ path("catalog") }}">
                     <input type="hidden" name="categorie" value="">
                     <input type="hidden" name="type" value="">
                     <input type="hidden" name="stars" value="">
@@ -39,7 +39,7 @@
                 </form>
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/">Accueil</a>
+                        <a class="nav-link active" href="{{ path("home") }}">Accueil</a>
                     </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">Figurines</a>
@@ -64,7 +64,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" style="position:relative" href="/panier">
-                            <img width="22" height="22" src="img/panier.png"/>
+                            <img width="22" height="22" src="/img/panier.png"/>
                             <span class="badge badge-pill badge-primary" style="position:absolute;left:20px;top:4px;font-size:10px;color:white;font-weight:bold;">0</span>Panier
                         </a>
                     </li>
@@ -85,7 +85,7 @@
     <footer style="background-color:rgb(23,50,77);">
         <div class="row">
             <div class="col-sm-6 col-md-4 footer-navigation">
-                <h3 style="margin-top:12%; margin-left:19%; font-size:558%;"><a href="/">Ô '<span> Tako</span></a></h3>
+                <h3 style="margin-top:12%; margin-left:19%; font-size:558%;"><a href="{{ path("home") }}">Ô '<span> Tako</span></a></h3>
             </div>
             <div class="col-sm-6 col-md-4 footer-contacts">
                 <div>
@@ -105,7 +105,7 @@
             <div class="col-sm-6 col-md-4 footer-about">
                 <div>
                     <h4 style="margin-top:10%; font-size:125%;">Pour information : </h4>
-                    <p style="margin:4%; font-size:90%;"><a href="/mentionslegales">Mentions légales et conditions générales de vente</a></p>
+                    <p style="margin:4%; font-size:90%;"><a href="{{ path("legal") }}">Mentions légales et conditions générales de vente</a></p>
                     <p style="margin:4%; font-size:90%;"> Octlantis est une ville sous-marine construite par des poulpes !
                         <br> Plus d'infos ici -->
                         <a href="https://www.lexpress.fr/actualite/sciences/voici-octlantis-une-ville-sous-marine-construite-par-des-poulpes_1944982.html">Octlantis 🐙</a>
@@ -115,8 +115,8 @@
         </div>
     </footer>
 
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     {% block javascripts %}{% endblock %}
 </body>
 </html>

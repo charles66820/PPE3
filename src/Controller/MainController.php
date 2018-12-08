@@ -39,7 +39,7 @@ class MainController extends AbstractController
     /**
      * @Route("/catalog", name="catalog")
      */
-    public function getcatalog()
+    public function getCatalog()
     {
         $products = $this->getDoctrine()
             ->getRepository(Product::class)
@@ -48,6 +48,21 @@ class MainController extends AbstractController
         return $this->render('main/catalog.html.twig', [
             'title' => 'Tous les produits',
             'products' => $products,
+        ]);
+    }
+
+    /**
+     * @Route("/product/{id}", name="product")
+     */
+    public function getProduct($id)
+    {
+        $product = $this->getDoctrine()
+            ->getRepository(Product::class)
+            ->find($id);
+
+        return $this->render('main/product.html.twig', [
+            'title' => 'Produit | '.$product->getTitle(),
+            'product' => $product,
         ]);
     }
 }
