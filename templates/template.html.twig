@@ -42,24 +42,12 @@
                         <a class="nav-link active" href="{{ path("home") }}">Accueil</a>
                     </li>
                     <li class="dropdown">
-                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">Figurines</a>
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">Categories</a>
                         <div class="dropdown-menu" role="menu">
-                            <a class="dropdown-item" href="">Pop</a>
-                            <a class="dropdown-item" href="">Nenedoroid</a>
-                            <a class="dropdown-item" href="">Officielles</a>
-                        </div>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">Vêtements</a>
-                        <div class="dropdown-menu" role="menu">
-                            <a class="dropdown-item" href="">Hommes</a>
-                            <a class="dropdown-item" href="">Femmes</a>
-                            <a class="dropdown-item" href="">Enfants</a>
-                            <a class="dropdown-item" href="">Cosplays</a>
-                            <a class="dropdown-item" href="">Kigurumi</a>
-                            <a class="dropdown-item" href="">Bijoux</a>
-                            <a class="dropdown-item" href="">Sous-vêtements</a>
-                            <a class="dropdown-item" href="">Bonnets & Casquettes</a>
+                            <a class="dropdown-item" href="{{ path("catalog", { 'cat': 'all'}) }}">Tous les produits</a>
+                            {% for category in categorys.getAllCategorys() %}
+                                <a class="dropdown-item" href="{{ path("catalog", { 'cat': category.name}) }}">{{ category.title }}</a>
+                            {% endfor %}
                         </div>
                     </li>
                     <li class="nav-item">
@@ -72,8 +60,18 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Compte </a>
                         <div class="dropdown-menu" role="menu">
-                            <a class="dropdown-item" href="{{ path("login") }}">Identifiez vous !</a>
-                            <a class="dropdown-item" href="{{ path("register") }}">Nouveau client !</a>
+
+                            {% if is_granted('ROLE_USER') %}
+                                <a class="dropdown-item" href="/profil">Editer mon profil</a>
+                                <a class="dropdown-item" href="/commands">Historique des commandes</a>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a class="dropdown-item" href="{{ path("admin") }}">Administration</a>
+                                {% endif %}
+                                <a class="dropdown-item" href="{{ path("logout") }}">Déconnectez-vous !</a>
+                            {% else %}
+                                <a class="dropdown-item" href="{{ path("login") }}">Identifiez vous !</a>
+                                <a class="dropdown-item" href="{{ path("register") }}">Nouveau client !</a>
+                            {% endif %}
                         </div>
                     </li>
                 </ul>
