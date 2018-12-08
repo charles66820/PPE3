@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Client
@@ -12,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="client", indexes={@ORM\Index(name="FK_client_idDefaultAddress", columns={"id_default_address"})})
  * @ORM\Entity
  */
-class Client
+class Client implements UserInterface, \Serializable
 {
     /**
      * @var int
@@ -25,22 +27,31 @@ class Client
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="login", type="string", length=20, nullable=false)
      */
     private $login;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max=100)
      * @ORM\Column(name="email", type="string", length=100, nullable=false)
      */
     private $email;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=250)
+     */
+    private $plainPassword;
+
+    /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=50, nullable=false)
+     * @ORM\Column(name="password", type="string", length=250, nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Length(max=250)
      */
     private $password;
 
@@ -283,4 +294,71 @@ class Client
         return $this;
     }
 
+    /**
+     * @see UserInterface
+     */
+    public function getPlainPassword(): string
+    {
+        return (string) $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $password): self
+    {
+        $this->plainPassword = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->login;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt() { }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials() { }
+
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize(): string
+    {
+        return serialize([$this->id, $this->login, $this->password]);
+    }
+
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized): void
+    {
+        [$this->id, $this->login, $this->password] = unserialize($serialized, ['allowed_classes' => false]);
+    }
 }
