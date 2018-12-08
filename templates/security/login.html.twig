@@ -12,16 +12,17 @@
                         {{ form_row(form._username) }}
                     </div>
                     <div class="form-group">
-                        {{ form_row(form._password, { 'attr': {'class': 'form-control', 'placeholder': "Mots de passe"} }) }}
+                        {{ form_row(form._password) }}
                     </div>
                     <br/><br/>
-                    {{ form_row(form.ok, 'Se connecter', { 'attr': {'class': 'btn btn-primary'} }) }}
+                    {{ form_row(form.ok) }}
                 {{ form_end(form) }}
                 {% if error %}
                     <div class="alert alert-danger">
                         <ul class="list-unstyled mb-0">
                             <li>
                                 <span class="initialism form-error-icon badge badge-danger">Error</span>
+                                {{ dump(error) }}
                                 <span class="form-error-message">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
                             </li>
                         </ul>

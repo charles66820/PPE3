@@ -95,7 +95,7 @@ class Client implements UserInterface, \Serializable
      *
      * @ORM\Column(name="confirmed", type="boolean", nullable=false)
      */
-    private $confirmed = false;
+    private $confirmed = true;
 
     /**
      * @var string
@@ -103,6 +103,11 @@ class Client implements UserInterface, \Serializable
      * @ORM\Column(name="token", type="string", length=40, nullable=true)
      */
     private $token;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
 
     /**
      * @var \Address

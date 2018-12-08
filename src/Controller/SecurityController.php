@@ -145,11 +145,27 @@ class SecurityController extends AbstractController
     {
         $form = $this->get('form.factory')
             ->createNamedBuilder(null)
-            ->add('_username', TextType::class, ['label' => 'Email'])
-            ->add('_password', PasswordType::class, ['label' => 'Mot de passe'])
-            ->add('ok', SubmitType::class)
+            ->add('_username', TextType::class, [
+                'label' => 'Identifiant',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => "Identifiant"
+                    ],
+                ])
+            ->add('_password', PasswordType::class, [
+                'label' => 'Mot de passe',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => "Mots de passe"
+                ],
+            ])
+            ->add('ok', SubmitType::class, [
+                'label' =>'Se connecter',
+                'attr' => [
+                    'class' => 'btn btn-primary'
+                ],
+            ])
             ->getForm();
-
         return $this->render('security/login.html.twig', [
             'title' => 'Connexion',
             'form' => $form->createView(),
