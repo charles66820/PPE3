@@ -21,21 +21,21 @@ class Category
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id_category;
+    private $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="title_category", type="string", length=100, nullable=false)
      */
-    private $categoryTitle;
+    private $title;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name_category", type="text", length=65535, nullable=false)
      */
-    private $categoryName;
+    private $name;
 
     /**
      * @var \Product
@@ -49,31 +49,31 @@ class Category
         $this->products = new ArrayCollection();
     }
 
-    public function getIdCategory(): ?int
+    public function getId(): ?int
     {
-        return $this->id_category;
+        return $this->id;
     }
 
-    public function getCategoryTitle(): ?string
+    public function getTitle(): ?string
     {
-        return $this->categoryTitle;
+        return $this->title;
     }
 
-    public function setCategoryTitle(string $categoryTitle): self
+    public function setTitle(string $title): self
     {
-        $this->categoryTitle = $categoryTitle;
+        $this->title = $title;
 
         return $this;
     }
 
-    public function getCategoryName(): ?string
+    public function getName(): ?string
     {
-        return $this->categoryName;
+        return $this->name;
     }
 
-    public function setCategoryName(string $categoryName): self
+    public function setName(string $name): self
     {
-        $this->categoryName = $categoryName;
+        $this->name = $name;
 
         return $this;
     }
