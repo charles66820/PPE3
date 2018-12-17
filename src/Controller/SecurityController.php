@@ -5,11 +5,11 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Client;
-
 use \Symfony\Component\Form\Extension\Core\Type\TextType;
 use \Symfony\Component\Form\Extension\Core\Type\EmailType;
 use \Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -67,7 +67,7 @@ class SecurityController extends AbstractController
             ])
             ->add('email', RepeatedType::class, [
                 'required' => true,
-                'invalid_message' => 'L\'email et l\'email de confirmation ne sont pas identique.',
+                'invalid_message' => 'L\'email et l\'email de confirmation doivent être identique.',
                 'type' => EmailType::class,
                 'first_options'  => [
                     'label' => 'Votre email',
@@ -84,18 +84,23 @@ class SecurityController extends AbstractController
                     ],
                 ],
             ])
-            ->add('password', PasswordType::class, [
-                'label' => 'Votre mot de passe',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => "Votre mot de passe"
+            ->add('password', RepeatedType::class, [
+                'required' => true,
+                'invalid_message' => 'Le mots de passe et le mots de passe de confirmation doivent être identique.',
+                'type' => PasswordType::class,
+                'first_options'  => [
+                    'label' => 'Votre mot de passe',
+                    'attr' => [
+                        'class' => 'form-control',
+                        'placeholder' => "Votre mot de passe"
+                    ],
                 ],
-            ])
-            ->add('plainPassword', PasswordType::class, [
-                'label' => 'Confirmez votre mot de passe',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => "Confirmez votre mot de passe"
+                'second_options' => [
+                    'label' => 'Confirmez votre mot de passe',
+                    'attr' => [
+                        'class' => 'form-control',
+                        'placeholder' => "Confirmez votre mot de passe"
+                    ],
                 ],
             ])
             ->add('lastname', TextType::class, [
@@ -132,7 +137,7 @@ class SecurityController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $password = $passwordEncoder->encodePassword($newClient, $newClient->getPlainPassword());
+            $password = $passwordEncoder->encodePassword($newClient, $newClient->getPassword());
             $newClient->setPassword($password);
             $newClient->setCreationDate(new \DateTime());
 
@@ -191,3 +196,4 @@ class SecurityController extends AbstractController
         throw new \Exception('This should never be reached!');
     }
 }
+

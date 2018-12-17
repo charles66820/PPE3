@@ -41,12 +41,6 @@ class Client implements UserInterface, \Serializable
     private $email;
 
     /**
-     * @Assert\NotBlank()
-     * @Assert\Length(max=250)
-     */
-    private $plainPassword;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=250, nullable=false)
@@ -295,21 +289,6 @@ class Client implements UserInterface, \Serializable
                 $productCartLine->setClient(null);
             }
         }
-
-        return $this;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getPlainPassword(): string
-    {
-        return (string) $this->plainPassword;
-    }
-
-    public function setPlainPassword(string $password): self
-    {
-        $this->plainPassword = $password;
 
         return $this;
     }
