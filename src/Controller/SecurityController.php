@@ -40,6 +40,16 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @Route("/profile", name="profile")
+     */
+    public function getProfile()
+    {
+        return new Response(
+            '<html><body> profile page </body></html>'
+        );
+    }
+
+    /**
      * @Route("/register", name="register")
      */
     public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)

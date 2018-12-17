@@ -1,8 +1,8 @@
 {% extends 'template.html.twig' %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="css/catalog.css">
-    <link rel="stylesheet" href="css/stars.css">
+    <link rel="stylesheet" href="/css/catalog.css">
+    <link rel="stylesheet" href="/css/stars.css">
 {% endblock %}
 
 {% block content %}
@@ -72,20 +72,24 @@
                 </div>
             </div>
             <div class="col-md-10 col-md-push-2 d-flex flex-wrap justify-content-center justify-content-lg-start">
-                {% for product in products %}
-                    <a href="{{ path("product", {'id':product.id}) }}" class="articleElm rounded m-2">
-                        <div class="articleNom">
-                            {{ product.title }}
-                        </div>
-                        <div class="imgBox">
-                            <img src="{{ product.pictures[0].pictureName }}" alt="">
-                        </div>
-                        <div class="articleStars stars {{ product.GetStarsClass() }}"></div>
-                        <div class="articlePrix">
-                            {{ product.unitPriceHT }}€
-                        </div>
-                    </a>
-                {% endfor %}
+                {% if products == [] %}
+                    <h1>Aucun produits ne correstopn a cette recherche ou categorie </h1>
+                {% else %}
+                    {% for product in products %}
+                        <a href="{{ path("product", {'id':product.id}) }}" class="articleElm rounded m-2">
+                            <div class="articleNom">
+                                {{ product.title }}
+                            </div>
+                            <div class="imgBox">
+                                <img src="{{ product.pictures[0].pictureName }}" alt="">
+                            </div>
+                            <div class="articleStars stars {{ product.GetStarsClass() }}"></div>
+                            <div class="articlePrix">
+                                {{ product.unitPriceHT }}€
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>

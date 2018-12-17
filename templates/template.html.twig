@@ -23,7 +23,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navcol-1">
-                <form class="form-inline navbar-left" action="{{ path("catalog") }}">
+                <form class="form-inline navbar-left" action="{{ path("catalogC", {'cat': 'all'}) }}">
                     <input type="hidden" name="categorie" value="">
                     <input type="hidden" name="type" value="">
                     <input type="hidden" name="stars" value="">
@@ -44,9 +44,9 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">Categories</a>
                         <div class="dropdown-menu" role="menu">
-                            <a class="dropdown-item" href="{{ path("catalog", { 'cat': 'all'}) }}">Tous les produits</a>
+                            <a class="dropdown-item" href="{{ path("catalogC", { 'cat': 'all'}) }}">Tous les produits</a>
                             {% for category in categorys.getAllCategorys() %}
-                                <a class="dropdown-item" href="{{ path("catalog", { 'cat': category.name}) }}">{{ category.title }}</a>
+                                <a class="dropdown-item" href="{{ path("catalogC", { 'cat': category.name}) }}">{{ category.title }}</a>
                             {% endfor %}
                         </div>
                     </li>
@@ -62,7 +62,7 @@
                         <div class="dropdown-menu" role="menu">
 
                             {% if is_granted('ROLE_USER') %}
-                                <a class="dropdown-item" href="/profil">Editer mon profil</a>
+                                <a class="dropdown-item" href="{{ path("profile") }}">Editer mon profil</a>
                                 <a class="dropdown-item" href="/commands">Historique des commandes</a>
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <a class="dropdown-item" href="{{ path("admin") }}">Administration</a>

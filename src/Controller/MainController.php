@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Product;
@@ -15,7 +16,6 @@ class MainController extends AbstractController
     {
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
-            'name' => 'estelle',
         ]);
     }
     /**
@@ -36,14 +36,37 @@ class MainController extends AbstractController
             'title' => 'Mentions legales',
         ]);
     }
+
     /**
      * @Route("/catalog", name="catalog")
      */
     public function getCatalog()
     {
-        $products = $this->getDoctrine()
-            ->getRepository(Product::class)
+        return $this->redirectToRoute('catalogC', ['cat'=>'all'], 302);
+    }
+
+    /**
+     * @Route("/catalog/{cat}", name="catalogC")
+     */
+    public function getCatalogC($cat)
+    {
+        $products = [];
+
+        if ($cat == 'all') {
+            $products = $this->getDoctrine()
+                ->getRepository(Product::class)
+                ->findAll();
+        }
+
+        $categorys = $this->getDoctrine()
+            ->getRepository(Category::class)
             ->findAll();
+
+        foreach ($categorys as $category) {
+            if ($category->GetName() == $cat) {
+                $products = $category->getProducts();
+            }
+        }
 
         return $this->render('main/catalog.html.twig', [
             'title' => 'Tous les produits',
