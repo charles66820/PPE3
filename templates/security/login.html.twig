@@ -14,15 +14,17 @@
                     <div class="form-group">
                         {{ form_row(form._password) }}
                     </div>
-                    <br/><br/>
-                    {{ form_row(form.ok) }}
+                    <br/>
+                    <div class="form-group">
+                        {{ form_row(form.submit) }}
+                    </div>
                 {{ form_end(form) }}
                 {% if error %}
                     <div class="alert alert-danger">
                         <ul class="list-unstyled mb-0">
                             <li>
-                                <span class="initialism form-error-icon badge badge-danger">Error</span>
-                                <span class="form-error-message">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+                                <span class="initialism form-error-icon badge badge-danger">Erreur</span>
+                                <span class="form-error-message">Votre identifient ou votre mots de passe sont invorecte ou votre compte est désactivé.</span>
                             </li>
                         </ul>
                     </div>

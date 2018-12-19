@@ -62,7 +62,6 @@ class SecurityController extends AbstractController
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => "Identifiant"
-
                 ],
             ])
             ->add('email', RepeatedType::class, [
@@ -103,7 +102,7 @@ class SecurityController extends AbstractController
                     ],
                 ],
             ])
-            ->add('lastname', TextType::class, [
+            ->add('lastName', TextType::class, [
                 'label' => 'Votre nom',
                 'attr' => [
                     'class' => 'form-control',
@@ -174,7 +173,7 @@ class SecurityController extends AbstractController
                     'placeholder' => "Mots de passe"
                 ],
             ])
-            ->add('ok', SubmitType::class, [
+            ->add('submit', SubmitType::class, [
                 'label' =>'Se connecter',
                 'attr' => [
                     'class' => 'btn btn-primary'

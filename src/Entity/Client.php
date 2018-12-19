@@ -27,6 +27,13 @@ class Client implements UserInterface, \Serializable
 
     /**
      * @var string
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 20,
+     *      minMessage = "votre identifiant doit faire plus de {{ limit }} caractères de long",
+     *      maxMessage = "votre identifiant ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
+     * @Assert\Type("string")
      * @Assert\NotBlank()
      * @ORM\Column(name="login", type="string", length=20, nullable=false)
      */
@@ -35,37 +42,65 @@ class Client implements UserInterface, \Serializable
     /**
      * @var string
      * @Assert\NotBlank()
-     * @Assert\Length(max=100)
+     * @Assert\Length(
+     *     min = 5,
+     *     max = 100,
+     *     minMessage = "Votre email doit faire plus de {{ limit }} caractères de long",
+     *     maxMessage = "Votre email ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
+     * @Assert\Email(
+     *     message = "Cette adresse email ( {{ value }} ) n'est pas valide.",
+     *     checkMX = true
+     * )
      * @ORM\Column(name="email", type="string", length=100, nullable=false)
      */
     private $email;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=250, nullable=false)
      * @Assert\NotBlank()
-     * @Assert\Length(max=250)
+     * @Assert\Length(
+     *     min=6,
+     *     max=100,
+     *     minMessage = "Votre mots de passe doit faire plus de {{ limit }} caractères de long",
+     *     maxMessage = "Votre mots de passe ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
+     * @Assert\Type("string")
+     * @ORM\Column(name="password", type="string", length=250, nullable=false)
      */
     private $password;
 
     /**
      * @var string|null
-     *
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "Votre nom de famille ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
+     * @Assert\Type("string")
      * @ORM\Column(name="last_name", type="string", length=50, nullable=true)
      */
     private $lastName;
 
     /**
      * @var string|null
-     *
+     * @Assert\Length(
+     *      max = 50,
+     *      maxMessage = "Votre prénom ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
+     * @Assert\Type("string")
      * @ORM\Column(name="first_name", type="string", length=50, nullable=true)
      */
     private $firstName;
 
     /**
      * @var string|null
-     *
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 13,
+     *      minMessage = "Votre numéro de telephone doit faire plus de {{ limit }} caractères de long",
+     *      maxMessage = "Votre numéro de telephone ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
+     * @Assert\Type("string")
      * @ORM\Column(name="phone_number", type="string", length=13, nullable=true)
      */
     private $phoneNumber;
