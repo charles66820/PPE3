@@ -83,6 +83,13 @@ class MainController extends AbstractController
             ->getRepository(Product::class)
             ->find($id);
 
+        if($product == null){
+            return $this->render('error/404.html.twig', [
+                'title' => '404 le produit n\'existe pas!',
+                'msgerr' => 'Le produit n\'existe pas!',
+            ]);
+        }
+
         return $this->render('main/product.html.twig', [
             'title' => 'Produit | '.$product->getTitle(),
             'product' => $product,
