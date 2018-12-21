@@ -3,4 +3,4 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     globals:
-        categorys: '@App\Service\CategoryService'
+        categorys: '@App\Services\CategoryService'

@@ -56,16 +56,12 @@ class MainController extends AbstractController
             $products = $this->getDoctrine()
                 ->getRepository(Product::class)
                 ->findAll();
-        }
-
-        $categorys = $this->getDoctrine()
-            ->getRepository(Category::class)
-            ->findAll();
-
-        foreach ($categorys as $category) {
-            if ($category->GetName() == $cat) {
-                $products = $category->getProducts();
-            }
+        } else {
+            $category = $this->getDoctrine()
+                ->getRepository(Category::class)
+                ->findOneBy(['name' => $cat]);
+            //TODO: star and price
+            $products = $category->getProducts();
         }
 
         return $this->render('main/catalog.html.twig', [
