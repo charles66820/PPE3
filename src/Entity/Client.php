@@ -155,6 +155,18 @@ class Client implements UserInterface, \Serializable
      */
     private $productCartLines;
 
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min=6,
+     *     max=100,
+     *     minMessage = "Votre nouveau mots de passe doit faire plus de {{ limit }} caractères de long",
+     *     maxMessage = "Votre nouveau mots de passe ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
+     * @Assert\Type("string")
+     */
+    private $newPassword;
+
     public function __construct()
     {
         $this->productCartLines = new ArrayCollection();
@@ -324,6 +336,18 @@ class Client implements UserInterface, \Serializable
                 $productCartLine->setClient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNewPassword(): ?string
+    {
+        return $this->newPassword;
+    }
+
+    public function setNewPassword(string $password): self
+    {
+        $this->newPassword = $password;
 
         return $this;
     }

@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Entity\Client;
 use \Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -42,11 +45,109 @@ class SecurityController extends AbstractController
     /**
      * @Route("/profile", name="profile")
      */
-    public function getProfile()
+    public function getProfile(Request $request, UserInterface $client)
     {
-        return new Response(
-            '<html><body> profile page </body></html>'
-        );
+        $form = $this->createFormBuilder($client)
+            ->add('login', TextType::class, [
+                'label' => 'Votre identifiant',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => "Identifiant"
+                ],
+            ])
+            ->add('email', RepeatedType::class, [
+                'required' => true,
+                'invalid_message' => 'L\'email et l\'email de confirmation doivent être identique.',
+                'type' => EmailType::class,
+                'first_options'  => [
+                    'label' => 'Votre email',
+                    'attr' => [
+                        'class' => 'form-control',
+                        'placeholder' => "Votre email"
+                    ],
+                ],
+                'second_options' => [
+                    'label' => 'Confirmez votre email',
+                    'attr' => [
+                        'class' => 'form-control',
+                        'placeholder' => "Confirmez votre email"
+                    ],
+                ],
+            ])
+            ->add('password', PasswordType::class, [
+                'label' => 'Votre mot de passe actuel',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => "Votre mot de passe actuel"
+                ],
+                'required' => false,
+            ])
+            ->add('newPassword', RepeatedType::class, [
+                'required' => true,
+                'invalid_message' => 'Le mots de passe et le mots de passe de confirmation doivent être identique.',
+                'type' => PasswordType::class,
+                'first_options'  => [
+                    'label' => 'Votre nouveau mot de passe',
+                    'attr' => [
+                        'class' => 'form-control',
+                        'placeholder' => "Votre nouveau mot de passe"
+                    ],
+                ],
+                'second_options' => [
+                    'label' => 'Confirmez votre nouveau mot de passe',
+                    'attr' => [
+                        'class' => 'form-control',
+                        'placeholder' => "Confirmez votre nouveau mot de passe"
+                    ],
+                ],
+            ])
+            ->add('lastName', TextType::class, [
+                'label' => 'Votre nom',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => "Votre nom"
+                ],
+                'required' => false,
+            ])
+            ->add('firstName', TextType::class, [
+                'label' => 'Votre prénom',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => "Votre prénom"
+                ],
+                'required' => false,
+            ])
+            ->add('phoneNumber', TextType::class, [
+                'label' => 'Votre n° de téléphone',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => "Votre n° de téléphone"
+                ],
+                'required' => false,
+            ])
+            ->add('save', SubmitType::class, [
+                'label' => 'Sauvegarder',
+                'attr'=> [
+                    'class'=> 'btn btn-primary',
+                ]
+            ])
+            ->add('reset', ResetType::class, [
+                'label' => 'Annuler',
+                'attr'=> [
+                    'class'=> 'btn btn-danger',
+                ]
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+        }
+
+        return $this->render('security/profile.html.twig', [
+            'title' => 'Connexion',
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
@@ -127,9 +228,9 @@ class SecurityController extends AbstractController
                 'required' => false,
             ])
             ->add('save', SubmitType::class, [
+                'label' => "Je m'inscris",
                 'attr'=> [
                     'class'=> 'btn btn-primary',
-                    'placeholder'=> "Je m'inscris"
                 ]
             ])
             ->getForm();

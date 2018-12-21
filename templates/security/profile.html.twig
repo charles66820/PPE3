@@ -1,0 +1,82 @@
+{% extends 'template.html.twig' %}
+
+{% block content %}
+    <div class="container" style="padding:10px 20px;" id="profile">
+        {{ form_start(form,{attr:{class:'mb-5'}}) }}
+            <div class="form-row" style="margin-top:55px;">
+                <div class="col-md-4 relative">
+                    <div>
+                        <div class="center" style="background: url('https://www.google.fr/logos/doodles/2018/winter-solstice-2018-northern-hemisphere-5609689915064320-law.gif') 50% 50% / cover;height:200px;width:200px;border-radius:50%;margin-left:calc(50% - 100px);"></div>
+                    </div>
+                <input type="file" name="avatar-file" class="form-control">
+                </div>
+                <div class="col-md-8">
+                    <h2>Modifier mon profil</h2>
+                    <hr>
+                    <div class="form-row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                {{ form_row(form.login) }}
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                {{ form_row(form.phoneNumber) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                {{ form_row(form.firstName) }}
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                {{ form_row(form.lastName) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                {{ form_row(form.email.first) }}
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                {{ form_row(form.email.second) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                {{ form_row(form.newPassword.first) }}
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                {{ form_row(form.newPassword.second) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                {{ form_row(form.password) }}
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group justify-content-center m-4 d-flex">
+                                {{ form_widget(form.save) }}
+                                {{ form_widget(form.reset) }}
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
