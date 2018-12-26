@@ -58,7 +58,6 @@ class Client implements UserInterface, \Serializable
 
     /**
      * @var string
-     * @Assert\NotBlank()
      * @Assert\Length(
      *     min=6,
      *     max=100,
@@ -156,7 +155,6 @@ class Client implements UserInterface, \Serializable
     private $productCartLines;
 
     /**
-     * @Assert\NotBlank()
      * @Assert\Length(
      *     min=6,
      *     max=100,
@@ -166,6 +164,19 @@ class Client implements UserInterface, \Serializable
      * @Assert\Type("string")
      */
     private $newPassword;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min=6,
+     *     max=100,
+     *     minMessage = "Votre mots de passe doit faire plus de {{ limit }} caractères de long",
+     *     maxMessage = "Votre mots de passe ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
+     * @Assert\Type("string")
+     */
+    private $plainPassword;
 
     public function __construct()
     {
@@ -348,6 +359,18 @@ class Client implements UserInterface, \Serializable
     public function setNewPassword(string $password): self
     {
         $this->newPassword = $password;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }

@@ -2,6 +2,14 @@
 
 {% block content %}
     <div class="container" style="padding:10px 20px;" id="profile">
+        {% if notifProfile %}
+            <div class="alert {{ notifProfile.class }} alert-dismissible">
+                <span class="form-error-message">{{ notifProfile.msg }}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
         {{ form_start(form,{attr:{class:'mb-5'}}) }}
             <div class="form-row" style="margin-top:55px;">
                 <div class="col-md-4 relative">
@@ -64,7 +72,7 @@
                     <div class="form-row">
                         <div class="col-sm-12 col-md-6">
                             <div class="form-group">
-                                {{ form_row(form.password) }}
+                                {{ form_row(form.plainPassword) }}
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6">
@@ -77,6 +85,6 @@
                     <hr>
                 </div>
             </div>
-        </form>
+        {{ form_end(form) }}
     </div>
 {% endblock %}

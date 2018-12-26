@@ -45,10 +45,13 @@ class SecurityController extends AbstractController
     /**
      * @Route("/profile", name="profile")
      */
-    public function getProfile(Request $request, UserInterface $client)
+    public function getProfile(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
+        $notifProfile = null;
+        $client = $this->getUser();
         $form = $this->createFormBuilder($client)
             ->add('login', TextType::class, [
+                'required' => true,
                 'label' => 'Votre identifiant',
                 'attr' => [
                     'class' => 'form-control',
@@ -74,16 +77,16 @@ class SecurityController extends AbstractController
                     ],
                 ],
             ])
-            ->add('password', PasswordType::class, [
+            ->add('plainPassword', PasswordType::class, [
                 'label' => 'Votre mot de passe actuel',
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => "Votre mot de passe actuel"
                 ],
-                'required' => false,
+                'required' => true,
             ])
             ->add('newPassword', RepeatedType::class, [
-                'required' => true,
+                'required' => false,
                 'invalid_message' => 'Le mots de passe et le mots de passe de confirmation doivent être identique.',
                 'type' => PasswordType::class,
                 'first_options'  => [
@@ -141,12 +144,38 @@ class SecurityController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $passwordValid = $passwordEncoder->isPasswordValid($client, $client->getPlainPassword());
+            $newPassword = $passwordEncoder->encodePassword($client, $client->getNewPassword());
+            if (!$passwordValid) {
+                $notifProfile = [
+                    'msg' => 'mots de passe incorrecte!',
+                    'class' => 'alert-danger',
+                ];
+            } else {
+                if ($client->getNewPassword() != null) {
+                    dump('change');
+                    $client->setPassword($newPassword);
+                    $notifProfile = [
+                        'msg' => 'profil mis à jour et mots de passe modifier!',
+                        'class' => 'alert-success',
+                    ];
+                } else
+                    $notifProfile = [
+                        'msg' => 'profil mis à jour!',
+                        'class' => 'alert-success',
+                    ];
 
+                //save client in db
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($client);
+                $entityManager->flush();
+            }
         }
 
         return $this->render('security/profile.html.twig', [
             'title' => 'Connexion',
             'form' => $form->createView(),
+            'notifProfile' => $notifProfile,
         ]);
     }
 
@@ -184,7 +213,7 @@ class SecurityController extends AbstractController
                     ],
                 ],
             ])
-            ->add('password', RepeatedType::class, [
+            ->add('plainPassword', RepeatedType::class, [
                 'required' => true,
                 'invalid_message' => 'Le mots de passe et le mots de passe de confirmation doivent être identique.',
                 'type' => PasswordType::class,
@@ -237,7 +266,7 @@ class SecurityController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $password = $passwordEncoder->encodePassword($newClient, $newClient->getPassword());
+            $password = $passwordEncoder->encodePassword($newClient, $newClient->getPlainPassword());
             $newClient->setPassword($password);
             $newClient->setCreationDate(new \DateTime());
 
