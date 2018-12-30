@@ -33,6 +33,7 @@
   color: black;
   margin: 4px;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .articleElm .articleStars{
   height: 26px;
