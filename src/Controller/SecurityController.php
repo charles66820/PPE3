@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\AddressType;
 use App\Form\ClientRegisterType;
 use App\Form\ClientType;
+use App\Repository\AddressRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,17 +81,22 @@ class SecurityController extends AbstractController
     /**
      * @Route("/profile/address/{id}", name="removeAddress")
      */
-    public function deleteAddress($id, Request $request){
-//        for remode addresse
-//        $form->handleRequest($request);
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $entityManager = $this->getDoctrine()->getManager();
-//            $entityManager->remove($a);
-//            $entityManager->flush();
-//        }
-        return new Response(
-            '{error:"address not remove"}'
-        );
+    public function deleteAddress(Address $address, Request $request){
+        //pour l'ajax
+        if ($request->isXmlHttpRequest()) {
+            if ($this->getUser() != $address->getClient()) return new Response(json_encode(['error'=>'l\adresse n\'apartin pas au client']));
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($address);
+            $entityManager->flush();
+            return new Response(json_encode(['address'=>$this->getUser()->getAddress()]));
+        }
+        //pour les site non dinamic
+        if ($this->getUser() == $address->getClient()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($address);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('address');
     }
 
     /**

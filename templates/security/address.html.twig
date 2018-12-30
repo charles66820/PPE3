@@ -13,7 +13,7 @@
                                     <div class="row">
                                         <p class="col-9">{{ a.way }} {{ a.complement }} <br> {{ a.zipCode }} {{ a.city }}, {{ a.country }}</p>
                                         <div class="col-3">
-                                            <form method="DELETE" style="display:initial;" action="{{ path('removeAddress', { id:a.id }) }}">
+                                            <form method="POST" style="display:initial;" action="{{ path('removeAddress', { id:a.id }) }}">
                                                 <button type="submit" class="btn btn-danger float-right" onclick="if (confirm('Êtes-vous sur de vouloir supprimer cette adresse ?')) {return true;}else {return false;}">✗</button>
                                             </form>
                                         </div>
