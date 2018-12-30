@@ -178,9 +178,17 @@ class Client implements UserInterface, \Serializable
      */
     private $plainPassword;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Address", mappedBy="client", fetch="EAGER")
+     */
+    private $address;
+
     public function __construct()
     {
         $this->productCartLines = new ArrayCollection();
+        $this->address = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -426,5 +434,36 @@ class Client implements UserInterface, \Serializable
     public function unserialize($serialized): void
     {
         [$this->id, $this->login, $this->password] = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    /**
+     * @return Collection|Address[]
+     */
+    public function getAddress(): Collection
+    {
+        return $this->address;
+    }
+
+    public function addAddress(Address $address): self
+    {
+        if (!$this->address->contains($address)) {
+            $this->address[] = $address;
+            $address->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(Address $address): self
+    {
+        if ($this->address->contains($address)) {
+            $this->address->removeElement($address);
+            // set the owning side to null (unless already changed)
+            if ($address->getClient() === $this) {
+                $address->setClient(null);
+            }
+        }
+
+        return $this;
     }
 }
