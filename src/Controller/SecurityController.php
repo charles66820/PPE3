@@ -22,16 +22,6 @@ use \Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/security", name="security")
-     */
-    public function index()
-    {
-        return $this->render('security/index.html.twig', [
-            'controller_name' => 'SecurityController',
-        ]);
-    }
-
-    /**
      * @Route("/admin", name="adminhome")
      */
     public function getAdmin()

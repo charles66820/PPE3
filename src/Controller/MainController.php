@@ -7,17 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Product;
 
+
 class MainController extends AbstractController
 {
-    /**
-     * @Route("/main", name="main")
-     */
-    public function index()
-    {
-        return $this->render('main/index.html.twig', [
-            'controller_name' => 'MainController',
-        ]);
-    }
     /**
      * @Route("/", name="home")
      */
