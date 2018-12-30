@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\AddressType;
 use App\Form\ClientRegisterType;
 use App\Form\ClientType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -107,13 +108,23 @@ class SecurityController extends AbstractController
      */
     public function getAddress(Request $request){
         $leClient = $this->getUser();
-        $address = $leClient->getAddress();
+        $newAddress = new Address();
+        $form = $this->createForm(AddressType::class, $newAddress);
 
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newAddress->setClient($leClient);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($newAddress);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('address');
+        }
 
         return $this->render('security/address.html.twig', [
             'title' => 'Adresse',
-            'address' => $address,
-            //'form' => $form,
+            'address' => $leClient->getAddress(),
+            'form' => $form->createView(),
         ]);
     }
 
