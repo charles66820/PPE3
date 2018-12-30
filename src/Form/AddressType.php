@@ -20,6 +20,7 @@ class AddressType extends AbstractType
                 ],
             ])
             ->add('complement', TextType::class, [
+                'required' => false,
                 'label' => 'Complément d\'adresse',
                 'attr' => [
                     'class' => 'form-control',
