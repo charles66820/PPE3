@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
+use App\Form\ClientRegisterType;
+use App\Form\ClientType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -13,12 +13,10 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Entity\Client;
+use App\Entity\Address;
 use \Symfony\Component\Form\Extension\Core\Type\TextType;
-use \Symfony\Component\Form\Extension\Core\Type\EmailType;
 use \Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use \Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 class SecurityController extends AbstractController
 {
@@ -49,98 +47,7 @@ class SecurityController extends AbstractController
     {
         $notifProfile = null;
         $client = $this->getUser();
-        $form = $this->createFormBuilder($client)
-            ->add('login', TextType::class, [
-                'required' => true,
-                'label' => 'Votre identifiant',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => "Identifiant"
-                ],
-            ])
-            ->add('email', RepeatedType::class, [
-                'required' => true,
-                'invalid_message' => 'L\'email et l\'email de confirmation doivent être identique.',
-                'type' => EmailType::class,
-                'first_options'  => [
-                    'label' => 'Votre email',
-                    'attr' => [
-                        'class' => 'form-control',
-                        'placeholder' => "Votre email"
-                    ],
-                ],
-                'second_options' => [
-                    'label' => 'Confirmez votre email',
-                    'attr' => [
-                        'class' => 'form-control',
-                        'placeholder' => "Confirmez votre email"
-                    ],
-                ],
-            ])
-            ->add('plainPassword', PasswordType::class, [
-                'label' => 'Votre mot de passe actuel',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => "Votre mot de passe actuel"
-                ],
-                'required' => true,
-            ])
-            ->add('newPassword', RepeatedType::class, [
-                'required' => false,
-                'invalid_message' => 'Le mots de passe et le mots de passe de confirmation doivent être identique.',
-                'type' => PasswordType::class,
-                'first_options'  => [
-                    'label' => 'Votre nouveau mot de passe',
-                    'attr' => [
-                        'class' => 'form-control',
-                        'placeholder' => "Votre nouveau mot de passe"
-                    ],
-                ],
-                'second_options' => [
-                    'label' => 'Confirmez votre nouveau mot de passe',
-                    'attr' => [
-                        'class' => 'form-control',
-                        'placeholder' => "Confirmez votre nouveau mot de passe"
-                    ],
-                ],
-            ])
-            ->add('lastName', TextType::class, [
-                'label' => 'Votre nom',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => "Votre nom"
-                ],
-                'required' => false,
-            ])
-            ->add('firstName', TextType::class, [
-                'label' => 'Votre prénom',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => "Votre prénom"
-                ],
-                'required' => false,
-            ])
-            ->add('phoneNumber', TextType::class, [
-                'label' => 'Votre n° de téléphone',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => "Votre n° de téléphone"
-                ],
-                'required' => false,
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Sauvegarder',
-                'attr'=> [
-                    'class'=> 'btn btn-primary',
-                ]
-            ])
-            ->add('reset', ResetType::class, [
-                'label' => 'Annuler',
-                'attr'=> [
-                    'class'=> 'btn btn-danger',
-                ]
-            ])
-            ->getForm();
+        $form = $this->createForm(ClientType::class, $client);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -173,96 +80,51 @@ class SecurityController extends AbstractController
         }
 
         return $this->render('security/profile.html.twig', [
-            'title' => 'Connexion',
+            'title' => 'Profil',
             'form' => $form->createView(),
             'notifProfile' => $notifProfile,
         ]);
     }
 
     /**
-     * @Route("/register", name="register")
+     * @Route("/profile/address/{id}", name="removeAddress")
      */
+    public function deleteAddress($id, Request $request){
+//        for remode addresse
+//        $form->handleRequest($request);
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $entityManager = $this->getDoctrine()->getManager();
+//            $entityManager->remove($a);
+//            $entityManager->flush();
+//        }
+        return new Response(
+            '{error:"address not remove"}'
+        );
+    }
+
+    /**
+     * @Route("/profile/address", name="address")
+     */
+    public function getAddress(Request $request){
+        $leClient = $this->getUser();
+        $address = $leClient->getAddress();
+
+
+        return $this->render('security/address.html.twig', [
+            'title' => 'Adresse',
+            'address' => $address,
+            //'form' => $form,
+        ]);
+    }
+
+    /**
+     * @Route("/register", name="register")
+    */
     public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $newClient = new Client();
 
-        $form = $this->createFormBuilder($newClient)
-            ->add('login', TextType::class, [
-                'label' => 'Votre identifiant',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => "Identifiant"
-                ],
-            ])
-            ->add('email', RepeatedType::class, [
-                'required' => true,
-                'invalid_message' => 'L\'email et l\'email de confirmation doivent être identique.',
-                'type' => EmailType::class,
-                'first_options'  => [
-                    'label' => 'Votre email',
-                    'attr' => [
-                        'class' => 'form-control',
-                        'placeholder' => "Votre email"
-                    ],
-                ],
-                'second_options' => [
-                    'label' => 'Confirmez votre email',
-                    'attr' => [
-                        'class' => 'form-control',
-                        'placeholder' => "Confirmez votre email"
-                    ],
-                ],
-            ])
-            ->add('plainPassword', RepeatedType::class, [
-                'required' => true,
-                'invalid_message' => 'Le mots de passe et le mots de passe de confirmation doivent être identique.',
-                'type' => PasswordType::class,
-                'first_options'  => [
-                    'label' => 'Votre mot de passe',
-                    'attr' => [
-                        'class' => 'form-control',
-                        'placeholder' => "Votre mot de passe"
-                    ],
-                ],
-                'second_options' => [
-                    'label' => 'Confirmez votre mot de passe',
-                    'attr' => [
-                        'class' => 'form-control',
-                        'placeholder' => "Confirmez votre mot de passe"
-                    ],
-                ],
-            ])
-            ->add('lastName', TextType::class, [
-                'label' => 'Votre nom',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => "Votre nom"
-                ],
-                'required' => false,
-            ])
-            ->add('firstName', TextType::class, [
-                'label' => 'Votre prénom',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => "Votre prénom"
-                ],
-                'required' => false,
-            ])
-            ->add('phoneNumber', TextType::class, [
-                'label' => 'Votre n° de téléphone',
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => "Votre n° de téléphone"
-                ],
-                'required' => false,
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => "Je m'inscris",
-                'attr'=> [
-                    'class'=> 'btn btn-primary',
-                ]
-            ])
-            ->getForm();
+        $form = $this->createForm(ClientRegisterType::class, $newClient);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
