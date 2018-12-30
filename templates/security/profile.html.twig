@@ -14,7 +14,7 @@
             <div class="form-row" style="margin-top:55px;">
                 <div class="col-md-4 relative">
                     <div>
-                        <div class="center" style="background: url('https://www.google.fr/logos/doodles/2018/winter-solstice-2018-northern-hemisphere-5609689915064320-law.gif') 50% 50% / cover;height:200px;width:200px;border-radius:50%;margin-left:calc(50% - 100px);"></div>
+                        <div class="center" id="avatar-bg" style="background: url('/img/defaultavatarurl.png') 50% 50% / cover;height:200px;width:200px;border-radius:50%;margin-left:calc(50% - 100px);"></div>
                     </div>
                 <input type="file" name="avatar-file" class="form-control">
                 </div>
@@ -87,4 +87,8 @@
             </div>
         {{ form_end(form) }}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/js/profile.js"></script>
 {% endblock %}
