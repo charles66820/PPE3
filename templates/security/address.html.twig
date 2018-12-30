@@ -1,0 +1,55 @@
+{% extends 'template.html.twig' %}
+
+{% block content %}
+    <div class="container" style="padding:10px 20px;">
+        <div class="form-row">
+            <div class="col-md-6 relative">
+                <h2 class="m-1">Adresses</h2>
+                <div class="col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <ul class="list-group" style="overflow:auto; height: 420px;" >
+                            {% for a in address %}
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <p class="col-9">{{ a.way }} {{ a.complement }} <br> {{ a.zipCode }} {{ a.city }}, {{ a.country }}</p>
+                                        <div class="col-3">
+                                            <form method="DELETE" style="display:initial;" action="{{ path('removeAddress', { id:a.id }) }}">
+                                                <button type="submit" class="btn btn-danger float-right" onclick="if (confirm('Êtes-vous sur de vouloir supprimer cette adresse ?')) {return true;}else {return false;}">✗</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 relative">
+                <h2>Ajouter une adresse</h2>
+                <hr>
+                <form method="post" class="mb-5">
+                    <div class="col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label>Adresse : </label>
+                            <input type="text" placeholder="Adresse" class="form-control" name="adresse" value="" />
+
+                            <label>Complément d'adresse : </label>
+                            <input type="text" placeholder="Complément d'adresse" class="form-control" name="Complement" value="" />
+
+                            <label>Code postal : </label>
+                            <input type="text" placeholder="Code postal" class="form-control" name="CodePostal" value="" />
+
+                            <label>Ville : </label>
+                            <input type="text" placeholder="Ville" class="form-control" name="Ville" value="" />
+                        </div>
+                        <p>L'adresse de livraison dois ce trouver en france métropoliténe !</p>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-primary" type="submit">Ajouter l'adresse</button>
+                        </div>
+                        <hr>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
