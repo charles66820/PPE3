@@ -37,22 +37,22 @@
                     <div class="side">
                         <div class="d-flex flex-wrap justify-content-center justify-content-md-start starscont">
                             {% set curquery = app.request.query.all() %}
-                            <a href="{{ path("catalogC", { 'cat': 'all'}) }}?{{ curquery|merge({'stars':0})|url_encode }}">
+                            <a href="{{ path("catalogC", { 'cat': app.request.attributes.get('cat')|default('all')}) }}?{{ curquery|merge({'stars':0})|url_encode }}">
                                 <span class="starsbox stars stars0">&amp;plus</span>
                             </a>
-                            <a href="{{ path("catalogC", { 'cat': 'all'}) }}?{{ curquery|merge({'stars':1})|url_encode }}">
+                            <a href="{{ path("catalogC", { 'cat': app.request.attributes.get('cat')|default('all')}) }}?{{ curquery|merge({'stars':1})|url_encode }}">
                                 <span class="starsbox stars stars1">&amp;plus</span>
                             </a>
-                            <a href="{{ path("catalogC", { 'cat': 'all'}) }}?{{ curquery|merge({'stars':2})|url_encode }}">
+                            <a href="{{ path("catalogC", { 'cat': app.request.attributes.get('cat')|default('all')}) }}?{{ curquery|merge({'stars':2})|url_encode }}">
                                 <span class="starsbox stars stars2">&amp;plus</span>
                             </a>
-                            <a href="{{ path("catalogC", { 'cat': 'all'}) }}?{{ curquery|merge({'stars':3})|url_encode }}">
+                            <a href="{{ path("catalogC", { 'cat': app.request.attributes.get('cat')|default('all')}) }}?{{ curquery|merge({'stars':3})|url_encode }}">
                                 <span class="starsbox stars stars3">&amp;plus</span>
                             </a>
-                            <a href="{{ path("catalogC", { 'cat': 'all'}) }}?{{ curquery|merge({'stars':4})|url_encode }}">
+                            <a href="{{ path("catalogC", { 'cat': app.request.attributes.get('cat')|default('all')}) }}?{{ curquery|merge({'stars':4})|url_encode }}">
                                 <span class="starsbox stars stars4">&amp;plus</span>
                             </a>
-                            <a href="{{ path("catalogC", { 'cat': 'all'}) }}?{{ curquery|merge({'stars':5})|url_encode }}">
+                            <a href="{{ path("catalogC", { 'cat': app.request.attributes.get('cat')|default('all')}) }}?{{ curquery|merge({'stars':5})|url_encode }}">
                                 <span class="starsbox stars stars5"></span>
                             </a>
                         </div>
