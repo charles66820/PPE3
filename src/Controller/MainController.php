@@ -52,7 +52,7 @@ class MainController extends AbstractController
             $category = $this->getDoctrine()
                 ->getRepository(Category::class)
                 ->findOneBy(['name' => $cat]);
-            //TODO: star and price
+            //TODO: star and price and search
             $products = $category->getProducts();
         }
 
