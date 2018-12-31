@@ -11,60 +11,48 @@
             <div class="col-md-2 col-md-pull-10">
                 <div class="sidebar container mb-3">
                     <div class="side">
-                        <h4>Price Range</h4>
-                        <form method="post">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="guests">Price from:</label>
-                                        <div class="form-field">
-                                            <i class="icon icon-arrow-down3"></i>
-                                            <select name="people" id="people" class="form-control">
-                                                <option value="#">1</option>
-                                                <option value="#">200</option>
-                                                <option value="#">300</option>
-                                                <option value="#">400</option>
-                                                <option value="#">1000</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="guests">Price to:</label>
-                                        <div class="form-field">
-                                            <i class="icon icon-arrow-down3"></i>
-                                            <select name="people" id="people" class="form-control">
-                                                <option value="#">2000</option>
-                                                <option value="#">4000</option>
-                                                <option value="#">6000</option>
-                                                <option value="#">8000</option>
-                                                <option value="#">10000</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <form>
+                            <i class="icon icon-arrow-down3"></i>
+                            {% if app.request.query.get('shortPrice') == 'DESC' %}
+                                {% set checkPrice = true %}
+                            {% else %}
+                                {% set checkPrice = false %}
+                            {% endif %}
+                            {% if app.request.query.get('q')  %}
+                                <input type="hidden" name="q" value="{{ app.request.query.get('q') }}">
+                            {% endif %}
+                            <select name="shortPrice" onchange="this.form.submit()" class="form-control">
+                                <option value="ASC" {% if not checkPrice %}selected{% endif %}>Prix croissant</option>
+                                <option value="DESC" {% if checkPrice %}selected{% endif %}>Prix decroissant</option>
+                            </select>
+                            {% if app.request.query.get('stars')  %}
+                                <input type="hidden" name="stars" value="{{ app.request.query.get('stars') }}">
+                            {% endif %}
+                            <noscript>
+                                <input type="submit" value="Filtrée">
+                            </noscript>
                         </form>
                     </div>
+                    <hr>
                     <div class="side">
                         <div class="d-flex flex-wrap justify-content-center justify-content-md-start starscont">
-                            <a href="/catalogue.php?categorie=figurines&amp;type=nenedoroid&amp;stars=0">
+                            {% set curquery = app.request.query.all() %}
+                            <a href="{{ path("catalogC", { 'cat': 'all'}) }}?{{ curquery|merge({'stars':0})|url_encode }}">
                                 <span class="starsbox stars stars0">&amp;plus</span>
                             </a>
-                            <a href="/catalogue.php?categorie=figurines&amp;type=nenedoroid&amp;stars=1">
+                            <a href="{{ path("catalogC", { 'cat': 'all'}) }}?{{ curquery|merge({'stars':1})|url_encode }}">
                                 <span class="starsbox stars stars1">&amp;plus</span>
                             </a>
-                            <a href="/catalogue.php?categorie=figurines&amp;type=nenedoroid&amp;stars=2">
+                            <a href="{{ path("catalogC", { 'cat': 'all'}) }}?{{ curquery|merge({'stars':2})|url_encode }}">
                                 <span class="starsbox stars stars2">&amp;plus</span>
                             </a>
-                            <a href="/catalogue.php?categorie=figurines&amp;type=nenedoroid&amp;stars=3">
+                            <a href="{{ path("catalogC", { 'cat': 'all'}) }}?{{ curquery|merge({'stars':3})|url_encode }}">
                                 <span class="starsbox stars stars3">&amp;plus</span>
                             </a>
-                            <a href="/catalogue.php?categorie=figurines&amp;type=nenedoroid&amp;stars=4">
+                            <a href="{{ path("catalogC", { 'cat': 'all'}) }}?{{ curquery|merge({'stars':4})|url_encode }}">
                                 <span class="starsbox stars stars4">&amp;plus</span>
                             </a>
-                            <a href="/catalogue.php?categorie=figurines&amp;type=nenedoroid&amp;stars=5">
+                            <a href="{{ path("catalogC", { 'cat': 'all'}) }}?{{ curquery|merge({'stars':5})|url_encode }}">
                                 <span class="starsbox stars stars5"></span>
                             </a>
                         </div>

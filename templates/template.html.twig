@@ -24,18 +24,25 @@
             </button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <form class="form-inline navbar-left" action="{{ path("catalogC", {'cat': 'all'}) }}">
-                    <input type="hidden" name="categorie" value="">
-                    <input type="hidden" name="type" value="">
-                    <input type="hidden" name="stars" value="">
-                    <input type="hidden" name="maxprice" value="">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <button class="input-group-text" onclick="this.parentNode.parentNode.submit()">
+                            <button class="input-group-text" type="submit">
                                 <i class="fa fa-search"></i>
                             </button>
                         </div>
-                        <input class="form-control" type="text" name="search" placeholder="Recherche">
+                        <input
+                            class="form-control"
+                            type="text" name="q"
+                            placeholder="Recherche"
+                            value="{{ app.request.query.get('q') }}"
+                        >
                     </div>
+                    {% if app.request.query.get('shortPrice')  %}
+                        <input type="hidden" name="shortPrice" value="{{ app.request.query.get('shortPrice') }}">
+                    {% endif %}
+                    {% if app.request.query.get('stars')  %}
+                        <input type="hidden" name="stars" value="{{ app.request.query.get('stars') }}">
+                    {% endif %}
                 </form>
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item">
