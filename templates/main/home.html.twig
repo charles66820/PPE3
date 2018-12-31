@@ -20,19 +20,27 @@
                         <p class="text-center" style="font-size:21px;margin-top:21px;">
                             Hey, bienvenue sur Ô'Tako ! <br>
                             Je suis Poulpi et je suis là pour te guider. <br>
-                            Si tu es nouveau, viens vite t'inscrire et <br>
-                            deviens un membre de la Tako Family !
+                            {% if app.user %}
+                                j'ai de nouveaux produits qui peuvent t'intéresser
+                            {% else %}
+                                Si tu es nouveau, viens vite t'inscrire et <br>
+                                deviens un membre de la Tako Family !
+                            {% endif %}
                         </p>
                     </div>
                     <div class="buttons">
                         <a class="btn btn-info btn-lg d-block float-none justify-content-center align-items-center align-content-center align-self-center order-4 mx-auto"
                            role="button"
-                           href="{{ path("register") }}"
+                           href="{% if app.user %}{{ path("catalogC", { 'cat': 'all'}) }}{% else %}{{ path("register") }}{% endif %}"
                            data-bs-hover-animate="bounce"
                            style="width:435px;font-size:27px;max-width:466px;margin-top:34px;"
                         >
                             <i class="fa fa-hand-o-right"></i>
-                            M'inscrire MAINTENANT !
+                            {% if app.user %}
+                                Voir les nouveaux produits
+                            {% else %}
+                                M'inscrire MAINTENANT !
+                            {% endif %}
                             <i class="fa fa-hand-o-left"></i>
                         </a>
                     </div>

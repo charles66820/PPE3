@@ -58,7 +58,14 @@
                     </li>
 
                     <li class="dropdown">
-                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Compte </a>
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
+                            {% if app.user %}
+                                <img src="{{ app.user.avatarUrl }}" alt="avatar" style="width:20px;">
+                                <span>{{ app.user.login }}</span>
+                            {% else %}
+                                <span>Compte</span>
+                            {% endif %}
+                        </a>
                         <div class="dropdown-menu" role="menu">
 
                             {% if is_granted('ROLE_USER') %}
@@ -80,6 +87,7 @@
     </nav>
 
     {% block content %}{% endblock %}
+
     <footer style="background-color:rgb(23,50,77);">
         <div class="row">
             <div class="col-sm-6 col-md-4 footer-navigation">
