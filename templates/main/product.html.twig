@@ -3,6 +3,18 @@
 {% block stylesheet %}
     <link rel="stylesheet" href="/css/catalog.css">
     <link rel="stylesheet" href="/css/stars.css">
+    <style>
+        .comment-box{
+            padding: 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 16px;
+            color: #282828;
+            font-weight: 100;
+            box-shadow: 1px 0 5px 0 rgba(0,0,0,0.2);
+            position: relative;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -54,40 +66,40 @@
                 {{ product.description }}
             </div>
         </div>
-        <div class="shadow-sm p-2 mt-3">
-            <h2>notée le produit : </h2>
+        <div class="p-2 col-xl-8 col-lg-12 mt-3 shadow-sm">
+            <h2 style="display: inline-block">notée le produit : </h2>
             <div id="starsselecteur" class="stars0">
                 <img src="/img/empty_star.png" style="margin-left:0px;" alt="1 étoiles" height="28" width="28" data-star="1">
-                <img src="/img/empty_star.png" alt="2 étoiles" height="28" width="28" data-star="2">
+                <img src="/img/empty_star.png" alt="2 étoiles" height="28" width="28" data-star="2" style="margin-left:4px;">
                 <img src="/img/empty_star.png" alt="3 étoiles" height="28" width="28" data-star="3">
                 <img src="/img/empty_star.png" alt="4 étoiles" height="28" width="28" data-star="4">
-                <img src="/img/empty_star.png" alt="5 étoiles" height="28" width="28" data-star="5">
+                <img src="/img/empty_star.png" alt="5 étoiles" height="28" width="28" data-star="5" style="margin-right:-1px;">
                 <input type="hidden" name="avis" value="0">
             </div>
-            <div class="shadow-sm">
-                <h2>écrivée un comantaire : </h2>
-                <form class="" method='POST'>
-                    <div class="col-sm-8 comment-box" style="margin-bottom:60px;">
-                        <input type='hidden' name='IDClient' value="">
-                        <br>
-                        <input class="form-control" type='text' name='titreAvis' placeholder="Titre ou résumé pour votre commentaire (requis)"><br>
-                        <textarea class="form-control textarea-avis" name='message' placeholder="Entrez ici votre commentaire"></textarea><br>
-                        <button class="button-avis" type='submit' name='commentSubmit'>Commenter</button>
-                    </div>
-                </form>
-            </div>
+            <form class="m-2" method='POST'>
+                <div class="comment-box" style="margin-bottom:60px;">
+                    <h2>écrivée un comantaire : </h2>
+                    <input type='hidden' name='IDClient' value="">
+                    <br>
+                    <input class="form-control" type='text' name='titreAvis' placeholder="Titre ou résumé pour votre commentaire (requis)"><br>
+                    <textarea class="form-control" style="height:80px;background-color:#fff;resize:none;" name='message' placeholder="Entrez ici votre commentaire"></textarea><br>
+                    <button class="btn btn-dark" type='submit' name='commentSubmit'>Commenter</button>
+                </div>
+            </form>
 
-            <div class='col-sm-8 comment-box'>
+            <div class='comment-box'>
                 <div class="form-row">
-                    <div class="stars stars" style="height: 26px; width: 148px; float: left; margin-right:8px;"></div>
-                    <p class="text-justify" style="margin-top:8px;">Commentaire fait le par</p>
+                    <p class="text-justify" style="margin-top:8px;">Commentaire fait le XXXXXX par YYYYYYY</p>
                 </div>
-                <p></p>
+                <h4 style="word-break:break-word;">fzezefzefzefzefeezzezerzefzefzefzefzfzefzefzfzefzfzefzefzefzfzefefzefezfzezhygilezhleziueziuoeziy erezg</h4>
                 <div class="textarea-avis">
+                    fezkjhrgbyuueziokplffbùgn
+                    ertyefk zijefoklfmù
+                    z
                 </div>
-                <form class='delete-form' method='POST'>
-                    <input type='hidden' name='IDAvis' value=''>
-                    <button type='submit' name='commentDelete'>Supprimer</button>
+                <form style="position: absolute;top: 20px;right: 20px;" method='POST'>
+                    <input type='hidden' name='id' value=''>
+                    <button type='submit' class="btn btn-dark" name='commentDelete'>Supprimer</button>
                 </form>
             </div>
         </div>
