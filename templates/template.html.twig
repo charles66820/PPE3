@@ -59,12 +59,11 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="position:relative" href="{{ path('card') }}">
-                            <img width="22" height="22" src="/img/panier.png"/>
-                            <span class="badge badge-pill badge-primary" style="position:absolute;left:20px;top:4px;font-size:10px;color:white;font-weight:bold;">0</span>Panier
+                        <a class="nav-link" style="padding-left: 35px;position:relative" href="{{ path('card') }}">
+                            <img style="left:0;height:26px;top:5px;position:absolute" src="/img/panier.png"/>
+                            <span class="badge badge-pill badge-primary" style="position:absolute;left:10px;top:5px;font-size:8px;color:white;font-weight:bold;">0</span>Panier
                         </a>
                     </li>
-
                     <li class="dropdown">
                         <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
                             {% if app.user %}
@@ -128,7 +127,6 @@
             </div>
         </div>
     </footer>
-
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     {% block javascripts %}{% endblock %}
