@@ -6,6 +6,7 @@ use App\Form\AddressType;
 use App\Form\ClientRegisterType;
 use App\Form\ClientType;
 use App\Repository\AddressRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +36,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/profile", name="profile")
      */
-    public function getProfile(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function getProfile(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $passwordEncoder)
     {
         $notifProfile = null;
         $client = $this->getUser();
@@ -65,9 +66,8 @@ class SecurityController extends AbstractController
                     ];
 
                 //save client in db
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($client);
-                $entityManager->flush();
+                $manager->persist($client);
+                $manager->flush();
             }
         }
 
@@ -81,20 +81,18 @@ class SecurityController extends AbstractController
     /**
      * @Route("/profile/address/{id}", name="removeAddress")
      */
-    public function deleteAddress(Address $address, Request $request){
+    public function deleteAddress(Address $address, Request $request, ObjectManager $manager){
         //pour l'ajax
         if ($request->isXmlHttpRequest()) {
             if ($this->getUser() != $address->getClient()) return new Response(json_encode(['error'=>'l\adresse n\'apartin pas au client']));
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($address);
-            $entityManager->flush();
+            $manager->remove($address);
+            $manager->flush();
             return new Response(json_encode(['address'=>$this->getUser()->getAddress()]));
         }
         //pour les site non dinamic
         if ($this->getUser() == $address->getClient()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($address);
-            $entityManager->flush();
+            $manager->remove($address);
+            $manager->flush();
         }
         return $this->redirectToRoute('address');
     }
@@ -102,7 +100,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/profile/address", name="address")
      */
-    public function getAddress(Request $request){
+    public function getAddress(Request $request, ObjectManager $manager){
         $leClient = $this->getUser();
         $newAddress = new Address();
         $form = $this->createForm(AddressType::class, $newAddress);
@@ -110,9 +108,8 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $newAddress->setClient($leClient);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($newAddress);
-            $entityManager->flush();
+            $manager->persist($newAddress);
+            $manager->flush();
 
             return $this->redirectToRoute('address');
         }
@@ -127,7 +124,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/register", name="register")
     */
-    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder, ObjectManager $manager)
     {
         $newClient = new Client();
 
@@ -139,9 +136,8 @@ class SecurityController extends AbstractController
             $newClient->setPassword($password);
             $newClient->setCreationDate(new \DateTime());
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($newClient);
-            $entityManager->flush();
+            $manager->persist($newClient);
+            $manager->flush();
 
             return $this->redirectToRoute('login');
         }

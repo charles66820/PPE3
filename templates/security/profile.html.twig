@@ -15,8 +15,13 @@
                 <div class="col-md-4 relative">
                     <div>
                         <div class="center" id="avatar-bg" style="background: url('/img/defaultavatarurl.png') 50% 50% / cover;height:200px;width:200px;border-radius:50%;margin-left:calc(50% - 100px);"></div>
+                        <input type="file" name="avatar-file" class="form-control">
                     </div>
-                <input type="file" name="avatar-file" class="form-control">
+                    <hr class="mt-4 mb-4">
+                    <div class="md-4">
+                        <p>Cliquer ici pour gérer vos adresses :</p>
+                        <a href="{{ path('address') }}">Mes adresses</a>
+                    </div>
                 </div>
                 <div class="col-md-8">
                     <h2>Modifier mon profil</h2>

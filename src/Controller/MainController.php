@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Product;
 
@@ -65,12 +66,8 @@ class MainController extends AbstractController
     /**
      * @Route("/product/{id}", name="product")
      */
-    public function getProduct($id)
+    public function getProduct(Product $product, Request $request)
     {
-        $product = $this->getDoctrine()
-            ->getRepository(Product::class)
-            ->find($id);
-
         if($product == null){
             return $this->render('error/404.html.twig', [
                 'title' => '404 le produit n\'existe pas!',
