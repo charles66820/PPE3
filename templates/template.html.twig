@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
+    {% set theme = 'sketchy' %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/img/logoIcon.gif"/>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/{{ theme }}/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
     <link rel="stylesheet" href="/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="/fonts/simple-line-icons.min.css">
@@ -92,9 +93,9 @@
             </div>
         </div>
     </nav>
-
-    {% block content %}{% endblock %}
-
+    <div class="mt-2">
+        {% block content %}{% endblock %}
+    </div>
     <footer style="background-color:rgb(23,50,77);">
         <div class="row">
             <div class="col-sm-6 col-md-4 footer-navigation">
