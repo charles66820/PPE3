@@ -70,8 +70,15 @@ class MainController extends AbstractController
     /**
      * @Route("/product/{id}", name="product")
      */
-    public function getProduct(Product $product, Request $request, ObjectManager $manager)
+    public function getProduct(Product $product = null, Request $request, ObjectManager $manager)
     {
+        if($product == null){
+            return $this->render('error/404.html.twig', [
+                'title' => '404 le produit n\'existe pas!',
+                'msgerr' => 'Le produit n\'existe pas!',
+            ]);
+        }
+
         $leClient = $this->getUser();
         $newComment = new Comment();
         $formV = null;
@@ -89,13 +96,6 @@ class MainController extends AbstractController
                 return $this->redirectToRoute('product', ['id' => $product->getId()]);
             }
             $formV = $form->createView();
-        }
-
-        if($product == null){
-            return $this->render('error/404.html.twig', [
-                'title' => '404 le produit n\'existe pas!',
-                'msgerr' => 'Le produit n\'existe pas!',
-            ]);
         }
 
         return $this->render('main/product.html.twig', [
