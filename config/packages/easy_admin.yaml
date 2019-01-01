@@ -46,6 +46,6 @@ easy_admin:
             - {property: 'lastName', label: 'Nom'}
             - {property: 'firstName', label: 'prénom'}
             - {property: 'phoneNumber', label: 'Numéro de telephone', type: 'tel'}
-            - {property: 'avatarUrl', label: "Lien de l'avatar", type: image}
+            - {property: 'avatarUrl', label: "Lien de l'avatar", type: image, base_path: '/img/'}
             - {property: 'confirmed', label: "Email confirmé"}
             - roles

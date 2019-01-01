@@ -109,7 +109,7 @@ class Client implements UserInterface, \Serializable
      *
      * @ORM\Column(name="avatar_url", type="string", length=2000, nullable=false)
      */
-    private $avatarUrl = "https://randomuser.me/api/portraits/women/11.jpg";
+    private $avatarUrl = "defaultavatarurl.png";
 
     /**
      * @var \DateTime
