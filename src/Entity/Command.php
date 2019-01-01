@@ -31,21 +31,21 @@ class Command
     /**
      * @var string|null
      *
-     * @ORM\Column(name="total_HT", type="decimal", precision=15, scale=2, nullable=true)
+     * @ORM\Column(name="total_HT", type="decimal", precision=15, scale=2, nullable=false)
      */
     private $totalHT;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="shipping", type="decimal", precision=15, scale=2, nullable=true)
+     * @ORM\Column(name="shipping", type="decimal", precision=15, scale=2, nullable=false)
      */
     private $shipping;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="tax_on_command", type="decimal", precision=3, scale=2, nullable=true)
+     * @ORM\Column(name="tax_on_command", type="decimal", precision=3, scale=2, nullable=false)
      */
     private $taxOnCommand;
 
@@ -54,7 +54,7 @@ class Command
      *
      * @ORM\ManyToOne(targetEntity="Address")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_address_delivery", referencedColumnName="id_address")
+     *   @ORM\JoinColumn(name="id_address_delivery", referencedColumnName="id_address", onDelete="SET NULL")
      * })
      */
     private $addressDelivery;
@@ -64,7 +64,7 @@ class Command
      *
      * @ORM\ManyToOne(targetEntity="Client")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client")
+     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client", onDelete="SET NULL")
      * })
      */
     private $client;

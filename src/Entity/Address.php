@@ -83,7 +83,7 @@ class Address
      *
      * @ORM\ManyToOne(targetEntity="Client", inversedBy="address")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client")
+     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client", onDelete="CASCADE")
      * })
      */
     private $client;

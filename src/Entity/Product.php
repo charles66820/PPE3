@@ -65,7 +65,7 @@ class Product
      *
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="products", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_category", referencedColumnName="id_category", nullable=true)
+     *   @ORM\JoinColumn(name="id_category", referencedColumnName="id_category", onDelete="SET NULL", nullable=true)
      * })
      */
     private $category;

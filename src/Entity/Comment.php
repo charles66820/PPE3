@@ -55,9 +55,9 @@ class Comment
     /**
      * @var \Client
      *
-     * @ORM\ManyToOne(targetEntity="Client", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="Client")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client", nullable=false)
+     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client", onDelete="CASCADE", nullable=false)
      * })
      */
     private $client;
@@ -67,7 +67,7 @@ class Comment
      *
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="comments")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_product", referencedColumnName="id_product", nullable=false)
+     *   @ORM\JoinColumn(name="id_product", referencedColumnName="id_product", onDelete="CASCADE", nullable=false)
      * })
      */
     private $product;

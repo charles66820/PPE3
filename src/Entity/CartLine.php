@@ -25,7 +25,7 @@ class CartLine
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="clientCartLines")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_product", referencedColumnName="id_product")
+     *   @ORM\JoinColumn(name="id_product", referencedColumnName="id_product", onDelete="CASCADE")
      * })
      */
     private $product;
@@ -36,7 +36,7 @@ class CartLine
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Client", inversedBy="productCartLines")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client")
+     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client", onDelete="CASCADE")
      * })
      */
     private $client;
