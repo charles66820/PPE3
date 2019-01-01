@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Comment;
 use App\Entity\Product;
 
 
@@ -79,5 +82,24 @@ class MainController extends AbstractController
             'title' => 'Produit | '.$product->getTitle(),
             'product' => $product,
         ]);
+    }
+
+    /**
+     * @Route("/comment/{id}", name="removeComment")
+     */
+    public function deleteComment(Comment $comment, Request $request, ObjectManager $manager){
+        //pour l'ajax
+        if ($request->isXmlHttpRequest()) {
+            if ($this->getUser() != $comment->getClient()) return new Response(json_encode(['error'=>'le commentaire n\'apartin pas au client']));
+            $manager->remove($comment);
+            $manager->flush();
+            return new Response(json_encode(['comment' => $comment->getProduct()->getComments()]));
+        }
+        //pour les site non dinamic
+        if ($this->getUser() == $comment->getClient()) {
+            $manager->remove($comment);
+            $manager->flush();
+        }
+        return $this->redirectToRoute('product', ['id' => $comment->getProduct()->getId()]);
     }
 }

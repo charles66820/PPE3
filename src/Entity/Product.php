@@ -87,7 +87,7 @@ class Product
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Opinion", mappedBy="product", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="product", fetch="EAGER")
      */
     private $comments;
 
