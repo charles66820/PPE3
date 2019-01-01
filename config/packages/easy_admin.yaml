@@ -16,16 +16,36 @@ easy_admin:
         class: App\Entity\Product
         list:
           title: "Les produits"
-          fields: ['id', {property: 'title', label: 'Titre'}, {property: 'unitPriceHT', label: 'Prix unitaire aure tax'}, 'reference', {property: 'quantity', label: 'Quantité' }, 'description', {property: 'category.title', label: 'Categorie'}]
+          fields:
+            - id
+            - {property: 'title', label: 'Nom'}
+            - {property: 'unitPriceHT', label: 'Prix unitaire hors taxe'}
+            - reference
+            - {property: 'quantity', label: 'Quantité'}
+            - description
+            - {property: 'category.title', label: 'Categorie'}
       Category:
         label: 'Categories'
         class: App\Entity\Category
         list:
           title: "Les categories"
-          fields: ['id', {property: 'title', label: 'Titre'}, {property: 'name', label: 'Nom'}, {property: 'products.count', label: 'Nombre de produit'}]
+          fields:
+            - id
+            - {property: 'title', label: 'Titre'}
+            - {property: 'name', label: 'Nom'}
+            - {property: 'products.count', label: 'Nombre de produit'}
       Client:
         label: 'Clients'
         class: App\Entity\Client
         list:
           title: "Les clients"
-          fields: ['id', {property: 'login', label: 'Identifiant'}, 'email', {property: 'lastName', label: 'Nom'}, {property: 'firstName', label: 'prénom'}, {property: 'phoneNumber', label: 'Numéro de telephone'}, {property: 'avatarUrl', label: "Lien de l'avatar"}, {property: 'confirmed', label: "Email confirmé"}, 'roles']
+          fields:
+            - id
+            - {property: 'login', label: 'Identifiant'}
+            - {property: email, type: 'email'}
+            - {property: 'lastName', label: 'Nom'}
+            - {property: 'firstName', label: 'prénom'}
+            - {property: 'phoneNumber', label: 'Numéro de telephone', type: 'tel'}
+            - {property: 'avatarUrl', label: "Lien de l'avatar", type: image}
+            - {property: 'confirmed', label: "Email confirmé"}
+            - roles
