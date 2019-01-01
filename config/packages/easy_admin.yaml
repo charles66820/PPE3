@@ -1,6 +1,31 @@
 easy_admin:
+    site_name: '<img width="75" height="70" src="/img/logoPoulpe.png">'
+    design:
+      brand_color: 'rgba(26, 188, 156, 0.85)'
+      assets:
+        favicon: '/img/logoIcon.gif'
+        css:
+          - '/css/sketchy/bootstrap.min.css'
+    list:
+      max_results: 10
+    show:
+      max_results: 10
     entities:
-        # List the entity class name you want to manage
-        - App\Entity\Product
-        - App\Entity\Category
-        - App\Entity\Client
+      Product:
+        label: 'Produits'
+        class: App\Entity\Product
+        list:
+          title: "Les produits"
+          fields: ['id', {property: 'title', label: 'Titre'}, {property: 'unitPriceHT', label: 'Prix unitaire aure tax'}, 'reference', {property: 'quantity', label: 'Quantité' }, 'description', {property: 'category.title', label: 'Categorie'}]
+      Category:
+        label: 'Categories'
+        class: App\Entity\Category
+        list:
+          title: "Les categories"
+          fields: ['id', {property: 'title', label: 'Titre'}, {property: 'name', label: 'Nom'}, {property: 'products.count', label: 'Nombre de produit'}]
+      Client:
+        label: 'Clients'
+        class: App\Entity\Client
+        list:
+          title: "Les clients"
+          fields: ['id', {property: 'login', label: 'Identifiant'}, 'email', {property: 'lastName', label: 'Nom'}, {property: 'firstName', label: 'prénom'}, {property: 'phoneNumber', label: 'Numéro de telephone'}, {property: 'avatarUrl', label: "Lien de l'avatar"}, {property: 'confirmed', label: "Email confirmé"}, 'roles']
