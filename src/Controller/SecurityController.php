@@ -24,16 +24,6 @@ use \Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/admin", name="adminhome")
-     */
-    public function getAdmin()
-    {
-        return new Response(
-            '<html><body> admin page </body></html>'
-        );
-    }
-
-    /**
      * @Route("/profile", name="profile")
      */
     public function getProfile(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $passwordEncoder)
