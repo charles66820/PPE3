@@ -73,7 +73,7 @@ class Product
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="ProductPicture", mappedBy="product", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="ProductPicture", mappedBy="product", cascade={"remove"}, fetch="EAGER")
      */
     private $pictures;
 
