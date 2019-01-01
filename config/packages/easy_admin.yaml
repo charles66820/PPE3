@@ -23,7 +23,25 @@ easy_admin:
             - reference
             - {property: 'quantity', label: 'Quantité'}
             - description
-            - {property: 'category.title', label: 'Categorie'}
+            #- {property: 'category.title', label: 'Categorie'}
+        new:
+          title:  'Ajouter un produit'
+          fields:
+            - {property: 'title', label: 'Nom'}
+            - {property: 'unitPriceHT', label: 'Prix unitaire hors taxe'}
+            - reference
+            - {property: 'quantity', label: 'Quantité'}
+            - description
+#            - {property: 'category', label: 'Categorie'}
+        edit:
+          title:  'Modifier le produit'
+          fields:
+            - {property: 'title', label: 'Nom'}
+            - {property: 'unitPriceHT', label: 'Prix unitaire hors taxe'}
+            - reference
+            - {property: 'quantity', label: 'Quantité'}
+            - description
+            - {property: 'category', label: 'Categorie', type: 'choice', choices: 'category'}
       Category:
         label: 'Categories'
         class: App\Entity\Category
@@ -35,12 +53,12 @@ easy_admin:
             - {property: 'name', label: 'Nom'}
             - {property: 'products.count', label: 'Nombre de produit'}
         new:
-          title:  'Add customer'
+          title:  'Ajouter une categorie'
           fields:
             - {property: 'title', label: 'Titre'}
             - {property: 'name', label: 'Nom'}
         edit:
-          title:  'Edit customer'
+          title:  'Modifier la categorie'
           fields:
             - {property: 'title', label: 'Titre'}
             - {property: 'name', label: 'Nom'}
@@ -48,6 +66,7 @@ easy_admin:
       Client:
         label: 'Clients'
         class: App\Entity\Client
+        disabled_actions: ['new']
         list:
           title: "Les clients"
           fields:
@@ -59,4 +78,14 @@ easy_admin:
             - {property: 'phoneNumber', label: 'Numéro de telephone', type: 'tel'}
             - {property: 'avatarUrl', label: "Lien de l'avatar", type: image, base_path: '/img/'}
             - {property: 'confirmed', label: "Email confirmé"}
-            - roles
+            - {property: 'roles', type: 'array'}
+        edit:
+          title:  'Modifier le client'
+          form_options: { validation_groups: ['none'] }
+          fields:
+            - {property: 'login', label: 'Identifiant'}
+            - {property: email, type: 'email'}
+            - {property: 'lastName', label: 'Nom'}
+            - {property: 'firstName', label: 'prénom'}
+            - {property: 'phoneNumber', label: 'Numéro de telephone', type: 'tel'}
+            - {property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' }}}
