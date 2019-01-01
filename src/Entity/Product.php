@@ -65,7 +65,7 @@ class Product
      *
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="products", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_category", referencedColumnName="id_category")
+     *   @ORM\JoinColumn(name="id_category", referencedColumnName="id_category", nullable=true)
      * })
      */
     private $category;
@@ -80,21 +80,21 @@ class Product
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Opinion", mappedBy="product", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Opinion", mappedBy="product", cascade={"remove"}, fetch="EAGER")
      */
     private $opinions;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="product", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="product", cascade={"remove"}, fetch="EAGER")
      */
     private $comments;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="CartLine", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="CartLine", mappedBy="product", cascade={"remove"})
      */
     private $clientCartLines;
 

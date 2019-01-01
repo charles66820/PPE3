@@ -40,7 +40,7 @@ class Category
     /**
      * @var \Product
      *
-     * @ORM\OneToMany(targetEntity="Product", mappedBy="category", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="category", cascade={"detach"}, fetch="EAGER")
      */
     private $products;
 

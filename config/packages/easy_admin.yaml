@@ -34,6 +34,17 @@ easy_admin:
             - {property: 'title', label: 'Titre'}
             - {property: 'name', label: 'Nom'}
             - {property: 'products.count', label: 'Nombre de produit'}
+        new:
+          title:  'Add customer'
+          fields:
+            - {property: 'title', label: 'Titre'}
+            - {property: 'name', label: 'Nom'}
+        edit:
+          title:  'Edit customer'
+          fields:
+            - {property: 'title', label: 'Titre'}
+            - {property: 'name', label: 'Nom'}
+
       Client:
         label: 'Clients'
         class: App\Entity\Client
