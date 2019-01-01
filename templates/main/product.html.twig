@@ -14,6 +14,16 @@
             box-shadow: 1px 0 5px 0 rgba(0,0,0,0.2);
             position: relative;
         }
+        .errsform ul{
+            display: initial;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        .errsform ul li{
+            color: red;
+            padding-left: 14px;
+        }
     </style>
 {% endblock %}
 
@@ -76,24 +86,34 @@
                 <img src="/img/empty_star.png" alt="5 étoiles" height="28" width="28" data-star="5" style="margin-right:-1px;">
                 <input type="hidden" name="avis" value="0">
             </div>
-            <div class="comment-box mb-4">
-                <form method='POST'>
-                    <h2>écrivée un comantaire : </h2>
-                    <br>
-                    <input class="form-control" type='text' name='title' placeholder="Titre ou résumé pour votre commentaire (requis)"><br>
-                    <textarea class="form-control" style="height:80px;background-color:#fff;resize:none;" name='content' placeholder="Entrez ici votre commentaire"></textarea><br>
-                    <button class="btn btn-dark" type='submit' name='commentSubmit'>Commenter</button>
-                </form>
-            </div>
+            {% if form %}
+                <div class="comment-box mb-4">
+                    {{ form_start(form) }}
+                        <h2>écrivée un comantaire : </h2>
+                        <br>
+                        {{ form_widget(form.title) }}
+                        {% if form_errors(form.title) is not empty %}
+                            <div class="errsform">{{ form_errors(form.title) }}</div>
+                        {% endif %}
+                        <br>
+                        {{ form_widget(form.content) }}
+                        {% if form_errors(form.content) is not empty %}
+                            <div class="errsform">{{ form_errors(form.content) }}</div>
+                        {% endif %}
+                        <br>
+                        {{ form_widget(form.submit) }}
+                    {{ form_end(form) }}
+                </div>
+            {% endif %}
             <div id="comments">
                 {% for comment in product.comments %}
-                <div class='comment-box'>
+                <div class='comment-box mt-3'>
                     <div class="form-row">
-                        <p class="text-justify" style="margin-top:8px;">Commentaire fait le {{ comment.Client.creationDate|date("d/m/Y à h:i:s") }} par {{ comment.Client.login }}</p>
+                        <p class="text-justify" style="margin-top:8px;">Commentaire fait le {{ comment.date|date("d/m/Y à h:i:s") }} par {{ comment.Client.login }}</p>
                     </div>
                     <h4 style="word-break:break-word;">{{ comment.title }}</h4>
                     <div class="textarea-avis">
-                        {{ comment.content }}
+                        {{ comment.content|nl2br }}
                     </div>
                     {% if comment.client == app.user %}
                     <form style="position: absolute;top: 20px;right: 20px;" method='POST' action="{{ path('removeComment', { id:comment.id }) }}">

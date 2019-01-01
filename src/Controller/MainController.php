@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Form\CommentType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,8 +70,27 @@ class MainController extends AbstractController
     /**
      * @Route("/product/{id}", name="product")
      */
-    public function getProduct(Product $product, Request $request)
+    public function getProduct(Product $product, Request $request, ObjectManager $manager)
     {
+        $leClient = $this->getUser();
+        $newComment = new Comment();
+        $formV = null;
+        if ($leClient !== null){
+            $form = $this->createForm(CommentType::class, $newComment);
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $newComment->setClient($leClient);
+                $newComment->setProduct($product);
+                $newComment->setDate(new \DateTime());
+                $manager->persist($newComment);
+                $manager->flush();
+
+                return $this->redirectToRoute('product', ['id' => $product->getId()]);
+            }
+            $formV = $form->createView();
+        }
+
         if($product == null){
             return $this->render('error/404.html.twig', [
                 'title' => '404 le produit n\'existe pas!',
@@ -81,6 +101,7 @@ class MainController extends AbstractController
         return $this->render('main/product.html.twig', [
             'title' => 'Produit | '.$product->getTitle(),
             'product' => $product,
+            'form' => $formV,
         ]);
     }
 
