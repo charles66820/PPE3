@@ -2,9 +2,11 @@
 namespace App\Form;
 
 use App\Entity\Address;
+use App\Entity\Client;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
@@ -108,16 +110,24 @@ class ClientType extends AbstractType
                     'class' => 'btn btn-danger',
                 ]
             ])
-            ->add('defaultAdresse', EntityType::class, array(
+            ->add('defaultAdresse', EntityType::class, [
                 'label' => 'Adresse par défaut :',
-                'required'   => false,
+                'required' => false,
                 'class' => Address::class,
                 'choice_label' => 'address',
                 'empty_data' => 'Aucune adresse par défaut',
                 'attr' => [
                     'class' => 'form-control',
                 ],
-            ));
+            ])
+            ->add('avatarUrl', FileType::class, [
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'client_avatarUrl',
+                ],
+                'data_class' => null,
+            ])
         ;
     }
 }

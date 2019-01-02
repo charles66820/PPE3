@@ -105,11 +105,14 @@ class Client implements UserInterface, \Serializable
     private $phoneNumber;
 
     /**
-     * @var string
+     * @ORM\Column(name="avatar_url", type="string", length=2000, nullable=true)
      *
-     * @ORM\Column(name="avatar_url", type="string", length=2000, nullable=false)
+     * @Assert\File(
+     *     maxSize = "2M",
+     *     mimeTypes={ "image/jpeg", "image/png", "image/gif" })
+     *     mimeTypesMessage = "L'image n'est pas valide, seuls les fichiers jpeg, png et gif son supporter"
      */
-    private $avatarUrl = "defaultavatarurl.png";
+    private $avatarUrl;
 
     /**
      * @var \DateTime
@@ -264,18 +267,6 @@ class Client implements UserInterface, \Serializable
     public function setPhoneNumber(?string $phoneNumber): self
     {
         $this->phoneNumber = $phoneNumber;
-
-        return $this;
-    }
-
-    public function getAvatarUrl(): ?string
-    {
-        return $this->avatarUrl;
-    }
-
-    public function setAvatarUrl(string $avatarUrl): self
-    {
-        $this->avatarUrl = $avatarUrl;
 
         return $this;
     }
@@ -463,6 +454,18 @@ class Client implements UserInterface, \Serializable
                 $address->setClient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAvatarUrl()
+    {
+        return $this->avatarUrl;
+    }
+
+    public function setAvatarUrl($avatarUrl): self
+    {
+        $this->avatarUrl = $avatarUrl;
 
         return $this;
     }

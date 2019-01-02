@@ -14,8 +14,8 @@
             <div class="form-row" style="margin-top:55px;">
                 <div class="col-md-4 relative">
                     <div>
-                        <div class="center" id="avatar-bg" style="background: url('/img/defaultavatarurl.png') 50% 50% / cover;height:200px;width:200px;border-radius:50%;margin-left:calc(50% - 100px);"></div>
-                        <input type="file" name="avatar-file" class="form-control">
+                        <div class="center" id="avatar-bg" style="background: url('/img/{% if app.user.avatarUrl %}{{ app.user.avatarUrl }}{% else %}{{ 'defaultavatarurl.png' }}{% endif %}') 50% 50% / cover;height:200px;width:200px;border-radius:50%;margin-left:calc(50% - 100px);"></div>
+                        {{ form_widget(form.avatarUrl) }}
                     </div>
                     <hr class="mt-4 mb-4">
                     <div class="md-4">
