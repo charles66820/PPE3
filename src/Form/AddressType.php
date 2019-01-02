@@ -51,11 +51,6 @@ class AddressType extends AbstractType
                     'class' => 'btn btn-primary',
                 ]
             ])
-            ->add('Client', EntityType::class, array(
-                'class' => Client::class,
-                'choice_label' => 'username',
-
-            ))
         ;
     }
 }

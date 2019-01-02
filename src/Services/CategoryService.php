@@ -7,15 +7,15 @@ use App\Entity\Category;
 
 class CategoryService
 {
-    private $manager;
+    private static $manager;
     public function __construct(RegistryInterface $registry)
     {
-        $this->manager = $registry->getManagerForClass(Category::class);
+        self::$manager = $registry->getManagerForClass(Category::class);
     }
 
-    public function getAllCategorys()
+    public static function getAllCategorys()
     {
-        return $this->manager->getRepository(Category::class)
+        return self::$manager->getRepository(Category::class)
             ->findAll();
     }
 }

@@ -6,6 +6,10 @@ easy_admin:
         favicon: '/img/logoIcon.gif'
         css:
           - '/css/sketchy/bootstrap.min.css'
+      menu:
+        - { entity: 'Product', icon: 'cube' }
+        - { entity: 'Client', icon: 'user' }
+        - { entity: 'Category', icon: 'tag' }
     list:
       max_results: 10
     show:
@@ -16,6 +20,7 @@ easy_admin:
         class: App\Entity\Product
         list:
           title: "Les produits"
+          actions: ['edit']
           fields:
             - id
             - {property: 'title', label: 'Nom'}
@@ -23,7 +28,7 @@ easy_admin:
             - reference
             - {property: 'quantity', label: 'Quantité'}
             - description
-            #- {property: 'category.title', label: 'Categorie'}
+            - {property: 'category.title', label: 'Categorie'}
         new:
           title:  'Ajouter un produit'
           fields:
@@ -32,7 +37,7 @@ easy_admin:
             - reference
             - {property: 'quantity', label: 'Quantité'}
             - description
-#            - {property: 'category', label: 'Categorie'}
+            - {property: 'category', type: 'entity', type_options: { class: 'App\Entity\category', choice_label: 'name'}}
         edit:
           title:  'Modifier le produit'
           fields:
@@ -41,7 +46,7 @@ easy_admin:
             - reference
             - {property: 'quantity', label: 'Quantité'}
             - description
-            - {property: 'category', label: 'Categorie', type: 'choice', choices: 'category'}
+            - {property: 'category', type: 'entity', type_options: { class: 'App\Entity\category', choice_label: 'name'}}
       Category:
         label: 'Categories'
         class: App\Entity\Category
@@ -49,19 +54,19 @@ easy_admin:
           title: "Les categories"
           fields:
             - id
-            - {property: 'title', label: 'Titre'}
             - {property: 'name', label: 'Nom'}
+            - {property: 'title', label: 'Titre'}
             - {property: 'products.count', label: 'Nombre de produit'}
         new:
           title:  'Ajouter une categorie'
           fields:
-            - {property: 'title', label: 'Titre'}
-            - {property: 'name', label: 'Nom'}
+            - {property: 'name', label: 'Nom', type: 'text'}
+            - {property: 'title', label: 'Titre', type: 'textarea'}
         edit:
           title:  'Modifier la categorie'
           fields:
-            - {property: 'title', label: 'Titre'}
-            - {property: 'name', label: 'Nom'}
+            - {property: 'name', label: 'Nom', type: 'text'}
+            - {property: 'title', label: 'Titre', type: 'textarea'}
 
       Client:
         label: 'Clients'
