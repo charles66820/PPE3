@@ -29,24 +29,20 @@ easy_admin:
             - {property: 'quantity', label: 'Quantité'}
             - description
             - {property: 'category.title', label: 'Categorie'}
+        form:
+          fields:
+            #- {property: 'pictures', type: 'collection', type_options: { entry_type: 'App\Form\ProductPictureType', by_reference: false}}
+            #type_options: { class: 'App\Entity\ProductPicture', choice_label: 'name'}
+            - {property: 'title', label: 'Nom'}
+            - {property: 'unitPriceHT', label: 'Prix unitaire hors taxe'}
+            - reference
+            - {property: 'quantity', label: 'Quantité'}
+            - description
+            - {property: 'category', type: 'entity', type_options: { class: 'App\Entity\category', choice_label: 'name'}}
         new:
           title:  'Ajouter un produit'
-          fields:
-            - {property: 'title', label: 'Nom'}
-            - {property: 'unitPriceHT', label: 'Prix unitaire hors taxe'}
-            - reference
-            - {property: 'quantity', label: 'Quantité'}
-            - description
-            - {property: 'category', type: 'entity', type_options: { class: 'App\Entity\category', choice_label: 'name'}}
         edit:
           title:  'Modifier le produit'
-          fields:
-            - {property: 'title', label: 'Nom'}
-            - {property: 'unitPriceHT', label: 'Prix unitaire hors taxe'}
-            - reference
-            - {property: 'quantity', label: 'Quantité'}
-            - description
-            - {property: 'category', type: 'entity', type_options: { class: 'App\Entity\category', choice_label: 'name'}}
       Category:
         label: 'Categories'
         class: App\Entity\Category
@@ -57,16 +53,14 @@ easy_admin:
             - {property: 'name', label: 'Nom'}
             - {property: 'title', label: 'Titre'}
             - {property: 'products.count', label: 'Nombre de produit'}
+        form:
+          fields:
+            - {property: 'name', label: 'Nom', type: 'text'}
+            - {property: 'title', label: 'Titre', type: 'textarea'}
         new:
           title:  'Ajouter une categorie'
-          fields:
-            - {property: 'name', label: 'Nom', type: 'text'}
-            - {property: 'title', label: 'Titre', type: 'textarea'}
         edit:
           title:  'Modifier la categorie'
-          fields:
-            - {property: 'name', label: 'Nom', type: 'text'}
-            - {property: 'title', label: 'Titre', type: 'textarea'}
 
       Client:
         label: 'Clients'
