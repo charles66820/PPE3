@@ -27,7 +27,7 @@
             <div class="col-md-6 relative">
                 <h2>Ajouter une adresse</h2>
                 <hr>
-                <form method="post" class="mb-5">
+                {{ form_start(form, {class:"mb-5"}) }}
                     <div class="col-sm-12 col-md-12">
                         <div class="form-group">
                             <div class="form-group">
@@ -50,7 +50,7 @@
                         </div>
                         <hr>
                     </div>
-                </form>
+                {{ form_end(form) }}
             </div>
         </div>
     </div>

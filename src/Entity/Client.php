@@ -135,7 +135,7 @@ class Client implements UserInterface, \Serializable
     /**
      * @ORM\Column(type="string")
      */
-    private $roles = [];
+    private $roles = '[]';
 
     /**
      * @var \Address
