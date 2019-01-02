@@ -53,7 +53,7 @@
                         <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">Categories</a>
                         <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="{{ path("catalogC", { 'cat': 'all'}) }}">Tous les produits</a>
-                            {% for category in categorys.getAllCategorys() %}
+                            {% for category in entityService.getAllCategorys() %}
                                 <a class="dropdown-item" href="{{ path("catalogC", { 'cat': category.name}) }}">{{ category.title }}</a>
                             {% endfor %}
                         </div>

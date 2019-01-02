@@ -125,22 +125,28 @@
             </div>
         </div>
         <div class="col-md-push-2 d-flex flex-wrap justify-content-center justify-content-lg-start mt-5">
-            {% set products = product.category.products %}
-            {% for i in 0..3 %}
-                <div class="articleElm rounded m-2" style="height: 348px;">
-                    <div class="articleNom">
-                        {{ products[i].title }}
+            {% if product.category and product.category.products|length >= 4  %}
+                {% set products = product.category.products %}
+            {% else %}
+                {% set products = entityService.getAllProduct() %}
+            {% endif %}
+            {% if products|length >= 4 %}
+                {% for i in 0..3 %}
+                    <div class="articleElm rounded m-2" style="height: 348px;">
+                        <div class="articleNom">
+                            {{ products[i].title }}
+                        </div>
+                        <div class="imgBox">
+                            <img src="{% if products[i].pictures.count != 0 %}{{ products[i].pictures[0].pictureName }}{% else %}{{ '/img/defaultproduitimg.png' }}{% endif %}" alt="">
+                        </div>
+                        <div class="articleStars stars {{ product.GetStarsClass() }}"></div>
+                        <div class="articlePrix">
+                            {{ product.unitPriceHT }}€
+                        </div>
+                        <a class="btn btn-primary btn-lg" href="{{ path("product", {'id':products[i].id}) }}" style="width:233px;margin:0 8px;height:50px;color:#fff;">Voir le produit</a>
                     </div>
-                    <div class="imgBox">
-                        <img src="{{ products[i].pictures[0].pictureName }}" alt="">
-                    </div>
-                    <div class="articleStars stars {{ product.GetStarsClass() }}"></div>
-                    <div class="articlePrix">
-                        {{ product.unitPriceHT }}€
-                    </div>
-                    <a class="btn btn-primary btn-lg" href="{{ path("product", {'id':products[i].id}) }}" style="width:233px;margin:0 8px;height:50px;color:#fff;">Voir le produit</a>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

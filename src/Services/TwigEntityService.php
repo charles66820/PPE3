@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
+use App\Entity\Product;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use App\Entity\Category;
 
-class CategoryService
+class TwigEntityService
 {
     private static $manager;
     public function __construct(RegistryInterface $registry)
@@ -16,6 +17,12 @@ class CategoryService
     public static function getAllCategorys()
     {
         return self::$manager->getRepository(Category::class)
+            ->findAll();
+    }
+
+    public static function getAllProduct()
+    {
+        return self::$manager->getRepository(Product::class)
             ->findAll();
     }
 }

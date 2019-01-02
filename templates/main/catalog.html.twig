@@ -69,7 +69,7 @@
                                 {{ product.title }}
                             </div>
                             <div class="imgBox">
-                                <img src="{{ product.pictures[0].pictureName }}" alt="">
+                                <img src="{% if product.pictures.count != 0 %}{{ product.pictures[0].pictureName }}{% else %}{{ '/img/defaultproduitimg.png' }}{% endif %}" alt="">
                             </div>
                             <div class="articleStars stars {{ product.GetStarsClass() }}"></div>
                             <div class="articlePrix">
