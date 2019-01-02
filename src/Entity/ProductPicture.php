@@ -22,8 +22,6 @@ class ProductPicture
     private $id;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="picture_name", type="string", length=100, nullable=true)
      */
     private $pictureName;
@@ -43,12 +41,12 @@ class ProductPicture
         return $this->id;
     }
 
-    public function getPictureName(): ?string
+    public function getPictureName()
     {
         return $this->pictureName;
     }
 
-    public function setPictureName(?string $pictureName): self
+    public function setPictureName($pictureName): self
     {
         $this->pictureName = $pictureName;
 

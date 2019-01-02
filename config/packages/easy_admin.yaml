@@ -31,7 +31,7 @@ easy_admin:
             - {property: 'category.title', label: 'Categorie'}
         form:
           fields:
-            #- {property: 'pictures', type: 'collection', type_options: { entry_type: 'App\Form\ProductPictureType', by_reference: false}}
+            - {property: 'pictures', type: 'collection', type_options: { entry_type: 'App\Form\ProductPictureType', by_reference: false}}
             #type_options: { class: 'App\Entity\ProductPicture', choice_label: 'name'}
             - {property: 'title', label: 'Nom'}
             - {property: 'unitPriceHT', label: 'Prix unitaire hors taxe'}
