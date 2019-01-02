@@ -35,7 +35,13 @@
                     <div class="m-2" style="overflow:auto; position:relative">
                         <img class="rounded mx-auto d-block" id="imgproduit" src="/img/{% if product.pictures.count != 0 %}products/{{ product.pictures[0].pictureName }}{% else %}{{ 'defaultproduitimg.png' }}{% endif %}" data-bs-hover-animate="pulse" style="width:422px; max-width:none; height:385px;">
                     </div>
-                    <div class="m-2" id="listimgproduit">
+                    <div class="m-2" id="listimgproduit" style="overflow-x:auto;display:flex;">
+                        {% for picture in product.pictures %}
+                            <img src="/img/products/{{ picture.pictureName }}" data-image-id="$photoID" style="width:80px;height: 80px; margin:0 2px">
+                        {% endfor %}
+                        {% if product.pictures.count == 0 %}
+                            <img src="/img/{{ 'defaultproduitimg.png' }}" data-image-id="$photoID" style="width:80px;height: 80px; margin:0 2px">
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-md-4">
