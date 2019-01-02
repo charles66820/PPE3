@@ -164,5 +164,8 @@ class Address
 
         return $this;
     }
-
+    public function getAddress(): string
+    {
+        return $this->way.', '.$this->complement.' '.$this->zipCode.' '.$this->city.', '.$this->country;
+    }
 }

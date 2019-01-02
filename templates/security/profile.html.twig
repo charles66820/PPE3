@@ -22,6 +22,11 @@
                         <p>Cliquer ici pour gérer vos adresses :</p>
                         <a href="{{ path('address') }}">Mes adresses</a>
                     </div>
+                    <hr>
+                    <div class="form-group">
+                        {{ form_row(form.defaultAdresse) }}
+                    </div>
+                    <hr>
                 </div>
                 <div class="col-md-8">
                     <h2>Modifier mon profil</h2>

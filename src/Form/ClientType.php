@@ -1,6 +1,8 @@
 <?php
 namespace App\Form;
 
+use App\Entity\Address;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -106,6 +108,16 @@ class ClientType extends AbstractType
                     'class' => 'btn btn-danger',
                 ]
             ])
+            ->add('defaultAdresse', EntityType::class, array(
+                'label' => 'Adresse par défaut :',
+                'required'   => false,
+                'class' => Address::class,
+                'choice_label' => 'address',
+                'empty_data' => 'Aucune adresse par défaut',
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+            ));
         ;
     }
 }

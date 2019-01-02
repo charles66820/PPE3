@@ -142,7 +142,7 @@ class Client implements UserInterface, \Serializable
      *
      * @ORM\ManyToOne(targetEntity="Address")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_default_address", referencedColumnName="id_address")
+     *   @ORM\JoinColumn(name="id_default_address", referencedColumnName="id_address", nullable=true)
      * })
      */
     private $defaultAdresse;
@@ -189,7 +189,6 @@ class Client implements UserInterface, \Serializable
     {
         $this->productCartLines = new ArrayCollection();
         $this->address = new ArrayCollection();
-        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
