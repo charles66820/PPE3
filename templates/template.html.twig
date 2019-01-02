@@ -67,7 +67,7 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
                             {% if app.user %}
-                                <img src="/img/{% if app.user.avatarUrl %}{{ app.user.avatarUrl }}{% else %}{{ 'defaultavatarurl.png' }}{% endif %}" alt="avatar" style="width:20px;">
+                                <img src="/img/{% if app.user.avatarUrl %}clients/{{ app.user.avatarUrl }}{% else %}{{ 'defaultavatarurl.png' }}{% endif %}" alt="avatar" style="width:20px;">
                                 <span>{{ app.user.login }}</span>
                             {% else %}
                                 <span>Compte</span>

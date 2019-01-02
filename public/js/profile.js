@@ -1,4 +1,4 @@
-$("#client_avatarUrl").on('change', e=>{
+$("#client_avatarFile").on('change', e=>{
     let input = e.target;
     if (input.files && input.files[0]) {
         let reader = new FileReader();

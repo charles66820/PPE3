@@ -120,11 +120,11 @@ class ClientType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
-            ->add('avatarUrl', FileType::class, [
+            ->add('avatarFile', FileType::class, [
                 'required' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'client_avatarUrl',
+                    'id' => 'client_avatarFile',//à modifier aussi dans profile.js
                 ],
                 'data_class' => null,
             ])

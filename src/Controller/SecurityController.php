@@ -56,20 +56,20 @@ class SecurityController extends AbstractController
                         'class' => 'alert-success',
                     ];
                 }
-
-                $file = $client->getAvatarUrl();
-                $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
-                try {
-                    $file->move(
-                        $this->getParameter('clients_directory'),
-                        $fileName
-                    );
-                } catch (FileException $e) {
-                    dump($file,$fileName,$e);die();
+                $file = $client->getAvatarFile();
+                if ($file != null) {
+                    $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
+                    try {
+                        $file->move(
+                            $this->getParameter('clients_directory'),
+                            $fileName
+                        );
+                        @unlink($this->getParameter('clients_directory').$client->getAvatarUrl());
+                    } catch (FileException $e) {
+                        dump($file,$fileName,$e);die();
+                    }
+                    $client->setAvatarUrl($fileName);
                 }
-
-                $client->setAvatarUrl('clients/'.$fileName);
-
                 //save client in db
                 $manager->persist($client);
                 $manager->flush();

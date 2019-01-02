@@ -106,13 +106,16 @@ class Client implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(name="avatar_url", type="string", length=2000, nullable=true)
-     *
+     */
+    private $avatarUrl;
+
+    /**
      * @Assert\File(
      *     maxSize = "2M",
      *     mimeTypes={ "image/jpeg", "image/png", "image/gif" })
      *     mimeTypesMessage = "L'image n'est pas valide, seuls les fichiers jpeg, png et gif son supporter"
      */
-    private $avatarUrl;
+    private $avatarFile;
 
     /**
      * @var \DateTime
@@ -458,14 +461,25 @@ class Client implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getAvatarUrl()
+    public function getAvatarUrl(): ?string
     {
         return $this->avatarUrl;
     }
 
-    public function setAvatarUrl($avatarUrl): self
+    public function setAvatarUrl(?string $avatarUrl): self
     {
         $this->avatarUrl = $avatarUrl;
+
+        return $this;
+    }
+    public function getAvatarFile()
+    {
+        return $this->avatarFile;
+    }
+
+    public function setAvatarFile($avatarFile): self
+    {
+        $this->avatarFile = $avatarFile;
 
         return $this;
     }
