@@ -33,7 +33,7 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="m-2" style="overflow:auto; position:relative">
-                        <img class="rounded mx-auto d-block" id="imgproduit" src="/img/defaultproduitimg.png" data-bs-hover-animate="pulse" style="width:422px; max-width:none; height:385px;">
+                        <img class="rounded mx-auto d-block" id="imgproduit" src="/img/{% if product.pictures.count != 0 %}products/{{ product.pictures[0].pictureName }}{% else %}{{ 'defaultproduitimg.png' }}{% endif %}" data-bs-hover-animate="pulse" style="width:422px; max-width:none; height:385px;">
                     </div>
                     <div class="m-2" id="listimgproduit">
                     </div>
