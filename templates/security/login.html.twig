@@ -1,0 +1,35 @@
+{% extends 'template.html.twig' %}
+
+{% block content %}
+    <div align="center">
+        <div class="container">
+            <div class="card card-container" style="max-width: 350px; padding: 40px 40px;">
+                <h2>Connexion</h2>
+                <br/><br/>
+                {{ form_start(form) }}
+                    <div class="form-group">
+                        {{ form_row(form._username) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form._password) }}
+                    </div>
+                    <br/>
+                    <div class="form-group">
+                        {{ form_widget(form.submit) }}
+                    </div>
+                {{ form_end(form) }}
+                {% if error %}
+                    <div class="alert alert-danger">
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <span class="initialism form-error-icon badge badge-danger">Erreur</span>
+                                <span class="form-error-message">Votre identifient ou votre mots de passe sont invorecte ou votre compte est désactivé.</span>
+                            </li>
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <a href="{{ path("register") }}"><br />Toujours pas inscrit ? Rejoins le club Ô'Tako 🐙</a>
+    </div>
+{% endblock %}

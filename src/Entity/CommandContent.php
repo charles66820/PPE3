@@ -47,7 +47,7 @@ class CommandContent
      *
      * @ORM\ManyToOne(targetEntity="Command")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_command", referencedColumnName="id_command")
+     *   @ORM\JoinColumn(name="id_command", referencedColumnName="id_command", onDelete="CASCADE")
      * })
      */
     private $command;
@@ -57,7 +57,7 @@ class CommandContent
      *
      * @ORM\ManyToOne(targetEntity="Product")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_product", referencedColumnName="id_product")
+     *   @ORM\JoinColumn(name="id_product", referencedColumnName="id_product", onDelete="SET NULL")
      * })
      */
     private $product;

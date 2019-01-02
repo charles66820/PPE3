@@ -1,0 +1,151 @@
+{% extends 'template.html.twig' %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="/css/catalog.css">
+    <link rel="stylesheet" href="/css/stars.css">
+    <style>
+        .comment-box{
+            padding: 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 16px;
+            color: #282828;
+            font-weight: 100;
+            box-shadow: 1px 0 5px 0 rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .errsform ul{
+            display: initial;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        .errsform ul li{
+            color: red;
+            padding-left: 14px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="shadow-sm p-2 mt-4">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="m-2" style="overflow:auto; position:relative">
+                        <img class="rounded mx-auto d-block" id="imgproduit" src="/img/defaultproduitimg.png" data-bs-hover-animate="pulse" style="width:422px; max-width:none; height:385px;">
+                    </div>
+                    <div class="m-2" id="listimgproduit">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <form method="post" class="shadow-sm" style="padding:8px;min-width:280px">
+                        <h1 class="text-capitalize text-center">{{ product.title }}</h1>
+                        {% if product.quantity <= 0 %}
+                            {% set baydisable = "disabled" %}
+                            <h5 class="text-left text-danger"><i class="fa fa-close"></i> Produit indisponible</h5>
+                        {% else %}
+                            {% set baydisable = "" %}
+                            <h5 class="text-left text-success"><i class="fa fa-check"></i> Produit disponible en stock</h5>
+                        {% endif %}
+                        <h4 class="text-right" style="margin-top:18px;max-width:68px;height:33px;">Avis : </h4>
+                        <!-- TODO: refaire la gestion des étoile -->
+                        <div class="float-right d-flex" style="margin-top: -40px; margin-right: 28px;">
+                            <div class="stars {{ product.GetStarsClass() }}" style="height: 26px; width: 148px;"></div>
+                        </div>
+                        <div style="margin:16px 0">
+                            <h5 style="font-size:25px;display:inline-block">Quantité :</h5>
+                            <select class="float-right" name="quentiterproduit" style="height:26px;" {{ baydisable }}>
+                                <optgroup label="Quantité">
+                                    {% for i in 1..product.quantity %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
+                        <h1 class="text-center text-warning md-auto" style="font-size: 47px">{{ product.unitPriceHT }}€</h1>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-primary" name="addproduitpanier" type="submit" data-bs-hover-animate="tada" style="font-size:31px;" {{ baydisable }}>Ajouter au panier </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <h1>Reference : {{ product.reference }}</h1>
+            <h1>Description :</h1>
+            <div style="word-break: break-word;">
+                {{ product.description }}
+            </div>
+        </div>
+        <div class="p-2 col-xl-8 col-lg-12 mt-3 shadow-sm">
+            <h2 style="display: inline-block">notée le produit : </h2>
+            <div id="starsselecteur" class="stars0">
+                <img src="/img/empty_star.png" style="margin-left:0px;" alt="1 étoiles" height="28" width="28" data-star="1">
+                <img src="/img/empty_star.png" alt="2 étoiles" height="28" width="28" data-star="2" style="margin-left:4px;">
+                <img src="/img/empty_star.png" alt="3 étoiles" height="28" width="28" data-star="3">
+                <img src="/img/empty_star.png" alt="4 étoiles" height="28" width="28" data-star="4">
+                <img src="/img/empty_star.png" alt="5 étoiles" height="28" width="28" data-star="5" style="margin-right:-1px;">
+                <input type="hidden" name="avis" value="0">
+            </div>
+            {% if form %}
+                <div class="comment-box mb-4">
+                    {{ form_start(form) }}
+                        <h2>écrivée un comantaire : </h2>
+                        <br>
+                        {{ form_widget(form.title) }}
+                        {% if form_errors(form.title) is not empty %}
+                            <div class="errsform">{{ form_errors(form.title) }}</div>
+                        {% endif %}
+                        <br>
+                        {{ form_widget(form.content) }}
+                        {% if form_errors(form.content) is not empty %}
+                            <div class="errsform">{{ form_errors(form.content) }}</div>
+                        {% endif %}
+                        <br>
+                        {{ form_widget(form.submit) }}
+                    {{ form_end(form) }}
+                </div>
+            {% endif %}
+            <div id="comments">
+                {% for comment in product.comments %}
+                <div class='comment-box mt-3'>
+                    <div class="form-row">
+                        <p class="text-justify" style="margin-top:8px;">Commentaire fait le {{ comment.date|date("d/m/Y à h:i:s") }} par {{ comment.Client.login }}</p>
+                    </div>
+                    <h4 style="word-break:break-word;">{{ comment.title }}</h4>
+                    <div class="textarea-avis">
+                        {{ comment.content|nl2br }}
+                    </div>
+                    {% if comment.client == app.user %}
+                    <form style="position: absolute;top: 20px;right: 20px;" method='POST' action="{{ path('removeComment', { id:comment.id }) }}">
+                        <button type='submit' class="btn btn-dark" name='commentDelete'>Supprimer</button>
+                    </form>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-push-2 d-flex flex-wrap justify-content-center justify-content-lg-start mt-5">
+            {% set products = product.category.products %}
+            {% for i in 0..3 %}
+                <div class="articleElm rounded m-2" style="height: 348px;">
+                    <div class="articleNom">
+                        {{ products[i].title }}
+                    </div>
+                    <div class="imgBox">
+                        <img src="{{ products[i].pictures[0].pictureName }}" alt="">
+                    </div>
+                    <div class="articleStars stars {{ product.GetStarsClass() }}"></div>
+                    <div class="articlePrix">
+                        {{ product.unitPriceHT }}€
+                    </div>
+                    <a class="btn btn-primary btn-lg" href="{{ path("product", {'id':products[i].id}) }}" style="width:233px;margin:0 8px;height:50px;color:#fff;">Voir le produit</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/js/image.js"></script>
+    <script src="/js/avis.js"></script>
+{% endblock %}

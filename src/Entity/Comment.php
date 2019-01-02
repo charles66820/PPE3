@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Comment
@@ -29,16 +30,25 @@ class Comment
     private $date = 'CURRENT_TIMESTAMP';
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="title", type="string", length=100, nullable=true)
+     * @var string
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 100,
+     *      minMessage = "le titre doit faire plus de {{ limit }} caractères de long",
+     *      maxMessage = "le titre ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
+     * @Assert\NotBlank()
+     * @ORM\Column(name="title", type="string", length=1000, nullable=false)
      */
     private $title;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(name="content", type="string", length=1000, nullable=true)
+     * @Assert\Length(
+     *      max = 1000,
+     *      maxMessage = "le commantaire ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
+     * @ORM\Column(name="content", type="string", length=100, nullable=true)
      */
     private $content;
 
@@ -47,7 +57,7 @@ class Comment
      *
      * @ORM\ManyToOne(targetEntity="Client")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client")
+     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client", onDelete="CASCADE", nullable=false)
      * })
      */
     private $client;
@@ -55,9 +65,9 @@ class Comment
     /**
      * @var \Product
      *
-     * @ORM\ManyToOne(targetEntity="Product")
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="comments")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_product", referencedColumnName="id_product")
+     *   @ORM\JoinColumn(name="id_product", referencedColumnName="id_product", onDelete="CASCADE", nullable=false)
      * })
      */
     private $product;

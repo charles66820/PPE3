@@ -31,7 +31,7 @@ class Opinion
     /**
      * @var int|null
      *
-     * @ORM\Column(name="score", type="integer", nullable=true)
+     * @ORM\Column(name="score", type="integer", nullable=false)
      */
     private $score;
 
@@ -40,7 +40,7 @@ class Opinion
      *
      * @ORM\ManyToOne(targetEntity="Client")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client")
+     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client", onDelete="SET NULL")
      * })
      */
     private $client;
@@ -48,9 +48,9 @@ class Opinion
     /**
      * @var \Product
      *
-     * @ORM\ManyToOne(targetEntity="Product")
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="opinions")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_product", referencedColumnName="id_product")
+     *   @ORM\JoinColumn(name="id_product", referencedColumnName="id_product", onDelete="CASCADE", nullable=false)
      * })
      */
     private $product;

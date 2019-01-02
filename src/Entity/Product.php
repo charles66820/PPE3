@@ -63,24 +63,38 @@ class Product
     /**
      * @var \Category
      *
-     * @ORM\ManyToOne(targetEntity="Category")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="products", fetch="EAGER")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_category", referencedColumnName="id_category")
+     *   @ORM\JoinColumn(name="id_category", referencedColumnName="id_category", onDelete="SET NULL", nullable=true)
      * })
      */
-    private $idcategorie;
+    private $category;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="ProductPicture", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="ProductPicture", mappedBy="product", cascade={"remove"}, fetch="EAGER")
      */
     private $pictures;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="CartLine", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="Opinion", mappedBy="product", cascade={"remove"}, fetch="EAGER")
+     */
+    private $opinions;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="product", cascade={"remove"}, fetch="EAGER")
+     */
+    private $comments;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="CartLine", mappedBy="product", cascade={"remove"})
      */
     private $clientCartLines;
 
@@ -88,6 +102,8 @@ class Product
     {
         $this->pictures = new ArrayCollection();
         $this->clientCartLines = new ArrayCollection();
+        $this->opinions = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -155,14 +171,14 @@ class Product
         return $this;
     }
 
-    public function getIdcategorie(): ?Category
+    public function getCategorie(): ?Category
     {
-        return $this->idcategorie;
+        return $this->categorie;
     }
 
-    public function setIdcategorie(?Category $idcategorie): self
+    public function setCategorie(?Category $categorie): self
     {
-        $this->idcategorie = $idcategorie;
+        $this->categorie = $categorie;
 
         return $this;
     }
@@ -227,5 +243,138 @@ class Product
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Opinion[]
+     */
+    public function getOpinions(): Collection
+    {
+        return $this->opinions;
+    }
+
+    public function addOpinion(Opinion $opinion): self
+    {
+        if (!$this->opinions->contains($opinion)) {
+            $this->opinions[] = $opinion;
+            $opinion->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOpinion(Opinion $opinion): self
+    {
+        if ($this->opinions->contains($opinion)) {
+            $this->opinions->removeElement($opinion);
+            // set the owning side to null (unless already changed)
+            if ($opinion->getProduct() === $this) {
+                $opinion->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Opinion[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Opinion $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Opinion $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getProduct() === $this) {
+                $comment->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function GetAverageOpinion() : float
+    {
+        $sumOpinion = 0;
+        foreach ($this->getOpinions() as $opinion) {
+            $sumOpinion += $opinion->getScore();
+        }
+
+        if (count($this->getOpinions()) <= 0) {
+            $averageOpinion = 0;
+        } else {
+            $averageOpinion = $sumOpinion / count($this->getOpinions());
+        }
+        return $averageOpinion;
+    }
+
+    public function GetStarsClass() : string
+    {
+        $moyenneStars = $this->GetAverageOpinion();
+
+        $result = 'stars0';
+        switch ($moyenneStars) {
+            case 0:
+                $result = "stars0";
+                break;
+            case ($moyenneStars <= 0.5):
+                $result = "stars0_5";
+                break;
+            case ($moyenneStars <= 1):
+                $result = "stars1";
+                break;
+            case ($moyenneStars <= 1.5):
+                $result = "stars1_5";
+                break;
+            case ($moyenneStars <= 2):
+                $result = "stars2";
+                break;
+            case ($moyenneStars <= 2.5):
+                $result = "stars2_5";
+                break;
+            case ($moyenneStars <= 3):
+                $result = "stars3";
+                break;
+            case ($moyenneStars <= 3.5):
+                $result = "stars3_5";
+                break;
+            case ($moyenneStars <= 4):
+                $result = "stars4";
+                break;
+            case ($moyenneStars <= 4.5):
+                $result = "stars4_5";
+                break;
+
+            default:
+                $result = 'stars5';
+                break;
+        }
+        return $result;
     }
 }

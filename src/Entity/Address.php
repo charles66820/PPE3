@@ -3,12 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Address
  *
  * @ORM\Table(name="address", indexes={@ORM\Index(name="FK_address_idClient", columns={"id_client"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\AddressRepository")
  */
 class Address
 {
@@ -23,28 +24,49 @@ class Address
 
     /**
      * @var string
-     *
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 100,
+     *      minMessage = "l'adresse doit faire plus de {{ limit }} caractères de long",
+     *      maxMessage = "l'adresse ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
+     * @Assert\NotBlank()
      * @ORM\Column(name="way", type="string", length=100, nullable=false)
      */
     private $way;
 
     /**
      * @var string|null
-     *
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 100,
+     *      minMessage = "le complement adresse doit faire plus de {{ limit }} caractères de long",
+     *      maxMessage = "le complement adresse ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
      * @ORM\Column(name="complement", type="string", length=100, nullable=true)
      */
     private $complement;
 
     /**
      * @var string
-     *
+     * @Assert\Length(
+     *      max = 10,
+     *      maxMessage = "le code postal ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
+     * @Assert\NotBlank()
      * @ORM\Column(name="zip_code", type="string", length=10, nullable=false)
      */
     private $zipCode;
 
     /**
      * @var string
-     *
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 100,
+     *      minMessage = "la ville doit faire plus de {{ limit }} caractères de long",
+     *      maxMessage = "la ville ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
+     * @Assert\NotBlank()
      * @ORM\Column(name="city", type="string", length=50, nullable=false)
      */
     private $city;
@@ -59,9 +81,9 @@ class Address
     /**
      * @var \Client
      *
-     * @ORM\ManyToOne(targetEntity="Client")
+     * @ORM\ManyToOne(targetEntity="Client", inversedBy="address")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client")
+     *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client", onDelete="CASCADE")
      * })
      */
     private $client;

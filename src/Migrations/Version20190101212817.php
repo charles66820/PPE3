@@ -8,14 +8,14 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20181105153638 extends AbstractMigration
+final class Version20190101212817 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE product CHANGE unit_price_HT unit_price_HT NUMERIC(5, 2) NOT NULL');
+        $this->addSql('ALTER TABLE opinion CHANGE score score INT NOT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -23,6 +23,6 @@ final class Version20181105153638 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE product CHANGE unit_price_HT unit_price_HT DOUBLE PRECISION NOT NULL');
+        $this->addSql('ALTER TABLE opinion CHANGE score score INT DEFAULT NULL');
     }
 }
