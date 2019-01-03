@@ -10,49 +10,49 @@ use Symfony\Component\HttpFoundation\Response;
 class MarketController extends AbstractController
 {
     /**
-     * @Route("/card", name="card")
+     * @Route("/cart", name="cart")
      */
-    public function getCard()
+    public function getCart()
     {
         return new Response(
-            '<html><body>card page </body></html>'
+            '<html><body>cart page </body></html>'
         );
         //Votre panier
     }
     /**
-     * @Route("/card/add/{id}/{qty}", name="cardLineAdd")
+     * @Route("/cart/add/{id}/{qty}", name="cartLineAdd")
      */
-    public function postCardLineAdd(Product $product, $qty)
+    public function postCartLineAdd(Product $product, $qty)
     {
         return new Response(
-            '<html><body>card line add</body></html>'
+            '<html><body>cart line add</body></html>'
         );
     }
     /**
-     * @Route("/card/remove/{id}/{qty}", name="cardLineRemove")
+     * @Route("/cart/remove/{id}/{qty}", name="cartLineRemove")
      */
-    public function postCardLineRemove(Product $product, $qty)
+    public function postCartLineRemove(Product $product, $qty)
     {
         return new Response(
-            '<html><body>card line remove </body></html>'
+            '<html><body>cart line remove </body></html>'
         );
     }
     /**
-     * @Route("/card/remove/{id}", name="cardLineRemoveAll")
+     * @Route("/cart/remove/{id}", name="cartLineRemoveAll")
      */
-    public function postCardLineRemoveAll(Product $product)
+    public function postCartLineRemoveAll(Product $product)
     {
         return new Response(
-            '<html><body>card line remove all</body></html>'
+            '<html><body>cart line remove all</body></html>'
         );
     }
     /**
-     * @Route("/card/remove", name="cardRemove")
+     * @Route("/cart/remove", name="cartRemove")
      */
-    public function postCardRemove()
+    public function postCartRemove()
     {
         return new Response(
-            '<html><body>card remove all</body></html>'
+            '<html><body>cart remove all</body></html>'
         );
     }
 }
