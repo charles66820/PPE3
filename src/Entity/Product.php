@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Services\TwigEntityService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -337,44 +338,6 @@ class Product
     public function GetStarsClass() : string
     {
         $moyenneStars = $this->GetAverageOpinion();
-
-        $result = 'stars0';
-        switch ($moyenneStars) {
-            case 0:
-                $result = "stars0";
-                break;
-            case ($moyenneStars <= 0.5):
-                $result = "stars0_5";
-                break;
-            case ($moyenneStars <= 1):
-                $result = "stars1";
-                break;
-            case ($moyenneStars <= 1.5):
-                $result = "stars1_5";
-                break;
-            case ($moyenneStars <= 2):
-                $result = "stars2";
-                break;
-            case ($moyenneStars <= 2.5):
-                $result = "stars2_5";
-                break;
-            case ($moyenneStars <= 3):
-                $result = "stars3";
-                break;
-            case ($moyenneStars <= 3.5):
-                $result = "stars3_5";
-                break;
-            case ($moyenneStars <= 4):
-                $result = "stars4";
-                break;
-            case ($moyenneStars <= 4.5):
-                $result = "stars4_5";
-                break;
-
-            default:
-                $result = 'stars5';
-                break;
-        }
-        return $result;
+        return TwigEntityService::getStarsClass($moyenneStars);
     }
 }

@@ -23,23 +23,23 @@ class ProductRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
         $execParam = [];
 
-        $sql = 'SELECT DISTINCT p.id_product, p.product_title, p.unit_price_HT, (SELECT pp.picture_name FROM product_picture as pp WHERE p.id_product = pp.id_product LIMIT 1 OFFSET 0) as picture, ROUND(AVG(o.score), 1) as avgstars FROM opinion as o RIGHT JOIN product as p ON o.id_product = p.id_product ';
+        $sql = 'SELECT DISTINCT p.id_product as id, p.product_title as title, p.unit_price_HT as unitPriceHT, (SELECT pp.picture_name FROM product_picture as pp WHERE p.id_product = pp.id_product LIMIT 1 OFFSET 0) as picture, ROUND(AVG(o.score), 1) as avgstars FROM opinion as o RIGHT JOIN product as p ON o.id_product = p.id_product ';
         if ($cat !== null && $q !== null) {
-            $sql .= 'WHERE p.id_category = (SELECT DISTINCT c.id_category FROM category as c WHERE c.name_category = ":cat" ) AND (p.product_title LIKE "%:q%" OR p.description LIKE "%:q%") ';
+            $sql .= 'WHERE p.id_category = (SELECT DISTINCT c.id_category FROM category as c WHERE c.name_category = :cat ) AND (p.product_title LIKE :q OR p.description LIKE :q ) ';
             $execParam['cat'] = $cat;
-            $execParam['q'] = $q;
+            $execParam['q'] = '%'.$q.'%';
         } else if ($cat !== null) {
-            $sql .= 'WHERE p.id_category = (SELECT DISTINCT c.id_category FROM category as c WHERE c.name_category = ":cat" ) ';
+            $sql .= 'WHERE p.id_category = (SELECT DISTINCT c.id_category FROM category as c WHERE c.name_category = :cat ) ';
             $execParam['cat'] = $cat;
         } else if ($q !== null) {
-            $sql .= 'WHERE (p.product_title LIKE "%:q%" OR p.description LIKE "%:q%") ';
-            $execParam['q'] = $q;
+            $sql .= 'WHERE (p.product_title LIKE :q OR p.description LIKE :q ) ';
+            $execParam['q'] = '%'.$q.'%';
         }
 
         $sql .= 'GROUP BY p.id_product, p.product_title, p.unit_price_HT ';
 
         if ($stars !== null && $stars > 0 && $stars < 6) {
-            $sql .= 'HAVING avgstars >= ":stars" ';
+            $sql .= 'HAVING avgstars >= :stars ';
             $execParam['stars'] = $stars;
         }
 
@@ -52,9 +52,11 @@ class ProductRepository extends ServiceEntityRepository
         }
 
         $stmt = $conn->prepare($sql);
-        $stmt->execute($execParam);
-
-        dump($sql, $execParam, $stmt, $stmt->fetchAll(), $stmt->errorInfo());die();
+        $index = 0;
+        foreach ($execParam as $p) {
+            $stmt->bindValue(array_keys($execParam)[$index++], $p);
+        }
+        $stmt->execute();
 
         return $stmt->fetchAll();
     }

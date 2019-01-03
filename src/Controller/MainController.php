@@ -54,8 +54,6 @@ class MainController extends AbstractController
             ->getRepository(Product::class)
             ->findAllBySQL($cat, $qry->get('q'), $qry->get('shortPrice'), $qry->get('stars'));
 
-        dump($products,$cat);die();
-
         return $this->render('main/catalog.html.twig', [
             'title' => 'Tous les produits',
             'products' => $products,
