@@ -55,7 +55,7 @@
                         <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="{{ path("catalogC", { 'cat': 'all'}) }}">Tous les produits</a>
                             {% for category in entityService.getAllCategorys() %}
-                                <a class="dropdown-item" href="{{ path("catalogC", { 'cat': category.name}) }}">{{ category.title }}</a>
+                                <a class="dropdown-item" href="{{ path("catalogC", { 'cat': category.name_category}) }}">{{ category.title_category }}</a>
                             {% endfor %}
                         </div>
                     </li>

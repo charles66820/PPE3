@@ -17,7 +17,7 @@ class TwigEntityService
     public static function getAllCategorys()
     {
         return self::$manager->getRepository(Category::class)
-            ->findAll();
+            ->findAllBySQL();
     }
 
     public static function getAllProduct()
