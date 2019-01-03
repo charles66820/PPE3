@@ -3,15 +3,16 @@
 namespace App\Services;
 
 use App\Entity\Product;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use App\Entity\Tax;
+use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Category;
 
 class TwigEntityService
 {
     private static $manager;
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ObjectManager $em)
     {
-        self::$manager = $registry->getManagerForClass(Category::class);
+        self::$manager = $em;
     }
 
     public static function getAllCategorys()
@@ -25,6 +26,14 @@ class TwigEntityService
         return self::$manager->getRepository(Product::class)
             ->findAll();
     }
+
+    public static function getTax()
+    {
+        return self::$manager->getRepository(Tax::class)
+            ->findAll()[0]->getTax();
+    }
+
+
 
     public static function getStarsClass($moyenneStars){
         $result = 'stars0';

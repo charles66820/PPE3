@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Services\TwigEntityService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -158,7 +159,7 @@ class Client implements UserInterface, \Serializable
      *
      * @ORM\OneToMany(targetEntity="CartLine", mappedBy="client")
      */
-    private $productCartLines;
+    private $cartLines;
 
     /**
      * @Assert\Length(
@@ -193,7 +194,7 @@ class Client implements UserInterface, \Serializable
 
     public function __construct()
     {
-        $this->productCartLines = new ArrayCollection();
+        $this->cartLines = new ArrayCollection();
         $this->address = new ArrayCollection();
     }
 
@@ -325,28 +326,28 @@ class Client implements UserInterface, \Serializable
     /**
      * @return Collection|CartLine[]
      */
-    public function getProductCartLines(): Collection
+    public function getCartLines(): Collection
     {
-        return $this->productCartLines;
+        return $this->cartLines;
     }
 
-    public function addProductCartLine(CartLine $productCartLine): self
+    public function addCartLine(CartLine $cartLine): self
     {
-        if (!$this->productCartLines->contains($productCartLine)) {
-            $this->productCartLines[] = $productCartLine;
-            $productCartLine->setClient($this);
+        if (!$this->cartLines->contains($cartLine)) {
+            $this->cartLines[] = $cartLine;
+            $cartLine->setClient($this);
         }
 
         return $this;
     }
 
-    public function removeProductCartLine(CartLine $productCartLine): self
+    public function removeCartLine(CartLine $cartLine): self
     {
-        if ($this->productCartLines->contains($productCartLine)) {
-            $this->productCartLines->removeElement($productCartLine);
+        if ($this->cartLines->contains($cartLine)) {
+            $this->cartLines->removeElement($cartLine);
             // set the owning side to null (unless already changed)
-            if ($productCartLine->getClient() === $this) {
-                $productCartLine->setClient(null);
+            if ($cartLine->getClient() === $this) {
+                $cartLine->setClient(null);
             }
         }
 
@@ -472,6 +473,7 @@ class Client implements UserInterface, \Serializable
 
         return $this;
     }
+
     public function getAvatarFile()
     {
         return $this->avatarFile;
@@ -483,4 +485,17 @@ class Client implements UserInterface, \Serializable
 
         return $this;
     }
+
+    public function getTotalPriceHT(){
+        $totalHT = 30;
+        foreach ($this->cartLines as $cartLine){
+            $totalHT = $cartLine->getProduct()->getUnitPriceHT() * $cartLine->getQuantity();
+        }
+        return $totalHT;
+    }
+
+    public function getTotalPrice(){
+        return $this->getTotalPriceHT() * ((TwigEntityService::getTax()/100)+1);
+    }
+
 }

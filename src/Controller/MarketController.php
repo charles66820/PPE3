@@ -24,7 +24,6 @@ class MarketController extends AbstractController
      */
     public function postCardLineAdd(Product $product, $qty)
     {
-        dump($product, $qty);
         return new Response(
             '<html><body>card line add</body></html>'
         );
@@ -34,7 +33,6 @@ class MarketController extends AbstractController
      */
     public function postCardLineRemove(Product $product, $qty)
     {
-        dump($product, $qty);die();
         return new Response(
             '<html><body>card line remove </body></html>'
         );
@@ -44,7 +42,6 @@ class MarketController extends AbstractController
      */
     public function postCardLineRemoveAll(Product $product)
     {
-        dump($product);die();
         return new Response(
             '<html><body>card line remove all</body></html>'
         );
