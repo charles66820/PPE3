@@ -97,12 +97,12 @@ class Product
      *
      * @ORM\OneToMany(targetEntity="CartLine", mappedBy="product", cascade={"remove"})
      */
-    private $clientCartLines;
+    private $cartLines;
 
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
-        $this->clientCartLines = new ArrayCollection();
+        $this->cartLines = new ArrayCollection();
         $this->opinions = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
@@ -218,28 +218,28 @@ class Product
     /**
      * @return Collection|CartLine[]
      */
-    public function getClientCartLines(): Collection
+    public function getCartLines(): Collection
     {
-        return $this->clientCartLines;
+        return $this->cartLines;
     }
 
-    public function addClientCartLine(CartLine $clientCartLine): self
+    public function addCartLine(CartLine $cartLine): self
     {
-        if (!$this->clientCartLines->contains($clientCartLine)) {
-            $this->clientCartLines[] = $clientCartLine;
-            $clientCartLine->setProduct($this);
+        if (!$this->cartLines->contains($cartLine)) {
+            $this->cartLines[] = $cartLine;
+            $cartLine->setProduct($this);
         }
 
         return $this;
     }
 
-    public function removeClientCartLine(CartLine $clientCartLine): self
+    public function removeCartLine(CartLine $cartLine): self
     {
-        if ($this->clientCartLines->contains($clientCartLine)) {
-            $this->clientCartLines->removeElement($clientCartLine);
+        if ($this->cartLines->contains($cartLine)) {
+            $this->cartLines->removeElement($cartLine);
             // set the owning side to null (unless already changed)
-            if ($clientCartLine->getProduct() === $this) {
-                $clientCartLine->setProduct(null);
+            if ($cartLine->getProduct() === $this) {
+                $cartLine->setProduct(null);
             }
         }
 
