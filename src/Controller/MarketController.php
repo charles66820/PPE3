@@ -50,7 +50,6 @@ class MarketController extends AbstractController
         if ($qty > $product->getQuantity()) $qty = $product->getQuantity();
 
         $cartLine = null;
-        //TODO: $cartLine product existe
         foreach ($leClient->getCartLines() as $oneCartLine){
             if ($oneCartLine->getProduct() == $product){
                 $cartLine = $oneCartLine;
@@ -83,28 +82,114 @@ class MarketController extends AbstractController
     /**
      * @Route("/cart/remove/{id}/{qty}", name="cartLineRemove")
      */
-    public function postCartLineRemove(Product $product = null, $qty)
+    public function postCartLineRemove(Product $product = null, $qty, ObjectManager $manager)
     {
-        return new Response(
-            '<html><body>cart line remove </body></html>'
-        );
+        if($product == null){
+            return $this->json([
+                'msg' => 'Product not found!',
+            ], 404);
+        }
+
+        $leClient = $this->getUser();
+        if($leClient == null){
+            return $this->json([
+                'msg' => 'Client not found!',
+            ], 404);
+        }
+
+        //vérification pour que la quentitée se trouve entre 0 et le nombre max de produit
+        if ($qty <= 0 ) $qty = 1;
+
+        $cartLine = null;
+        foreach ($leClient->getCartLines() as $oneCartLine){
+            if ($oneCartLine->getProduct() == $product){
+                $cartLine = $oneCartLine;
+            }
+        }
+        dump($cartLine);
+        //création de la ligne du panier
+        if ($cartLine == null) {
+            return $this->json([
+                'msg' => 'Le produit n\'a pas pu ete supprimer du panier',
+            ], 404);
+        } else {
+            $qty = $cartLine->getQuantity() - $qty;
+
+            if ($qty > $product->getQuantity()) {
+                $cartLine->setQuantity($product->getQuantity());
+                $manager->persist($cartLine);
+            } else if ($qty <= 0 ) {
+                $leClient->removeCartLine($cartLine);
+                $manager->remove($cartLine);
+            } else {
+                $cartLine->setQuantity($qty);
+                $manager->persist($cartLine);
+            }
+        }
+        $manager->flush();
+
+        return $this->json([
+            'msg' => 'Le produit a bien ete supprimer du panier',
+        ], 200);
     }
     /**
      * @Route("/cart/remove/{id}", name="cartLineRemoveAll")
      */
-    public function postCartLineRemoveAll(Product $product = null)
+    public function postCartLineRemoveAll(Product $product = null, ObjectManager $manager)
     {
-        return new Response(
-            '<html><body>cart line remove all</body></html>'
-        );
+        if($product == null){
+            return $this->json([
+                'msg' => 'Product not found!',
+            ], 404);
+        }
+
+        $leClient = $this->getUser();
+        if($leClient == null){
+            return $this->json([
+                'msg' => 'Client not found!',
+            ], 404);
+        }
+
+        $cartLine = null;
+        foreach ($leClient->getCartLines() as $oneCartLine){
+            if ($oneCartLine->getProduct() == $product){
+                $cartLine = $oneCartLine;
+            }
+        }
+
+        if ($cartLine == null) {
+            return $this->json([
+                'msg' => 'Le produit n\'a pas pu ete elevee du panier',
+            ], 404);
+        }
+        $leClient->removeCartLine($cartLine);
+        $manager->remove($cartLine);
+        $manager->flush();
+
+        return $this->json([
+            'msg' => 'Le produit a bien ete elevee du panier',
+        ], 200);
     }
     /**
      * @Route("/cart/remove", name="cartRemove")
      */
-    public function postCartRemove()
+    public function postCartRemove(ObjectManager $manager)
     {
-        return new Response(
-            '<html><body>cart remove all</body></html>'
-        );
+        $leClient = $this->getUser();
+        if($leClient == null){
+            return $this->json([
+                'msg' => 'Client not found!',
+            ], 404);
+        }
+
+        foreach ($leClient->getCartLines() as $cartLine){
+            $leClient->removeCartLine($cartLine);
+            $manager->remove($cartLine);
+            $manager->flush();
+        }
+
+        return $this->json([
+            'msg' => 'Le panier a bien ete vidé',
+        ], 200);
     }
 }
