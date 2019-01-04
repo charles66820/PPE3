@@ -487,7 +487,7 @@ class Client implements UserInterface, \Serializable
     }
 
     public function getTotalPriceHT(){
-        $totalHT = 30;
+        $totalHT = 0;
         foreach ($this->cartLines as $cartLine){
             $totalHT = $cartLine->getProduct()->getUnitPriceHT() * $cartLine->getQuantity();
         }
