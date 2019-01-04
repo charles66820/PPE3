@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <form method="post" class="shadow-sm" style="padding:8px;min-width:280px">
+                    <form method="post" id="addCartForm" class="shadow-sm" style="padding:8px;min-width:280px">
                         <h1 class="text-capitalize text-center">{{ product.title }}</h1>
                         {% if product.quantity <= 0 %}
                             {% set baydisable = "disabled" %}
@@ -61,7 +61,8 @@
                         </div>
                         <div style="margin:16px 0">
                             <h5 style="font-size:25px;display:inline-block">Quantité :</h5>
-                            <select class="float-right" name="quentiterproduit" style="height:26px;" {{ baydisable }}>
+                            <input type="hidden" name="id" data-src="{{ path('cartLineAdd', {id:'<value>', qty:'1'}) }}" value="{{ product.id }}">
+                            <select class="float-right" name="qty" style="height:26px;" {{ baydisable }}>
                                 <optgroup label="Quantité">
                                     {% if product.quantity > 10 %}
                                         {% set qte = 10 %}
@@ -76,7 +77,7 @@
                         </div>
                         <h1 class="text-center text-warning md-auto" style="font-size: 47px">{{ product.unitPriceHT }}€</h1>
                         <div class="d-flex justify-content-center">
-                            <button class="btn btn-primary" name="addproduitpanier" type="submit" data-bs-hover-animate="tada" style="font-size:31px;" {{ baydisable }}>Ajouter au panier </button>
+                            <button class="btn btn-primary" type="submit" data-bs-hover-animate="tada" style="font-size:31px;" {{ baydisable }}>Ajouter au panier </button>
                         </div>
                     </form>
                 </div>
@@ -147,7 +148,7 @@
                         <div class="articleNom">
                             {{ products[i].title }}
                         </div>
-        <script src="/js/avis.js"></script>                <div class="imgBox">
+                        <div class="imgBox">
                             <img src="/img/{% if products[i].pictures.count != 0 %}products/{{ products[i].pictures[0].pictureName }}{% else %}{{ 'defaultproduitimg.png' }}{% endif %}" alt="">
                         </div>
                         <div class="articleStars stars {{ product.GetStarsClass() }}"></div>
@@ -165,4 +166,5 @@
 {% block javascripts %}
     <script src="/js/image.js"></script>
     <script src="/js/avis.js"></script>
+    <script src="/js/panierProduct.js"></script>
 {% endblock %}
