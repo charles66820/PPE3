@@ -157,7 +157,7 @@ class Client implements UserInterface, \Serializable
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="CartLine", mappedBy="client")
+     * @ORM\OneToMany(targetEntity="CartLine", mappedBy="client", fetch="EAGER")
      */
     private $cartLines;
 

@@ -4,38 +4,57 @@
     <div class="container pb-1" style="box-shadow: 1px 0 5px 0 rgba(0,0,0,0.2);">
         <div class="col-12 col-md-12 mb-2">
             <div class="row">
-                <div class="col col-sm-6 col-md-8 col-lg-9"><label class="col-form-label">Nom</label></div>
-                <div class="col col-sm-2 col-md-1 col-lg-1"><label class="col-form-label">Prix</label></div>
-                <div class="col col-sm-4 col-md-3 col-lg-2"><label class="col-form-label pull-right">Quantité</label></div>
+                <div class="col-4 col-sm-5 col-md-6 col-lg-7"><label class="col-form-label">Nom</label></div>
+                <div class="col-2 col-sm-1 col-md-1 col-lg-1"><label class="col-form-label">Prix</label></div>
+                <div class="col-2 col-sm-2 col-md-2 col-lg-1"><label class="col-form-label">Quantité</label></div>
+                <div class="col-4 col-sm-4 col-md-3 col-lg-3"><label class="col-form-label"></label></div>
             </div>
         </div>
-        <div class="ml-2 mb-5">Votre panier est vide</div>
-        <div class="col-12 col-md-12 mb-2" style="box-shadow: 1px 0 5px 0 rgba(0,0,0,0.2);">
-            <div class="row">
-                <div class="col-xs-2 col-sm-6 col-md-8 col-lg-9">
-                    <label class="col-form-label">un produit</label>
-                </div>
-                <div class="col-xs-1 col-sm-6 col-md-4 col-lg-3">
-                    <label class="col-form-label">99€</label>
-                    <form method="post" style="display: initial;">
-                        <input type="hidden" name="produitidlignepanier" value="42">
-                        <button class="btn btn-primary pull-right m-1" name="quentiterplus" value="5" type="submit">+</button>
-                    </form>
-                    <form method="post" style="display: initial;">
-                        <input type="hidden" name="produitidlignepanier" value="42">
-                        <button class="btn btn-primary pull-right m-1" name="quentitermoins" value="3" type="submit">-</button>
-                    </form>
-                    <label class="col-form-label pull-right m-1">4</label>
+        {% if app.user.cartLines.count == 0 %}
+            <div class="ml-2 mb-5">Votre panier est vide</div>
+        {% endif %}
+        {% for cartLine in app.user.cartLines %}
+            <div class="col-12 col-md-12 mb-2" style="box-shadow: 1px 0 5px 0 rgba(0,0,0,0.2);">
+                <div class="row">
+                    <div class="col-4 col-sm-5 col-md-6 col-lg-7">
+                        <label class="col-form-label" style="word-break: break-word;">{{ cartLine.product.title }}</label>
+                    </div>
+                    <div class="col-2 col-sm-1 col-md-1 col-lg-1">
+                        <label class="col-form-label">{{ cartLine.product.unitPriceHT }}€</label>
+                    </div>
+                    <div class="col-2 col-sm-2 col-md-2 col-lg-1">
+                        <label class="col-form-label pull-right m-1">{{ cartLine.quantity }}</label>
+                    </div>
+                    <div class="col-4 col-sm-4 col-md-3 col-lg-3">
+                        <div class="pull-right">
+                            <form method="POST" style="display: initial;">
+                                <input type="hidden" name="id" value="{{ cartLine.product.id }}">
+                                <button class="btn btn-primary m-1" name="quentityremove" type="submit">-</button>
+                            </form>
+                            <form method="POST" style="display: initial;">
+                                <input type="hidden" name="id" value="{{ cartLine.product.id }}">
+                                <button class="btn btn-primary m-1" name="quentityadd" type="submit">+</button>
+                            </form>
+                            <form method="POST" style="display:initial;">
+                                <input type="hidden" name="id" value="{{ cartLine.product.id }}">
+                                <button class="btn btn-danger m-1" name="productremove" type="submit">X</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endfor %}
         <div class="mb-3">
             <div class="col-xs-1">
-                <label>Sous-total (nbre d'articles) : 1</label>
+                <label>Nombre d'articles : {{ app.user.cartLines.Count }}</label>
+                <button class="btn btn-primary pull-right" type="button" onclick="document.location.href='{{ path('cartRemove') }}'">Vider le panier</button>
             </div>
             <div class="col-xs-1">
-                <label> Prix total HT : 3996€</label>
-                <button class="btn btn-primary pull-right" type="button" onclick="document.location.href='commander'">Passer la commande</button>
+                <label> Prix total HT : {{ app.user.totalPriceHT|replace({'.': ','}) }}€</label>
+            </div>
+            <div class="col-xs-1">
+                <label> Prix total avec la TVA : {{ app.user.totalPrice|replace({'.': ','}) }}€</label>
+                <button class="btn btn-primary pull-right" type="button" onclick="document.location.href='/command'">Passer la commande</button>
             </div>
         </div>
     </div>
