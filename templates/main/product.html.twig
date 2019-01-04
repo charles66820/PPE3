@@ -147,7 +147,7 @@
                         <div class="articleNom">
                             {{ products[i].title }}
                         </div>
-                        <div class="imgBox">
+        <script src="/js/avis.js"></script>                <div class="imgBox">
                             <img src="/img/{% if products[i].pictures.count != 0 %}products/{{ products[i].pictures[0].pictureName }}{% else %}{{ 'defaultproduitimg.png' }}{% endif %}" alt="">
                         </div>
                         <div class="articleStars stars {{ product.GetStarsClass() }}"></div>

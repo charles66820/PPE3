@@ -10,7 +10,6 @@ $("#client_avatarFile").on('change', e=>{
                 'background-position': '50% 50%'
             });
         };
-        console.log('test');
         reader.readAsDataURL(input.files[0]);
     }
 });

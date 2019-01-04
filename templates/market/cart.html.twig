@@ -29,15 +29,15 @@
                         <div class="pull-right">
                             <form method="POST" style="display: initial;">
                                 <input type="hidden" name="id" value="{{ cartLine.product.id }}">
-                                <button class="btn btn-primary m-1" name="quentityremove" type="submit">-</button>
+                                <button class="btn btn-primary m-1" name="action" value="quentityremove" type="submit">-</button>
                             </form>
                             <form method="POST" style="display: initial;">
                                 <input type="hidden" name="id" value="{{ cartLine.product.id }}">
-                                <button class="btn btn-primary m-1" name="quentityadd" type="submit">+</button>
+                                <button class="btn btn-primary m-1" name="action" value="quentityadd" type="submit">+</button>
                             </form>
                             <form method="POST" style="display:initial;">
                                 <input type="hidden" name="id" value="{{ cartLine.product.id }}">
-                                <button class="btn btn-danger m-1" name="productremove" type="submit">X</button>
+                                <button class="btn btn-danger m-1" name="action" value="productremove" type="submit">X</button>
                             </form>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
         <div class="mb-3">
             <div class="col-xs-1">
                 <label>Nombre d'articles : {{ app.user.cartLines.Count }}</label>
-                <button class="btn btn-primary pull-right" type="button" onclick="document.location.href='{{ path('cartRemove') }}'">Vider le panier</button>
+                <button class="btn btn-primary pull-right" type="button" id="cartRemove" data-src="{{ path('cartRemove') }}">Vider le panier</button>
             </div>
             <div class="col-xs-1">
                 <label> Prix total HT : {{ app.user.totalPriceHT|replace({'.': ','}) }}€</label>
@@ -58,4 +58,8 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/js/panier.js"></script>
 {% endblock %}
