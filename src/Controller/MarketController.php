@@ -78,6 +78,7 @@ class MarketController extends AbstractController
         return $this->json([
             'msg' => 'Le produit a bien ete ajoute au panier',
             'lineCount' => $leClient->getCartLines()->Count(),
+            'qty' => $cartLine->getQuantity(),
             'totalPriceHT' => number_format($leClient->getTotalPriceHT(), 2, ',', ' '),
             'totalPrice' => number_format($leClient->getTotalPrice(),2,',',' '),
         ], 200);
@@ -109,7 +110,6 @@ class MarketController extends AbstractController
                 $cartLine = $oneCartLine;
             }
         }
-        dump($cartLine);
         //création de la ligne du panier
         if ($cartLine == null) {
             return $this->json([
@@ -122,6 +122,7 @@ class MarketController extends AbstractController
                 $cartLine->setQuantity($product->getQuantity());
                 $manager->persist($cartLine);
             } else if ($qty <= 0 ) {
+                $cartLine->setQuantity(0);
                 $leClient->removeCartLine($cartLine);
                 $manager->remove($cartLine);
             } else {
@@ -133,6 +134,10 @@ class MarketController extends AbstractController
 
         return $this->json([
             'msg' => 'Le produit a bien ete supprimer du panier',
+            'lineCount' => $leClient->getCartLines()->Count(),
+            'qty' => $cartLine->getQuantity(),
+            'totalPriceHT' => number_format($leClient->getTotalPriceHT(), 2, ',', ' '),
+            'totalPrice' => number_format($leClient->getTotalPrice(),2,',',' '),
         ], 200);
     }
     /**
@@ -171,6 +176,10 @@ class MarketController extends AbstractController
 
         return $this->json([
             'msg' => 'Le produit a bien ete elevee du panier',
+            'lineCount' => $leClient->getCartLines()->Count(),
+            'qty' => $cartLine->getQuantity(),
+            'totalPriceHT' => number_format($leClient->getTotalPriceHT(), 2, ',', ' '),
+            'totalPrice' => number_format($leClient->getTotalPrice(),2,',',' '),
         ], 200);
     }
     /**
@@ -193,6 +202,9 @@ class MarketController extends AbstractController
 
         return $this->json([
             'msg' => 'Le panier a bien ete vidé',
+            'lineCount' => $leClient->getCartLines()->Count(),
+            'totalPriceHT' => number_format($leClient->getTotalPriceHT(), 2, ',', ' '),
+            'totalPrice' => number_format($leClient->getTotalPrice(),2,',',' '),
         ], 200);
     }
 }
