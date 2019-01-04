@@ -77,10 +77,13 @@ class MarketController extends AbstractController
 
         return $this->json([
             'msg' => 'Le produit a bien ete ajoute au panier',
+            'lineCount' => $leClient->getCartLines()->Count(),
+            'totalPriceHT' => number_format($leClient->getTotalPriceHT(), 2, ',', ' '),
+            'totalPrice' => number_format($leClient->getTotalPrice(),2,',',' '),
         ], 200);
     }
     /**
-     * @Route("/cart/remove/{id}/{qty}", name="cartLineRemove")
+     * @Route("/cart/remove/{id}/{qty<\d+>}", name="cartLineRemove")
      */
     public function postCartLineRemove(Product $product = null, $qty, ObjectManager $manager)
     {
