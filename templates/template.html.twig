@@ -62,7 +62,7 @@
                     <li class="nav-item">
                         <a class="nav-link" style="padding-left: 35px;position:relative" href="{{ path('cart') }}">
                             <img style="left:0;height:26px;top:5px;position:absolute" src="/img/panier.png"/>
-                            <span class="badge badge-pill badge-primary" id="cartnumber" style="position:absolute;left:10px;top:5px;font-size:8px;color:white;font-weight:bold;">{{ app.user.cartLines.Count }}</span>Panier
+                            <span class="badge badge-pill badge-primary" id="cartnumber" style="position:absolute;left:10px;top:5px;font-size:8px;color:white;font-weight:bold;">{% if app.user %}{{ app.user.cartLines.Count }}{% else %}0{% endif %}</span>Panier
                         </a>
                     </li>
                     <li class="dropdown">
