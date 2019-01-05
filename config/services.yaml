@@ -7,7 +7,7 @@ parameters:
     locale: 'fr'
     clients_directory: '%kernel.project_dir%/public/img/clients/'
     app.path.product_images: /img/products
-    host: 'ppe3.fr'
+    host: 'ppe3.net'
     completUrl: 'http://%host%'
 
 

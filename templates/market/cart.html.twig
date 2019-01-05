@@ -44,19 +44,21 @@
                 </div>
             {% endfor %}
         </div>
-        <div class="mb-3">
-            <div class="col-xs-1">
-                <label>Nombre d'articles : <span id="cartCount">{{ app.user.cartLines.Count }}</span></label>
-                <button class="btn btn-primary pull-right" type="button" id="cartRemove" data-src="{{ path('cartRemove') }}">Vider le panier</button>
+        <form action="{{ path('order') }}">
+            <div class="mb-3">
+                <div class="col-xs-1">
+                    <label>Nombre d'articles : <span id="cartCount">{{ app.user.cartLines.Count }}</span></label>
+                    <button class="btn btn-primary pull-right" type="button" id="cartRemove" data-src="{{ path('cartRemove') }}">Vider le panier</button>
+                </div>
+                <div class="col-xs-1">
+                    <label>Prix total hors taxe : <span id="cartPriceHT">{{ (app.user.totalPriceHT)|number_format(2, ',') }}</span>€</label>
+                </div>
+                <div class="col-xs-1">
+                    <label>Prix total avec la TVA : <span id="cartPrice">{{ (app.user.totalPrice)|number_format(2, ',', ' ') }}</span>€</label>
+                    <button class="btn btn-primary pull-right" type="submit">Passer la commande</button>
+                </div>
             </div>
-            <div class="col-xs-1">
-                <label>Prix total hors taxe : <span id="cartPriceHT">{{ (app.user.totalPriceHT)|number_format(2, ',') }}</span>€</label>
-            </div>
-            <div class="col-xs-1">
-                <label>Prix total avec la TVA : <span id="cartPrice">{{ (app.user.totalPrice)|number_format(2, ',', ' ') }}</span>€</label>
-                <button class="btn btn-primary pull-right" type="button" onclick="document.location.href='/command'">Passer la commande</button>
-            </div>
-        </div>
+        </form>
     </div>
 {% endblock %}
 
