@@ -44,7 +44,6 @@ class SecurityController extends AbstractController
                 ];
             } else {
                 if ($client->getNewPassword() != null) {
-                    dump('change');
                     $client->setPassword($newPassword);
                     $notifProfile = [
                         'msg' => 'profil mis à jour et mots de passe modifier!',

@@ -489,7 +489,7 @@ class Client implements UserInterface, \Serializable
     public function getTotalPriceHT(){
         $totalHT = 0;
         foreach ($this->cartLines as $cartLine){
-            $totalHT = $cartLine->getProduct()->getUnitPriceHT() * $cartLine->getQuantity();
+            $totalHT += $cartLine->getProduct()->getUnitPriceHT() * $cartLine->getQuantity();
         }
         return $totalHT;
     }
@@ -497,5 +497,4 @@ class Client implements UserInterface, \Serializable
     public function getTotalPrice(){
         return $this->getTotalPriceHT() * ((TwigEntityService::getTax()/100)+1);
     }
-
 }
