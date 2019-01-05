@@ -110,7 +110,7 @@ class ClientType extends AbstractType
                     'class' => 'btn btn-danger',
                 ]
             ])
-            ->add('defaultAdresse', EntityType::class, [
+            ->add('defaultAddress', EntityType::class, [
                 'label' => 'Adresse par défaut :',
                 'required' => false,
                 'class' => Address::class,

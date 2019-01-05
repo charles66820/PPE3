@@ -152,7 +152,7 @@ class Client implements UserInterface, \Serializable
      *   @ORM\JoinColumn(name="id_default_address", referencedColumnName="id_address", nullable=true)
      * })
      */
-    private $defaultAdresse;
+    private $defaultAddress;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -311,14 +311,14 @@ class Client implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getDefaultAdresse(): ?Address
+    public function getDefaultAddress(): ?Address
     {
-        return $this->defaultAdresse;
+        return $this->defaultAddress;
     }
 
-    public function setDefaultAdresse(?Address $defaultAdresse): self
+    public function setDefaultAddress(?Address $defaultAddress): self
     {
-        $this->defaultAdresse = $defaultAdresse;
+        $this->defaultAddress = $defaultAddress;
 
         return $this;
     }
