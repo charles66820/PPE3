@@ -110,6 +110,9 @@
     "pagerfanta/pagerfanta": {
         "version": "v2.0.1"
     },
+    "paypal/rest-api-sdk-php": {
+        "version": "1.14.0"
+    },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
     },
