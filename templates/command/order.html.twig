@@ -1,0 +1,19 @@
+{% extends 'template.html.twig' %}
+
+{% block content %}
+    <div align="center">
+        <div class="container">
+            {{ form_start(form) }}
+                <div class="mb-2 row">
+                    {{ form_label(form.deliveryAddress) }}
+                    <div class="col-12 col-sm-7">
+                        {{ form_widget(form.deliveryAddress) }}
+                    </div>
+                    <div class="col-12 col-sm-2">
+                        {{ form_widget(form.submit) }}
+                    </div>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
