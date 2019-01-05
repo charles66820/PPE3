@@ -4,15 +4,26 @@ namespace App\Services;
 
 use App\Entity\Product;
 use App\Entity\Tax;
-use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Category;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 
 class TwigEntityService
 {
     private static $manager;
-    public function __construct(ObjectManager $em)
+    private static $container;
+    public function __construct(ContainerInterface $container)
     {
-        self::$manager = $em;
+        self::$container = $container;
+        if (!self::$container->has('doctrine')) {
+            throw new \LogicException('The DoctrineBundle is not registered in your application. Try running "composer require symfony/orm-pack".');
+        }
+        self::$manager = self::$container->get('doctrine');
+    }
+
+    public static function getPayPalPayment()
+    {
+        return  self::$container->getParameter('completUrl');
     }
 
     public static function getAllCategorys()

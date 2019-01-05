@@ -4,3 +4,4 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
       entityService: '@App\Services\TwigEntityService'
+      paypalService: '@App\Services\PayPalService'
