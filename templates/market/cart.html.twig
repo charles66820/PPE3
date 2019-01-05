@@ -19,7 +19,7 @@
                             <label class="col-form-label" style="word-break: break-word;">{{ cartLine.product.title }}</label>
                         </div>
                         <div class="col-2 col-sm-1 col-md-1 col-lg-1">
-                            <label class="col-form-label">{{ cartLine.product.unitPriceHT }}€</label>
+                            <label class="col-form-label">{{ cartLine.product.unitPriceHT|number_format(2, ',') }}€</label>
                         </div>
                         <div class="col-2 col-sm-2 col-md-2 col-lg-1">
                             <label class="col-form-label pull-right m-1">{{ cartLine.quantity }}</label>
@@ -50,10 +50,10 @@
                 <button class="btn btn-primary pull-right" type="button" id="cartRemove" data-src="{{ path('cartRemove') }}">Vider le panier</button>
             </div>
             <div class="col-xs-1">
-                <label> Prix total HT : <span id="cartPriceHT">{{ (app.user.totalPriceHT)|number_format(2, ',')}}</span>€</label>
+                <label>Prix total hors taxe : <span id="cartPriceHT">{{ (app.user.totalPriceHT)|number_format(2, ',') }}</span>€</label>
             </div>
             <div class="col-xs-1">
-                <label> Prix total avec la TVA : <span id="cartPrice">{{ (app.user.totalPrice)|number_format(2, ',', ' ') }}</span>€</label>
+                <label>Prix total avec la TVA : <span id="cartPrice">{{ (app.user.totalPrice)|number_format(2, ',', ' ') }}</span>€</label>
                 <button class="btn btn-primary pull-right" type="button" onclick="document.location.href='/command'">Passer la commande</button>
             </div>
         </div>
