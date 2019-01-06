@@ -63,13 +63,13 @@ class PayPalService
 
         $details = new Details();
         $details->setShipping(10);
-        $details->setTax($leClient->getTotalPrice()-$leClient->getTotalPriceHT());
-        $details->setSubTotal($leClient->getTotalPriceHT());
+        $details->setTax(number_format($leClient->getTotalPrice(),2)-number_format($leClient->getTotalPriceHT(),2));
+        $details->setSubTotal(number_format($leClient->getTotalPriceHT(),2));
 
         // payment amount
         $amount = new Amount();
         $amount->setCurrency("EUR");
-        $amount->setTotal($leClient->getTotalPrice()+10);
+        $amount->setTotal(number_format($leClient->getTotalPrice(),2)+10);
         $amount->setDetails($details);
 
         // transaction
