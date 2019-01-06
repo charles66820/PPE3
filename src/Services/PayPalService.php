@@ -37,6 +37,9 @@ class PayPalService
 
         //adresse de livraision
         $shippingAddress = new ShippingAddress();
+        $shippingAddress->setRecipientName(
+            $leClient->getLogin().' | '.$leClient->getLastName().' '.$leClient->getFirstName()
+        );
         $shippingAddress->setLine1($address->getWay());
         $shippingAddress->setLine2($address->getComplement());
         $shippingAddress->setCity($address->getCity());

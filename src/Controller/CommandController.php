@@ -6,6 +6,7 @@ use App\Entity\Address;
 use App\Entity\Command;
 use App\Entity\CommandContent;
 use App\Entity\Product;
+use App\Entity\Tax;
 use App\Services\PayPalService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
@@ -18,6 +19,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CommandController extends AbstractController
@@ -163,10 +165,10 @@ class CommandController extends AbstractController
         $payment = Payment::get($_GET["paymentId"], $apiContext);
         $custom = JSON_decode($payment->getTransactions()[0]->getCustom());
 
-        $idDeliveryAddress = $custom['idAddress'];
+        $idDeliveryAddress = $custom->idAddress;
         $deliveryAddressValid = false;
-        foreach ($leClient->getAddress() as $address) {
-            if ($address->getId() == $idDeliveryAddress) $deliveryAddressValid = true;
+        foreach ($leClient->getAddress() as $a) {
+            if ($a->getId() == $idDeliveryAddress) $deliveryAddressValid = true;
         }
 
         if ($idDeliveryAddress == null || !$deliveryAddressValid) {
@@ -207,16 +209,18 @@ class CommandController extends AbstractController
         $content = $payment->getTransactions()[0]->getItemList()->getItems();
         foreach ($content as $item) {
             $commandContent = new CommandContent();
-            $commandContent->setTax(1);
+            $commandContent->setTax($this->getDoctrine()
+                ->getRepository(Tax::class)
+                ->find(1));
             $commandContent->setUnitPriceHT($item->getPrice());
             $commandContent->setQuantity($item->getQuantity());
-            $commandContent->setProduct($this->getDoctrine()
+            $products = $this->getDoctrine()
                 ->getRepository(Product::class)
-                ->findBy(['reference' => $item->getSku()]));
+                ->findBy(['reference' => $item->getSku()]);
+            $commandContent->setProduct($products[0]);
             $commandContent->setCommand($command);
             $command->addCommandContent($commandContent);
             $manager->persist($commandContent);
-            dump($item->getUrl());die();
         }
         $manager->flush();
 
@@ -227,26 +231,37 @@ class CommandController extends AbstractController
         }
         $manager->flush();
 
+        return $this->redirect($this->generateUrl('commands'));
     }
 
     /**
      * @Route("/command/paymentcancel", name="paymentcancel")
      */
-    public function getPaymentCancel(Request $request)
+    public function getPaymentCancel()
     {
         return new Response(
-            '<html><body>Commende annuler</body></html>'
+            '<html><body>Commande annuler</body></html>'
         );
     }
 
     /**
      * @Route("/command/paymenterror", name="paymenterror")
      */
-    public function getPaymentFail(Request $request)
+    public function getPaymentFail()
     {
         return $this->render('error/400.html.twig', [
             'title' => '400 : Bad Request!',
             'msgerr' => 'Erreur avec l\'adresse de livraison!',
         ]);
+    }
+
+    /**
+     * @Route("/commands", name="commands")
+     */
+    public function getCommands()
+    {
+        return new Response(
+            '<html><body>Commands</body></html>'
+        );
     }
 }

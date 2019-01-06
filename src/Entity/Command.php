@@ -136,12 +136,12 @@ class Command
         return $this;
     }
 
-    public function getAddressDelivery(): ?Adresse
+    public function getAddressDelivery(): ?Address
     {
         return $this->addressDelivery;
     }
 
-    public function setAddressDelivery(?Adresse $addressDelivery): self
+    public function setAddressDelivery(?Address $addressDelivery): self
     {
         $this->addressDelivery = $addressDelivery;
 

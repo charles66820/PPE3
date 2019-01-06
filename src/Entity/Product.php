@@ -6,6 +6,8 @@ use App\Services\TwigEntityService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product
@@ -13,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="product", indexes={
  *     @ORM\Index(name="FK_product_idCategory", columns={"id_category"})
  * })
+ * @UniqueEntity("reference")
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  */
 class Product
@@ -43,7 +46,7 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="reference", type="string", length=255, nullable=false)
+     * @ORM\Column(name="reference", type="string", length=255, nullable=false, unique=true)
      */
     private $reference;
 
