@@ -54,7 +54,7 @@ class PayPalService
             $item = new Item();
             $item->setSku($cartLine->getProduct()->getReference());
             $item->setName($cartLine->getProduct()->getTitle());
-            $item->setPrice($cartLine->getProduct()->getUnitPriceHT());
+            $item->setPrice(number_format($cartLine->getProduct()->getUnitPriceHT(),2));
             $item->setCurrency("EUR");
             $item->setQuantity($cartLine->getQuantity());
 

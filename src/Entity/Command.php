@@ -47,7 +47,7 @@ class Command
     /**
      * @var string|null
      *
-     * @ORM\Column(name="tax_on_command", type="decimal", precision=3, scale=2, nullable=false)
+     * @ORM\Column(name="tax_on_command", type="decimal", precision=30, scale=2, nullable=false)
      */
     private $taxOnCommand;
 
