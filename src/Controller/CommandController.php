@@ -235,13 +235,13 @@ class CommandController extends AbstractController
     }
 
     /**
-     * @Route("/command/paymentcancel", name="paymentcancel")
+     * @Route("/paymentcancel", name="paymentcancel")
      */
     public function getPaymentCancel()
     {
-        return new Response(
-            '<html><body>Commande annuler</body></html>'
-        );
+        return $this->render('market/orderCancel.html.twig', [
+            'title' => 'Command annuler',
+        ]);
     }
 
     /**
@@ -256,12 +256,12 @@ class CommandController extends AbstractController
     }
 
     /**
-     * @Route("/commands", name="commands")
+     * @Route("/commandes", name="commands")
      */
     public function getCommands()
     {
-        return new Response(
-            '<html><body>Commands</body></html>'
-        );
+        return $this->render('market/commands.html.twig', [
+            'title' => 'Mes commandes',
+        ]);
     }
 }

@@ -1,0 +1,93 @@
+{% extends 'template.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <h2>Vos commandes :</h2>
+        <div class="container rounded shadow p-3 mb-5">
+            <div class="row">
+                <div class="hidden-xs-down col-sm-6 col-md-1 col-lg-1">
+                    N° commande
+                </div>
+                <div class="hidden-xs-down col-sm-6 col-md-3 col-lg-3">
+                    Date de la commande
+                </div>
+                <div class="hidden-sm-down col-md-1 col-lg-1">
+                    TVA
+                </div>
+                <div class="hidden-sm-down col-md-2 col-lg-2">
+                    Frais de port
+                </div>
+                <div class="hidden-sm-down col-md-2 col-lg-2">
+                    Prix total
+                </div>
+                <div class="hidden-sm-down col-md-1 col-lg-2"></div>
+                <div class="hidden-sm-down col-md-1 col-lg-1">
+                    Statut
+                </div>
+            </div>
+            {% for command in app.user.commands %}
+                <div class="row rounded shadow-sm p-3">
+                    <div class="col-12 col-sm-6 col-md-1 col-lg-1">
+                        <span class="hidden-sm-up">N° commande : </span>{{ command.id }}
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+                        <span class="hidden-sm-up">Date de la commande : </span>{{ command.date|date("F d M Y \\à G:i") }}
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-1 col-lg-1">
+                        <span class="hidden-md-up">TVA : </span> {{ command.taxOnCommand|number_format(2, ',') }}€
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-2 col-lg-2">
+                        <span class="hidden-md-up">Frais de port : </span> {{ command.shipping|number_format(2, ',') }}€
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-2 col-lg-2">
+                        <span class="hidden-md-up">Prix total : </span> {{ command.totalHT|number_format(2, ',') }}€
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-1 col-lg-2 order-md-0 order-1 d-flex justify-content-end">
+                        <a class="btn btn-secondary" data-toggle="collapse" data-target="#col{{ command.id }}" role="button" aria-expanded="true" aria-controls="42">⯆</a>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-1 col-lg-1 order-md-1 order-0 d-md-flex justify-content-md-center">
+                        <span class="hidden-md-up">Statut :  </span> <i class="fa fa-spinner" data-toggle="tooltip" data-placement="right" title="traitement en cours"></i>
+                    </div>
+                </div>
+                <div class="row collapse p-3" id="col{{ command.id }}">
+                    <div class="col-12 col-sm-6">
+                        <h2 class="col-12">Adresse de livraison</h2>
+                        <div class="col-12">
+                            Rue : {{ command.addressDelivery.way }}
+                        </div>
+                        <div class="col-12">
+                            Complèment : {{ command.addressDelivery.complement }}
+                        </div>
+                        <div class="col-12">
+                            Code postal : {{ command.addressDelivery.zipCode }}
+                        </div>
+                        <div class="col-12">
+                            Ville : {{ command.addressDelivery.city }}
+                        </div>
+                        <div class="col-12">
+                            Pays : {{ command.addressDelivery.country }}
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6" style="overflow:auto">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Produit</th>
+                                <th>Prix unitaire</th>
+                                <th>Quantité</th>
+                                <th>Réference</th>
+                            </tr>
+                            {% for commandContent in command.commandContents %}
+                                <tr>
+                                    <td>{{ commandContent.product.title }}</td>
+                                    <td>{{ commandContent.unitPriceHT|number_format(2, ',') }}€</td>
+                                    <td>{{ commandContent.quantity }}</td>
+                                    <td>{{ commandContent.product.reference }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
