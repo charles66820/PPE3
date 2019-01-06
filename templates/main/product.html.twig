@@ -92,13 +92,18 @@
             <h2 style="display: inline-block">notée le produit : </h2>
             {% if app.user %}
                 {% if app.user.alreadyOrdered(product) %}
-                    <div id="starsselecteur" class="stars{{ app.user.getOpinion(product).score }}">
+                    {% if app.user.getOpinion(product) %}
+                        {% set currentscore = app.user.getOpinion(product).score %}
+                    {% else %}
+                        {% set currentscore = 0 %}
+                    {% endif %}
+                    <div id="starsselecteur" class="stars{{ currentscore }}">
                         <img src="/img/empty_star.png" alt="1 étoiles" height="28" width="28" data-star="1">
                         <img src="/img/empty_star.png" alt="2 étoiles" height="28" width="28" data-star="2">
                         <img src="/img/empty_star.png" alt="3 étoiles" height="28" width="28" data-star="3">
                         <img src="/img/empty_star.png" alt="4 étoiles" height="28" width="28" data-star="4">
                         <img src="/img/empty_star.png" alt="5 étoiles" height="28" width="28" data-star="5">
-                        <input type="hidden" name="avis" value="{{ app.user.getOpinion(product).score }}">
+                        <input type="hidden" name="avis" value="{{ currentscore }}">
                     </div>
                 {% endif %}
             {% endif %}

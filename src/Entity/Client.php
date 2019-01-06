@@ -553,15 +553,13 @@ class Client implements UserInterface, \Serializable
         return $productFind;
     }
 
-    public function getOpinion(Product $product): Opinion
+    public function getOpinion(Product $product)
     {
         $opinion = null;
-        foreach ($this->commands as $command) {
-            foreach ($product->getOpinions() as $o) {
-                if ($o->getClient() == $this) {
-                    $opinion = $o;
-                    break;
-                }
+        foreach ($product->getOpinions() as $o) {
+            if ($o->getClient() == $this) {
+                $opinion = $o;
+                break;
             }
         }
         return $opinion;
