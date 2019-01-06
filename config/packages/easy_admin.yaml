@@ -1,5 +1,7 @@
 easy_admin:
     site_name: '<img width="75" height="70" src="/img/logoPoulpe.png">'
+    formats:
+      number: "%0.2f€"
     design:
       brand_color: 'rgba(26, 188, 156, 0.85)'
       assets:
@@ -29,7 +31,7 @@ easy_admin:
             - {property: 'title', label: 'Nom'}
             - {property: 'unitPriceHT', label: 'Prix unitaire hors taxe'}
             - reference
-            - {property: 'quantity', label: 'Quantité'}
+            - {property: 'quantity', label: 'Quantité', type: 'text'}
             - description
             - {property: 'category.title', label: 'Categorie'}
         form:
