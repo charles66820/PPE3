@@ -46,7 +46,8 @@ class TwigEntityService
 
 
 
-    public static function getStarsClass($moyenneStars){
+    public static function getStarsClass($moyenneStars)
+    {
         $result = 'stars0';
         switch ($moyenneStars) {
             case 0:

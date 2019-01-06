@@ -90,14 +90,18 @@
         </div>
         <div class="p-2 col-xl-8 col-lg-12 mt-3 shadow-sm">
             <h2 style="display: inline-block">notée le produit : </h2>
-            <div id="starsselecteur" class="stars0">
-                <img src="/img/empty_star.png" alt="1 étoiles" height="28" width="28" data-star="1">
-                <img src="/img/empty_star.png" alt="2 étoiles" height="28" width="28" data-star="2">
-                <img src="/img/empty_star.png" alt="3 étoiles" height="28" width="28" data-star="3">
-                <img src="/img/empty_star.png" alt="4 étoiles" height="28" width="28" data-star="4">
-                <img src="/img/empty_star.png" alt="5 étoiles" height="28" width="28" data-star="5">
-                <input type="hidden" name="avis" value="0">
-            </div>
+            {% if app.user %}
+                {% if app.user.alreadyOrdered(product) %}
+                    <div id="starsselecteur" class="stars0">
+                        <img src="/img/empty_star.png" alt="1 étoiles" height="28" width="28" data-star="1">
+                        <img src="/img/empty_star.png" alt="2 étoiles" height="28" width="28" data-star="2">
+                        <img src="/img/empty_star.png" alt="3 étoiles" height="28" width="28" data-star="3">
+                        <img src="/img/empty_star.png" alt="4 étoiles" height="28" width="28" data-star="4">
+                        <img src="/img/empty_star.png" alt="5 étoiles" height="28" width="28" data-star="5">
+                        <input type="hidden" name="avis" value="0">
+                    </div>
+                {% endif %}
+            {% endif %}
             {% if form %}
                 <div class="comment-box mb-4">
                     {{ form_start(form) }}

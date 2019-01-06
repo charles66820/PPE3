@@ -494,18 +494,6 @@ class Client implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getTotalPriceHT(){
-        $totalHT = 0;
-        foreach ($this->cartLines as $cartLine){
-            $totalHT += $cartLine->getProduct()->getUnitPriceHT() * $cartLine->getQuantity();
-        }
-        return $totalHT;
-    }
-
-    public function getTotalPrice(){
-        return $this->getTotalPriceHT() * ((TwigEntityService::getTax()/100)+1);
-    }
-
     /**
      * @return Collection|Command[]
      */
@@ -535,5 +523,33 @@ class Client implements UserInterface, \Serializable
         }
 
         return $this;
+    }
+
+    public function getTotalPriceHT()
+    {
+        $totalHT = 0;
+        foreach ($this->cartLines as $cartLine){
+            $totalHT += $cartLine->getProduct()->getUnitPriceHT() * $cartLine->getQuantity();
+        }
+        return $totalHT;
+    }
+
+    public function getTotalPrice()
+    {
+        return $this->getTotalPriceHT() * ((TwigEntityService::getTax()/100)+1);
+    }
+
+    public function alreadyOrdered(Product $product): bool
+    {
+        $productFind = false;
+        foreach ($this->commands as $command) {
+            foreach ($command->getCommandContents() as $commandContent) {
+                if ($commandContent->getProduct() == $product) {
+                    $productFind = true;
+                    break;
+                }
+            }
+        }
+        return $productFind;
     }
 }
