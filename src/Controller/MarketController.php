@@ -197,8 +197,8 @@ class MarketController extends AbstractController
         foreach ($leClient->getCartLines() as $cartLine){
             $leClient->removeCartLine($cartLine);
             $manager->remove($cartLine);
-            $manager->flush();
         }
+        $manager->flush();
 
         return $this->json([
             'msg' => 'Le panier a bien ete vidé',

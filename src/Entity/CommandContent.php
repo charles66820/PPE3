@@ -45,7 +45,7 @@ class CommandContent
     /**
      * @var \Command
      *
-     * @ORM\ManyToOne(targetEntity="Command")
+     * @ORM\ManyToOne(targetEntity="Command", inversedBy="ccommandContents")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_command", referencedColumnName="id_command", onDelete="CASCADE")
      * })

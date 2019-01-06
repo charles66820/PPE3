@@ -3,7 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Address;
+use App\Entity\Command;
+use App\Entity\CommandContent;
+use App\Entity\Product;
 use App\Services\PayPalService;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use PayPal\Api\Payer;
 use PayPal\Api\Payment;
@@ -146,17 +150,37 @@ class CommandController extends AbstractController
     /**
      * @Route("/command/paymentdone", name="paymentdone")
      */
-    public function getPaymentDone(Request $request)
+    public function getPaymentDone(Request $request, ObjectManager $manager)
     {
         $leClient = $this->getUser();
-        $apiContext = PayPalService::getPayPalApiContext();
-        $transaction = PayPalService::getPayPalPayment($leClient);
+        if($leClient == null){
+            return $this->json([
+                'msg' => 'Client not found!',
+            ], 404);
+        }
 
+        $apiContext = PayPalService::getPayPalApiContext();
         $payment = Payment::get($_GET["paymentId"], $apiContext);
+        $custom = JSON_decode($payment->getTransactions()[0]->getCustom());
+
+        $idDeliveryAddress = $custom['idAddress'];
+        $deliveryAddressValid = false;
+        foreach ($leClient->getAddress() as $address) {
+            if ($address->getId() == $idDeliveryAddress) $deliveryAddressValid = true;
+        }
+
+        if ($idDeliveryAddress == null || !$deliveryAddressValid) {
+            return $this->redirect($this->generateUrl('paymenterror'));
+        }
+
+        $address = $this->getDoctrine()
+            ->getRepository(Address::class)
+            ->find($idDeliveryAddress);
+
+        $transaction = PayPalService::getPayPalTransaction($leClient, $address);
 
         $execution = new PaymentExecution();
         $execution->setPayerID($_GET["PayerID"]);
-
         $execution->setTransactions([$transaction]);
 
         try {
@@ -170,19 +194,39 @@ class CommandController extends AbstractController
                 dump($e);die();
             }
         }
-        dump('fini');die();
-//        //add commande in bdd
-//        //get custome data don idaddress
-//        $custom = JSON_decode($payment->getTransactions()[0]->getCustom());
-//        $payment->getTransactions()[0]->getAmount()->getTotal();
-//        $payment->getTransactions()[0]->getAmount()->getDetails()->getShipping();
-//        $custom->IDAdresse;
-//        $contenus = $payment->getTransactions()[0]->getItemList()->getItems();
-//        foreach ($contenus as $unContenu) {
-//            $unContenu->getPrice(); //PrixUnitaire
-//            $unContenu->getQuantity(); //QuantiteContenu
-//        }
-//        //supprimePanier();
+
+        $command = new Command();
+        $command->setClient($leClient);
+        $command->setDate(new \DateTime());
+        $command->setAddressDelivery($address);
+        $command->setShipping($payment->getTransactions()[0]->getAmount()->getDetails()->getShipping());
+        $command->setTaxOnCommand($payment->getTransactions()[0]->getAmount()->getDetails()->getTax());
+        $command->setTotalHT($payment->getTransactions()[0]->getAmount()->getTotal());
+        $manager->persist($command);
+
+        $content = $payment->getTransactions()[0]->getItemList()->getItems();
+        foreach ($content as $item) {
+            $commandContent = new CommandContent();
+            $commandContent->setTax(1);
+            $commandContent->setUnitPriceHT($item->getPrice());
+            $commandContent->setQuantity($item->getQuantity());
+            $commandContent->setProduct($this->getDoctrine()
+                ->getRepository(Product::class)
+                ->findBy(['reference' => $item->getSku()]));
+            $commandContent->setCommand($command);
+            $command->addCommandContent($commandContent);
+            $manager->persist($commandContent);
+            dump($item->getUrl());die();
+        }
+        $manager->flush();
+
+        //suppretion du panier
+        foreach ($leClient->getCartLines() as $cartLine){
+            $leClient->removeCartLine($cartLine);
+            $manager->remove($cartLine);
+        }
+        $manager->flush();
+
     }
 
     /**
@@ -195,4 +239,14 @@ class CommandController extends AbstractController
         );
     }
 
+    /**
+     * @Route("/command/paymenterror", name="paymenterror")
+     */
+    public function getPaymentFail(Request $request)
+    {
+        return $this->render('error/400.html.twig', [
+            'title' => '400 : Bad Request!',
+            'msgerr' => 'Erreur avec l\'adresse de livraison!',
+        ]);
+    }
 }
