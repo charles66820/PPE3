@@ -130,7 +130,6 @@ class ClientType extends AbstractType
                         ->setParameter('idcli', $user->getId());
                 },
                 'choice_label' => 'address',
-                'empty_data' => 'Aucune adresse par défaut',
                 'attr' => [
                     'class' => 'form-control',
                 ],
