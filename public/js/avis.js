@@ -1,5 +1,5 @@
 //permet de gérer le hover et la selection des étoiles
-let selectstar = 0;
+let selectstar = $('#starsselecteur input').val();
 let laststar = 6;
 $('#starsselecteur').children().on('click',function(){
     selectstar = $(this).attr("data-star");
@@ -11,7 +11,6 @@ $('#starsselecteur').children().on('click',function(){
         $('#starsselecteur').removeClass().addClass('stars'+selectstar).children().last().val(selectstar);
         laststar = selectstar;
     }
-    console.log(selectstar);
 }).on('mouseover', function(){
     $('#starsselecteur').removeClass().addClass('stars'+$(this).attr("data-star"));
 }).on('mouseleave', function(){

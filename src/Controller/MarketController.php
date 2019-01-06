@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CartLine;
+use App\Entity\Opinion;
 use App\Entity\Product;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -206,5 +207,57 @@ class MarketController extends AbstractController
             'totalPriceHT' => number_format($leClient->getTotalPriceHT(), 2, ',', ' '),
             'totalPrice' => number_format($leClient->getTotalPrice(),2,',',' '),
         ], 200);
+    }
+
+    /**
+     * @Route("/opinion/{id}/{score<\d+>}", name="opinion")
+     */
+    public function postOpinion(Product $product = null, $score, ObjectManager $manager)
+    {
+        if ($product == null) {
+            return $this->json([
+                'msg' => 'Product not found!',
+            ], 404);
+        }
+
+        $leClient = $this->getUser();
+        if ($leClient == null) {
+            return $this->json([
+                'msg' => 'Client not found!',
+            ], 404);
+        }
+
+        if ($score <= 0) $score = 0;
+        if ($score > 5) $score = 5;
+
+        if ($leClient->alreadyOrdered($product)) {
+            $opinions = null;
+            foreach ($product->getOpinions() as $o) {
+                if ($o->getClient() == $leClient) {
+                    $opinions = $o;
+                }
+            }
+
+            if ($opinions == null) {
+                $opinions = new Opinion();
+                $opinions->setClient($leClient);
+                $opinions->setProduct($product);
+            }
+            $opinions->setDate(new \DateTime());
+            $opinions->setScore($score);
+            $product->addOpinion($opinions);
+            $manager->persist($opinions);
+            $manager->flush();
+            return $this->json([
+                'msg' => 'Le client à bien donner son avie sur le produit!',
+            ], 200);
+        } else {
+            return $this->json([
+                'msg' => 'Le client n\a pas acheter ce produit!',
+            ], 403);
+        }
+
+        echo $score;
+        return;
     }
 }
