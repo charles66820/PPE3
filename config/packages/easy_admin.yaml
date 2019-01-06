@@ -39,7 +39,7 @@ easy_admin:
             - {property: 'quantity', label: 'Quantité'}
             - description
             - {property: 'category', type: 'entity', type_options: { class: 'App\Entity\category', choice_label: 'name'}}
-            - { property: 'pictures', type: 'collection', type_options: { entry_type: 'App\Form\ProductPictureType', by_reference: false } }
+            - {property: 'pictures', type: 'collection', type_options: { entry_type: 'App\Form\ProductPictureType', by_reference: false }}
         new:
           title:  'Ajouter un produit'
         edit:
