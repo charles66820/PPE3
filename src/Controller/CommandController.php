@@ -172,7 +172,7 @@ class CommandController extends AbstractController
         }
 
         if ($idDeliveryAddress == null || !$deliveryAddressValid) {
-            return $this->redirect($this->generateUrl('paymenterror'));
+            return $this->redirectToRoute('paymenterror');
         }
 
         $address = $this->getDoctrine()
@@ -231,7 +231,7 @@ class CommandController extends AbstractController
         }
         $manager->flush();
 
-        return $this->redirect($this->generateUrl('commands'));
+        return $this->redirectToRoute('commands');
     }
 
     /**
