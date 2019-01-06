@@ -203,5 +203,13 @@ class SecurityController extends AbstractController
         // uniqid(), which is based on timestamps
         return md5(uniqid());
     }
+
+    /**
+     * @Route("/test", name="test")
+     */
+    public function test(Request $request){
+        dump($request->query->all()); die();
+        return $this->redirectToRoute('address');
+    }
 }
 

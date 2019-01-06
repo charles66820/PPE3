@@ -21,11 +21,6 @@ class TwigEntityService
         self::$manager = self::$container->get('doctrine');
     }
 
-    public static function getPayPalPayment()
-    {
-        return  self::$container->getParameter('completUrl');
-    }
-
     public static function getAllCategorys()
     {
         return self::$manager->getRepository(Category::class)
