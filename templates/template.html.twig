@@ -79,7 +79,7 @@
 
                             {% if is_granted('ROLE_USER') %}
                                 <a class="dropdown-item" href="{{ path("profile") }}">Modifier mon profil</a>
-                                <a class="dropdown-item" href="/commands">Historique des commandes</a>
+                                <a class="dropdown-item" href="{{ path("commands") }}">Mes commandes</a>
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <a class="dropdown-item" href="{{ path("easyadmin") }}">Administration</a>
                                 {% endif %}
