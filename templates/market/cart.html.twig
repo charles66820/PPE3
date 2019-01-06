@@ -44,7 +44,7 @@
                 </div>
             {% endfor %}
         </div>
-        <form action="{{ path('order') }}">
+        <form action="{{ path('order') }}" method="post">
             <div class="mb-3">
                 <div class="col-xs-1">
                     <label>Nombre d'articles : <span id="cartCount">{{ app.user.cartLines.Count }}</span></label>
