@@ -119,6 +119,13 @@ class Client implements UserInterface, \Serializable
     private $avatarFile;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Command", mappedBy="client", fetch="EAGER")
+     */
+    private $commands;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="creation_date", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
@@ -145,7 +152,7 @@ class Client implements UserInterface, \Serializable
     private $roles = '[]';
 
     /**
-     * @var \Address
+     * @var Address
      *
      * @ORM\ManyToOne(targetEntity="Address")
      * @ORM\JoinColumns({
@@ -196,6 +203,7 @@ class Client implements UserInterface, \Serializable
     {
         $this->cartLines = new ArrayCollection();
         $this->address = new ArrayCollection();
+        $this->commands = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -496,5 +504,36 @@ class Client implements UserInterface, \Serializable
 
     public function getTotalPrice(){
         return $this->getTotalPriceHT() * ((TwigEntityService::getTax()/100)+1);
+    }
+
+    /**
+     * @return Collection|Command[]
+     */
+    public function getCommands(): Collection
+    {
+        return $this->commands;
+    }
+
+    public function addCommand(Command $command): self
+    {
+        if (!$this->commands->contains($command)) {
+            $this->commands[] = $command;
+            $command->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommand(Command $command): self
+    {
+        if ($this->commands->contains($command)) {
+            $this->commands->removeElement($command);
+            // set the owning side to null (unless already changed)
+            if ($command->getClient() === $this) {
+                $command->setClient(null);
+            }
+        }
+
+        return $this;
     }
 }
