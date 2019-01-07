@@ -116,4 +116,12 @@ class MainController extends AbstractController
         }
         return $this->redirectToRoute('product', ['id' => $comment->getProduct()->getId()]);
     }
+
+    /**
+     * @Route("/test", name="test")
+     */
+    public function test() {
+        //Votre commande
+        die();
+    }
 }
