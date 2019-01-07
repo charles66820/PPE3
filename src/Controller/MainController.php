@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CommentType;
 use Doctrine\Common\Persistence\ObjectManager;
+use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -120,7 +121,7 @@ class MainController extends AbstractController
     /**
      * @Route("/test", name="test")
      */
-    public function test(\Swift_Mailer $mailer) {
+    public function test(Swift_Mailer $mailer) {
         $message = (new \Swift_Message('Votre commande'))
             ->setFrom('cornichon66820@gmail.com')
             ->setTo('charles.goedefroit@gmail.com')
@@ -131,15 +132,16 @@ class MainController extends AbstractController
                 ),
                 'text/html'
             )
-            ->addPart(
-                $this->renderView(
-                    'emails/order.txt.twig',
-                    ['name' => 'charles']
-                ),
-                'text/plain'
-            )
-
+//            ->addPart(
+//                $this->renderView(
+//                    'emails/order.txt.twig',
+//                    ['name' => 'charles']
+//                ),
+//                'text/plain'
+//            )
         ;
+        $mailer->send($message);
         die();
+        return;
     }
 }
