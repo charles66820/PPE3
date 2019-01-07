@@ -529,7 +529,7 @@ class Client implements UserInterface, \Serializable
     {
         $totalHT = 0;
         foreach ($this->cartLines as $cartLine){
-            $totalHT += number_format($cartLine->getProduct()->getUnitPriceHT(),2) * $cartLine->getQuantity();
+            $totalHT += number_format($cartLine->getProduct()->getUnitPriceHT(),2,'.','') * $cartLine->getQuantity();
         }
         return $totalHT;
     }

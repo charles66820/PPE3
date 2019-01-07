@@ -54,7 +54,7 @@ class PayPalService
             $item = new Item();
             $item->setSku($cartLine->getProduct()->getReference());
             $item->setName($cartLine->getProduct()->getTitle());
-            $item->setPrice(number_format($cartLine->getProduct()->getUnitPriceHT(),2));
+            $item->setPrice(number_format($cartLine->getProduct()->getUnitPriceHT(),2,'.',''));
             $item->setCurrency("EUR");
             $item->setQuantity($cartLine->getQuantity());
 
@@ -63,13 +63,13 @@ class PayPalService
 
         $details = new Details();
         $details->setShipping(10);
-        $details->setTax(number_format($leClient->getTotalPrice(),2)-number_format($leClient->getTotalPriceHT(),2));
-        $details->setSubTotal(number_format($leClient->getTotalPriceHT(),2));
+        $details->setTax(number_format($leClient->getTotalPrice(),2,'.','')-number_format($leClient->getTotalPriceHT(),2,'.',''));
+        $details->setSubTotal(number_format($leClient->getTotalPriceHT(),2,'.',''));
 
         // payment amount
         $amount = new Amount();
         $amount->setCurrency("EUR");
-        $amount->setTotal(number_format($leClient->getTotalPrice(),2)+10);
+        $amount->setTotal(number_format($leClient->getTotalPrice(),2,'.','')+10);
         $amount->setDetails($details);
 
         // transaction
