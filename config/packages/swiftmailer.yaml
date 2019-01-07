@@ -1,8 +1,7 @@
 swiftmailer:
-    username: '%env(MAILER_USERNAME)%'
-    password: '%env(MAILER_PASSWORD)%'
-    host: 'smtp.gmail.com'
-    port: 465
-    encryption: ssl
-    #url: '%env(MAILER_URL)%'
+    url: '%env(MAILER_URL)%'
     spool: { type: 'memory' }
+    stream-options:
+        ssl:
+            allow_self_signed: true
+            verify_peer: false

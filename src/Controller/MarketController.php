@@ -256,8 +256,5 @@ class MarketController extends AbstractController
                 'msg' => 'Le client n\a pas acheter ce produit!',
             ], 403);
         }
-
-        echo $score;
-        return;
     }
 }

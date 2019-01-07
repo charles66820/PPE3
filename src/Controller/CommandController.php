@@ -65,6 +65,17 @@ class CommandController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($leClient->getCartLines()->Count() <=0) {
+                return $this->render('market/order.html.twig', [
+                    'title' => 'Commander',
+                    'form' => $form->createView(),
+                    'notifOrder' => [
+                        'msg' => 'Erreur vous aver 0 produit dans votre commande',
+                        'class' => 'alert-danger',
+                    ]
+                ]);
+            }
+
             $idDeliveryAddress = $request->request->get('chooseAddress')['deliveryAddress'];
             $deliveryAddressValid = false;
             foreach ($leClient->getAddress() as $address) {
