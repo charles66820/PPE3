@@ -34,7 +34,7 @@
                         <label class="col-form-label">{{ cartLine.product.title }}</label>
                     </div>
                     <div class="col-11 col-sm-5 col-md-3 col-lg-2">
-                        <label class="col-form-label">{{ cartLine.product.unitPriceHT|number_format(2, ',') }}€</label>
+                        <label class="col-form-label">{{ cartLine.product.unitPriceHT|number_format(2, ',', ' ') }}€</label>
                     </div>
                     <label class="col-form-label float-right m-1">{{ cartLine.quantity }}</label>
                 </div>
@@ -46,7 +46,7 @@
                     <label>Nombre d'articles : {{ app.user.cartLines.Count }}</label>
                 </div>
                 <div class="col-xs-1">
-                    <label>Prix total hors taxe : {{ (app.user.totalPriceHT)|number_format(2, ',') }}€</label>
+                    <label>Prix total hors taxe : {{ (app.user.totalPriceHT)|number_format(2, ',', ' ') }}€</label>
                 </div>
                 <div class="col-xs-1">
                     <label>Prix total avec la TVA : {{ (app.user.totalPrice)|number_format(2, ',', ' ') }}€</label>
