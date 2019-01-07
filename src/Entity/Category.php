@@ -5,12 +5,14 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Category
  *
  * @ORM\Table(name="category")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ *
  */
 class Category
 {
@@ -26,14 +28,28 @@ class Category
     /**
      * @var string
      *
-     * @ORM\Column(name="title_category", type="string", length=100, nullable=false)
+     * Assert\Length(
+     *      min = 1,
+     *      max = 250,
+     *      minMessage = "le titre doit faire plus de {{ limit }} caractères de long",
+     *      maxMessage = "le titre ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
+     * @Assert\NotBlank()
+     * @ORM\Column(name="title_category", type="text", length=250, nullable=false)
      */
     private $title;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name_category", type="text", length=65535, nullable=false)
+     * Assert\Length(
+     *      min = 1,
+     *      max = 100,
+     *      minMessage = "le nom doit faire plus de {{ limit }} caractères de long",
+     *      maxMessage = "le nom ne doit pas faire plus de {{ limit }} caractères de long"
+     * )
+     * @Assert\NotBlank()
+     * @ORM\Column(name="name_category", type="string", length=100, nullable=false)
      */
     private $name;
 

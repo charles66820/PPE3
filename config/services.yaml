@@ -5,6 +5,10 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'fr'
+    clients_directory: '%kernel.project_dir%/public/img/clients/'
+    app.path.product_images: /img/products
+    completUrl: 'http://%env(TRUSTED_HOSTS)%'
+
 
 services:
     # default configuration for services in *this* file
@@ -26,6 +30,8 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

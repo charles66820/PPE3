@@ -1,4 +1,4 @@
-$("input.form-control[name=avatar-file]").on('change', e=>{
+$("#client_avatarFile").on('change', e=>{
     let input = e.target;
     if (input.files && input.files[0]) {
         let reader = new FileReader();
@@ -10,7 +10,6 @@ $("input.form-control[name=avatar-file]").on('change', e=>{
                 'background-position': '50% 50%'
             });
         };
-        console.log('test');
         reader.readAsDataURL(input.files[0]);
     }
 });

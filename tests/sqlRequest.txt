@@ -1,0 +1,46 @@
+;just product
+SELECT DISTINCT p.id_product, p.product_title, p.unit_price_HT, (SELECT pp.picture_name FROM product_picture as pp WHERE p.id_product = pp.id_product LIMIT 1 OFFSET 0) as picture, ROUND(AVG(o.score), 1) as t
+FROM opinion as o
+RIGHT JOIN product as p ON o.id_product = p.id_product
+GROUP BY p.id_product, p.product_title, p.unit_price_HT
+ORDER BY product_title ASC
+
+;just product with note
+SELECT DISTINCT p.id_product, p.product_title, p.unit_price_HT, (SELECT pp.picture_name FROM product_picture as pp WHERE p.id_product = pp.id_product LIMIT 1 OFFSET 0) as picture, ROUND(AVG(o.score), 1) as t
+FROM opinion as o
+RIGHT JOIN product as p ON o.id_product = p.id_product
+GROUP BY p.id_product, p.product_title, p.unit_price_HT
+HAVING t >= 0
+ORDER BY product_title ASC
+
+;just product with note with recherche
+SELECT DISTINCT p.id_product, p.product_title, p.unit_price_HT, (SELECT pp.picture_name FROM product_picture as pp WHERE p.id_product = pp.id_product LIMIT 1 OFFSET 0) as picture, ROUND(AVG(o.score), 1) as t
+FROM opinion as o
+RIGHT JOIN product as p ON o.id_product = p.id_product
+WHERE (p.product_title LIKE '%11%' OR p.description LIKE '%11%')
+GROUP BY p.id_product, p.product_title, p.unit_price_HT
+HAVING t >= 0
+ORDER BY product_title ASC
+
+;just product with note with recherche with category
+SELECT DISTINCT p.id_product, p.product_title, p.unit_price_HT, (SELECT pp.picture_name FROM product_picture as pp WHERE p.id_product = pp.id_product LIMIT 1 OFFSET 0) as picture, ROUND(AVG(o.score), 1) as avgstars
+FROM opinion as o
+RIGHT JOIN product as p ON o.id_product = p.id_product
+WHERE p.id_category = (SELECT DISTINCT c.id_category FROM category as c WHERE c.name_category = 'cat2')
+AND (p.product_title LIKE '%11%' OR p.description LIKE '%11%')
+GROUP BY p.id_product, p.product_title, p.unit_price_HT
+HAVING avgstars >= 0
+ORDER BY product_title ASC
+
+;order by price
+ORDER BY unit_price_HT, product_title ASC
+
+;end request
+SELECT DISTINCT p.id_product as id, p.product_title as title, p.unit_price_HT as unitPriceHT, (SELECT pp.picture_name FROM product_picture as pp WHERE p.id_product = pp.id_product LIMIT 1 OFFSET 0) as picture, ROUND(AVG(o.score), 1) as avgstars
+FROM opinion as o
+RIGHT JOIN product as p ON o.id_product = p.id_product
+WHERE p.id_category = (SELECT DISTINCT c.id_category FROM category as c WHERE c.name_category = :cat )
+AND (p.product_title LIKE :q OR p.description LIKE :q )
+GROUP BY p.id_product, p.product_title, p.unit_price_HT
+HAVING avgstars >= :stars
+ORDER BY unit_price_HT, product_title DESC

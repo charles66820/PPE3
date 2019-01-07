@@ -1,0 +1,1 @@
+document.getElementById("listimgproduit").onclick=function(e){if(e.target.localName==='img')document.getElementById("imgproduit").src=document.getElementById('listimgproduit').children[Array.prototype.indexOf.call(document.getElementById('listimgproduit').children,e.target)].src}

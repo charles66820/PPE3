@@ -45,21 +45,14 @@ class MainController extends AbstractController
     /**
      * @Route("/catalog/{cat}", name="catalogC")
      */
-    public function getCatalogC($cat)
+    public function getCatalogC($cat, Request $request)
     {
-        $products = [];
+        $qry = $request->query;
+        $cat = ($cat == 'all')? null : $cat;
 
-        if ($cat == 'all') {
-            $products = $this->getDoctrine()
-                ->getRepository(Product::class)
-                ->findAll();
-        } else {
-            $category = $this->getDoctrine()
-                ->getRepository(Category::class)
-                ->findOneBy(['name' => $cat]);
-            //TODO: star and price and search
-            $products = $category->getProducts();
-        }
+        $products = $this->getDoctrine()
+            ->getRepository(Product::class)
+            ->findAllBySQL($cat, $qry->get('q'), $qry->get('shortPrice'), $qry->get('stars'));
 
         return $this->render('main/catalog.html.twig', [
             'title' => 'Tous les produits',
@@ -122,5 +115,13 @@ class MainController extends AbstractController
             $manager->flush();
         }
         return $this->redirectToRoute('product', ['id' => $comment->getProduct()->getId()]);
+    }
+
+    /**
+     * @Route("/test", name="test")
+     */
+    public function test() {
+        //Votre commande
+        die();
     }
 }

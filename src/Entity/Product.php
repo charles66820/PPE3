@@ -2,9 +2,13 @@
 
 namespace App\Entity;
 
+use App\Services\TwigEntityService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product
@@ -12,7 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="product", indexes={
  *     @ORM\Index(name="FK_product_idCategory", columns={"id_category"})
  * })
- * @ORM\Entity
+ * @UniqueEntity("reference")
+ * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  */
 class Product
 {
@@ -42,7 +47,7 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="reference", type="string", length=255, nullable=false)
+     * @ORM\Column(name="reference", type="string", length=255, nullable=false, unique=true)
      */
     private $reference;
 
@@ -73,7 +78,7 @@ class Product
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="ProductPicture", mappedBy="product", cascade={"remove"}, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="ProductPicture", mappedBy="product", cascade={"persist"}, fetch="EAGER")
      */
     private $pictures;
 
@@ -96,12 +101,12 @@ class Product
      *
      * @ORM\OneToMany(targetEntity="CartLine", mappedBy="product", cascade={"remove"})
      */
-    private $clientCartLines;
+    private $cartLines;
 
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
-        $this->clientCartLines = new ArrayCollection();
+        $this->cartLines = new ArrayCollection();
         $this->opinions = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
@@ -217,28 +222,28 @@ class Product
     /**
      * @return Collection|CartLine[]
      */
-    public function getClientCartLines(): Collection
+    public function getCartLines(): Collection
     {
-        return $this->clientCartLines;
+        return $this->cartLines;
     }
 
-    public function addClientCartLine(CartLine $clientCartLine): self
+    public function addCartLine(CartLine $cartLine): self
     {
-        if (!$this->clientCartLines->contains($clientCartLine)) {
-            $this->clientCartLines[] = $clientCartLine;
-            $clientCartLine->setProduct($this);
+        if (!$this->cartLines->contains($cartLine)) {
+            $this->cartLines[] = $cartLine;
+            $cartLine->setProduct($this);
         }
 
         return $this;
     }
 
-    public function removeClientCartLine(CartLine $clientCartLine): self
+    public function removeCartLine(CartLine $cartLine): self
     {
-        if ($this->clientCartLines->contains($clientCartLine)) {
-            $this->clientCartLines->removeElement($clientCartLine);
+        if ($this->cartLines->contains($cartLine)) {
+            $this->cartLines->removeElement($cartLine);
             // set the owning side to null (unless already changed)
-            if ($clientCartLine->getProduct() === $this) {
-                $clientCartLine->setProduct(null);
+            if ($cartLine->getProduct() === $this) {
+                $cartLine->setProduct(null);
             }
         }
 
@@ -337,44 +342,6 @@ class Product
     public function GetStarsClass() : string
     {
         $moyenneStars = $this->GetAverageOpinion();
-
-        $result = 'stars0';
-        switch ($moyenneStars) {
-            case 0:
-                $result = "stars0";
-                break;
-            case ($moyenneStars <= 0.5):
-                $result = "stars0_5";
-                break;
-            case ($moyenneStars <= 1):
-                $result = "stars1";
-                break;
-            case ($moyenneStars <= 1.5):
-                $result = "stars1_5";
-                break;
-            case ($moyenneStars <= 2):
-                $result = "stars2";
-                break;
-            case ($moyenneStars <= 2.5):
-                $result = "stars2_5";
-                break;
-            case ($moyenneStars <= 3):
-                $result = "stars3";
-                break;
-            case ($moyenneStars <= 3.5):
-                $result = "stars3_5";
-                break;
-            case ($moyenneStars <= 4):
-                $result = "stars4";
-                break;
-            case ($moyenneStars <= 4.5):
-                $result = "stars4_5";
-                break;
-
-            default:
-                $result = 'stars5';
-                break;
-        }
-        return $result;
+        return TwigEntityService::getStarsClass($moyenneStars);
     }
 }

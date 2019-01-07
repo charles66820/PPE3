@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Services\TwigEntityService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -105,11 +106,24 @@ class Client implements UserInterface, \Serializable
     private $phoneNumber;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="avatar_url", type="string", length=2000, nullable=false)
+     * @ORM\Column(name="avatar_url", type="string", length=2000, nullable=true)
      */
-    private $avatarUrl = "defaultavatarurl.png";
+    private $avatarUrl;
+
+    /**
+     * @Assert\File(
+     *     maxSize = "2M",
+     *     mimeTypes={ "image/jpeg", "image/png", "image/gif" })
+     *     mimeTypesMessage = "L'image n'est pas valide, seuls les fichiers jpeg, png et gif son supporter"
+     */
+    private $avatarFile;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Command", mappedBy="client", fetch="EAGER")
+     */
+    private $commands;
 
     /**
      * @var \DateTime
@@ -138,21 +152,21 @@ class Client implements UserInterface, \Serializable
     private $roles = '[]';
 
     /**
-     * @var \Address
+     * @var Address
      *
      * @ORM\ManyToOne(targetEntity="Address")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_default_address", referencedColumnName="id_address")
+     *   @ORM\JoinColumn(name="id_default_address", referencedColumnName="id_address", nullable=true)
      * })
      */
-    private $defaultAdresse;
+    private $defaultAddress;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="CartLine", mappedBy="client")
+     * @ORM\OneToMany(targetEntity="CartLine", mappedBy="client", fetch="EAGER")
      */
-    private $productCartLines;
+    private $cartLines;
 
     /**
      * @Assert\Length(
@@ -187,9 +201,9 @@ class Client implements UserInterface, \Serializable
 
     public function __construct()
     {
-        $this->productCartLines = new ArrayCollection();
+        $this->cartLines = new ArrayCollection();
         $this->address = new ArrayCollection();
-        $this->comments = new ArrayCollection();
+        $this->commands = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -269,18 +283,6 @@ class Client implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getAvatarUrl(): ?string
-    {
-        return $this->avatarUrl;
-    }
-
-    public function setAvatarUrl(string $avatarUrl): self
-    {
-        $this->avatarUrl = $avatarUrl;
-
-        return $this;
-    }
-
     public function getCreationDate(): ?\DateTimeInterface
     {
         return $this->creationDate;
@@ -317,14 +319,14 @@ class Client implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getDefaultAdresse(): ?Address
+    public function getDefaultAddress(): ?Address
     {
-        return $this->defaultAdresse;
+        return $this->defaultAddress;
     }
 
-    public function setDefaultAdresse(?Address $defaultAdresse): self
+    public function setDefaultAddress(?Address $defaultAddress): self
     {
-        $this->defaultAdresse = $defaultAdresse;
+        $this->defaultAddress = $defaultAddress;
 
         return $this;
     }
@@ -332,28 +334,28 @@ class Client implements UserInterface, \Serializable
     /**
      * @return Collection|CartLine[]
      */
-    public function getProductCartLines(): Collection
+    public function getCartLines(): Collection
     {
-        return $this->productCartLines;
+        return $this->cartLines;
     }
 
-    public function addProductCartLine(CartLine $productCartLine): self
+    public function addCartLine(CartLine $cartLine): self
     {
-        if (!$this->productCartLines->contains($productCartLine)) {
-            $this->productCartLines[] = $productCartLine;
-            $productCartLine->setClient($this);
+        if (!$this->cartLines->contains($cartLine)) {
+            $this->cartLines[] = $cartLine;
+            $cartLine->setClient($this);
         }
 
         return $this;
     }
 
-    public function removeProductCartLine(CartLine $productCartLine): self
+    public function removeCartLine(CartLine $cartLine): self
     {
-        if ($this->productCartLines->contains($productCartLine)) {
-            $this->productCartLines->removeElement($productCartLine);
+        if ($this->cartLines->contains($cartLine)) {
+            $this->cartLines->removeElement($cartLine);
             // set the owning side to null (unless already changed)
-            if ($productCartLine->getClient() === $this) {
-                $productCartLine->setClient(null);
+            if ($cartLine->getClient() === $this) {
+                $cartLine->setClient(null);
             }
         }
 
@@ -466,5 +468,100 @@ class Client implements UserInterface, \Serializable
         }
 
         return $this;
+    }
+
+    public function getAvatarUrl(): ?string
+    {
+        return $this->avatarUrl;
+    }
+
+    public function setAvatarUrl(?string $avatarUrl): self
+    {
+        $this->avatarUrl = $avatarUrl;
+
+        return $this;
+    }
+
+    public function getAvatarFile()
+    {
+        return $this->avatarFile;
+    }
+
+    public function setAvatarFile($avatarFile): self
+    {
+        $this->avatarFile = $avatarFile;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Command[]
+     */
+    public function getCommands(): Collection
+    {
+        return $this->commands;
+    }
+
+    public function addCommand(Command $command): self
+    {
+        if (!$this->commands->contains($command)) {
+            $this->commands[] = $command;
+            $command->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommand(Command $command): self
+    {
+        if ($this->commands->contains($command)) {
+            $this->commands->removeElement($command);
+            // set the owning side to null (unless already changed)
+            if ($command->getClient() === $this) {
+                $command->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTotalPriceHT()
+    {
+        $totalHT = 0;
+        foreach ($this->cartLines as $cartLine){
+            $totalHT += number_format($cartLine->getProduct()->getUnitPriceHT(),2,'.','') * $cartLine->getQuantity();
+        }
+        return $totalHT;
+    }
+
+    public function getTotalPrice()
+    {
+        return $this->getTotalPriceHT() * ((TwigEntityService::getTax()/100)+1);
+    }
+
+    public function alreadyOrdered(Product $product): bool
+    {
+        $productFind = false;
+        foreach ($this->commands as $command) {
+            foreach ($command->getCommandContents() as $commandContent) {
+                if ($commandContent->getProduct() == $product) {
+                    $productFind = true;
+                    break;
+                }
+            }
+        }
+        return $productFind;
+    }
+
+    public function getOpinion(Product $product)
+    {
+        $opinion = null;
+        foreach ($product->getOpinions() as $o) {
+            if ($o->getClient() == $this) {
+                $opinion = $o;
+                break;
+            }
+        }
+        return $opinion;
     }
 }

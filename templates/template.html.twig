@@ -7,9 +7,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="/img/logoIcon.gif"/>
         <link rel="stylesheet" href="/css/{{ theme }}/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/hideshow.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
         <link rel="stylesheet" href="/fonts/font-awesome.min.css">
         <link rel="stylesheet" href="/fonts/simple-line-icons.min.css">
+        <link rel="stylesheet" href="/css/animate.min.css">
         <link rel="stylesheet" href="/css/footer.css">
         {% block stylesheet %}{% endblock %}
     </head>
@@ -53,21 +55,21 @@
                         <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">Categories</a>
                         <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="{{ path("catalogC", { 'cat': 'all'}) }}">Tous les produits</a>
-                            {% for category in categorys.getAllCategorys() %}
-                                <a class="dropdown-item" href="{{ path("catalogC", { 'cat': category.name}) }}">{{ category.title }}</a>
+                            {% for category in entityService.getAllCategorys() %}
+                                <a class="dropdown-item" href="{{ path("catalogC", { 'cat': category.name_category}) }}">{{ category.title_category }}</a>
                             {% endfor %}
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="padding-left: 35px;position:relative" href="{{ path('card') }}">
+                        <a class="nav-link" style="padding-left: 35px;position:relative" href="{{ path('cart') }}">
                             <img style="left:0;height:26px;top:5px;position:absolute" src="/img/panier.png"/>
-                            <span class="badge badge-pill badge-primary" style="position:absolute;left:10px;top:5px;font-size:8px;color:white;font-weight:bold;">0</span>Panier
+                            <span class="badge badge-pill badge-primary" id="cartnumber" style="position:absolute;left:10px;top:5px;font-size:8px;color:white;font-weight:bold;">{% if app.user %}{{ app.user.cartLines.Count }}{% else %}0{% endif %}</span>Panier
                         </a>
                     </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
                             {% if app.user %}
-                                <img src="/img/{{ app.user.avatarUrl }}" alt="avatar" style="width:20px;">
+                                <img src="/img/{% if app.user.avatarUrl %}clients/{{ app.user.avatarUrl }}{% else %}{{ 'defaultavatarurl.png' }}{% endif %}" alt="avatar" style="width:20px;">
                                 <span>{{ app.user.login }}</span>
                             {% else %}
                                 <span>Compte</span>
@@ -77,9 +79,9 @@
 
                             {% if is_granted('ROLE_USER') %}
                                 <a class="dropdown-item" href="{{ path("profile") }}">Modifier mon profil</a>
-                                <a class="dropdown-item" href="/commands">Historique des commandes</a>
+                                <a class="dropdown-item" href="{{ path("commands") }}">Mes commandes</a>
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <a class="dropdown-item" href="/admin">Administration</a>
+                                    <a class="dropdown-item" href="{{ path("easyadmin") }}">Administration</a>
                                 {% endif %}
                                 <a class="dropdown-item" href="{{ path("logout") }}">Déconnectez-vous !</a>
                             {% else %}
@@ -129,6 +131,7 @@
     </footer>
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/BSanimation.js"></script>
     {% block javascripts %}{% endblock %}
 </body>
 </html>

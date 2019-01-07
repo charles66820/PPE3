@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -45,7 +47,7 @@ class Command
     /**
      * @var string|null
      *
-     * @ORM\Column(name="tax_on_command", type="decimal", precision=3, scale=2, nullable=false)
+     * @ORM\Column(name="tax_on_command", type="decimal", precision=30, scale=2, nullable=false)
      */
     private $taxOnCommand;
 
@@ -62,12 +64,24 @@ class Command
     /**
      * @var \Client
      *
-     * @ORM\ManyToOne(targetEntity="Client")
+     * @ORM\ManyToOne(targetEntity="Client", inversedBy="commands")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_client", referencedColumnName="id_client", onDelete="SET NULL")
      * })
      */
     private $client;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="CommandContent", mappedBy="command", fetch="EAGER")
+     */
+    private $commandContents;
+
+    public function __construct()
+    {
+        $this->commandContents = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -122,12 +136,12 @@ class Command
         return $this;
     }
 
-    public function getAddressDelivery(): ?Adresse
+    public function getAddressDelivery(): ?Address
     {
         return $this->addressDelivery;
     }
 
-    public function setAddressDelivery(?Adresse $addressDelivery): self
+    public function setAddressDelivery(?Address $addressDelivery): self
     {
         $this->addressDelivery = $addressDelivery;
 
@@ -142,6 +156,37 @@ class Command
     public function setClient(?Client $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CommandContent[]
+     */
+    public function getCommandContents(): Collection
+    {
+        return $this->commandContents;
+    }
+
+    public function addCommandContent(CommandContent $commandContent): self
+    {
+        if (!$this->commandContents->contains($commandContent)) {
+            $this->commandContents[] = $commandContent;
+            $commandContent->setCommand($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandContent(CommandContent $commandContent): self
+    {
+        if ($this->commandContents->contains($commandContent)) {
+            $this->commandContents->removeElement($commandContent);
+            // set the owning side to null (unless already changed)
+            if ($commandContent->getCommand() === $this) {
+                $commandContent->setCommand(null);
+            }
+        }
 
         return $this;
     }

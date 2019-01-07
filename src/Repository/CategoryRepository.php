@@ -18,13 +18,14 @@ class CategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Category::class);
     }
-    /*public function all()
+    public function findAllBySQL()
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = 'SELECT * FROM category';
+        $sql = 'SELECT name_category, title_category FROM category ORDER BY name_category, title_category ASC';
         $stmt = $conn->prepare($sql);
+        $stmt->execute();
 
-        return $stmt->execute();
-    }*/
+        return $stmt->fetchAll();
+    }
 }

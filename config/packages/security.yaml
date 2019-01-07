@@ -39,4 +39,8 @@ security:
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/card, roles: ROLE_USER }
+        - { path: ^/cart, roles: ROLE_USER }
+        - { path: ^/order, roles: ROLE_USER }
+        - { path: ^/command, roles: ROLE_USER }
+        - { path: ^/commandes, roles: ROLE_USER }
+        - { path: ^/opinion, roles: ROLE_USER }

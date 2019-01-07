@@ -1,19 +1,33 @@
 <?php
 namespace App\Form;
 
+use App\Entity\Address;
+use App\Entity\Client;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ClientType extends AbstractType
 {
+    protected $tokenStorage;
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $user = $this->tokenStorage->getToken()->getUser();
+
         $builder
             ->add('login', TextType::class, [
                 'required' => true,
@@ -105,6 +119,28 @@ class ClientType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-danger',
                 ]
+            ])
+            ->add('defaultAddress', EntityType::class, [
+                'label' => 'Adresse par défaut :',
+                'required' => false,
+                'class' => Address::class,
+                'query_builder' => function (EntityRepository $er) use ($user) {
+                    return $er->createQueryBuilder('a')
+                        ->where('a.client = :idcli')
+                        ->setParameter('idcli', $user->getId());
+                },
+                'choice_label' => 'address',
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+            ])
+            ->add('avatarFile', FileType::class, [
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'client_avatarFile',//à modifier aussi dans profile.js
+                ],
+                'data_class' => null,
             ])
         ;
     }

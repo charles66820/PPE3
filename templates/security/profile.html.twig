@@ -14,14 +14,20 @@
             <div class="form-row" style="margin-top:55px;">
                 <div class="col-md-4 relative">
                     <div>
-                        <div class="center" id="avatar-bg" style="background: url('/img/defaultavatarurl.png') 50% 50% / cover;height:200px;width:200px;border-radius:50%;margin-left:calc(50% - 100px);"></div>
-                        <input type="file" name="avatar-file" class="form-control">
+                        <div class="center" id="avatar-bg" style="background: url('/img/{% if app.user.avatarUrl %}clients/{{ app.user.avatarUrl }}{% else %}{{ 'defaultavatarurl.png' }}{% endif %}') 50% 50% / cover;height:200px;width:200px;border-radius:50%;margin-left:calc(50% - 100px);"></div>
+                        {{ form_widget(form.avatarFile) }}
                     </div>
+                    {{ form_errors(form.avatarFile) }}
                     <hr class="mt-4 mb-4">
                     <div class="md-4">
                         <p>Cliquer ici pour gérer vos adresses :</p>
                         <a href="{{ path('address') }}">Mes adresses</a>
                     </div>
+                    <hr>
+                    <div class="form-group">
+                        {{ form_row(form.defaultAddress) }}
+                    </div>
+                    <hr>
                 </div>
                 <div class="col-md-8">
                     <h2>Modifier mon profil</h2>

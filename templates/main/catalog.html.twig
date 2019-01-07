@@ -61,7 +61,9 @@
             </div>
             <div class="col-md-10 col-md-push-2 d-flex flex-wrap justify-content-center justify-content-lg-start">
                 {% if products == [] %}
-                    <h1>Aucun produits ne correstopn a cette recherche ou categorie </h1>
+                    <div class="container" style="margin: 10% 0">
+                        <h1>Aucun produits ne correstopn a cette recherche ou categorie </h1>
+                    </div>
                 {% else %}
                     {% for product in products %}
                         <a href="{{ path("product", {'id':product.id}) }}" class="articleElm rounded m-2">
@@ -69,9 +71,9 @@
                                 {{ product.title }}
                             </div>
                             <div class="imgBox">
-                                <img src="{{ product.pictures[0].pictureName }}" alt="">
+                                <img src="/img/{% if product.picture %}products/{{ product.picture }}{% else %}{{ 'defaultproduitimg.png' }}{% endif %}" alt="product picture">
                             </div>
-                            <div class="articleStars stars {{ product.GetStarsClass() }}"></div>
+                            <div class="articleStars stars {{ entityService.getStarsClass(product.avgstars) }}"></div>
                             <div class="articlePrix">
                                 {{ product.unitPriceHT }}€
                             </div>
