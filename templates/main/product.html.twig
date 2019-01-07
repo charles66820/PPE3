@@ -89,9 +89,9 @@
             </div>
         </div>
         <div class="p-2 col-xl-8 col-lg-12 mt-3 shadow-sm">
-            <h2 style="display: inline-block">notée le produit : </h2>
             {% if app.user %}
                 {% if app.user.alreadyOrdered(product) %}
+                    <h2 style="display: inline-block">notée le produit : </h2>
                     {% if app.user.getOpinion(product) %}
                         {% set currentscore = app.user.getOpinion(product).score %}
                     {% else %}

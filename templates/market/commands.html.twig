@@ -34,13 +34,13 @@
                         <span class="hidden-sm-up">Date de la commande : </span>{{ command.date|date("F d M Y \\à G:i") }}
                     </div>
                     <div class="col-12 col-sm-6 col-md-1 col-lg-1">
-                        <span class="hidden-md-up">TVA : </span> {{ command.taxOnCommand|number_format(2, ',') }}€
+                        <span class="hidden-md-up">TVA : </span> {{ command.taxOnCommand|number_format(2, ',', ' ') }}€
                     </div>
                     <div class="col-12 col-sm-6 col-md-2 col-lg-2">
-                        <span class="hidden-md-up">Frais de port : </span> {{ command.shipping|number_format(2, ',') }}€
+                        <span class="hidden-md-up">Frais de port : </span> {{ command.shipping|number_format(2, ',', ' ') }}€
                     </div>
                     <div class="col-12 col-sm-6 col-md-2 col-lg-2">
-                        <span class="hidden-md-up">Prix total : </span> {{ command.totalHT|number_format(2, ',') }}€
+                        <span class="hidden-md-up">Prix total : </span> {{ command.totalHT|number_format(2, ',', ' ') }}€
                     </div>
                     <div class="col-12 col-sm-12 col-md-1 col-lg-2 order-md-0 order-1 d-flex justify-content-end">
                         <a class="btn btn-secondary" data-toggle="collapse" data-target="#col{{ command.id }}" role="button" aria-expanded="true" aria-controls="42">⯆</a>
@@ -79,7 +79,7 @@
                             {% for commandContent in command.commandContents %}
                                 <tr>
                                     <td>{{ commandContent.product.title }}</td>
-                                    <td>{{ commandContent.unitPriceHT|number_format(2, ',') }}€</td>
+                                    <td>{{ commandContent.unitPriceHT|number_format(2, ',', ' ') }}€</td>
                                     <td>{{ commandContent.quantity }}</td>
                                     <td>{{ commandContent.product.reference }}</td>
                                 </tr>

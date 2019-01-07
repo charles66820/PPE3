@@ -79,7 +79,7 @@ easy_admin:
             - {property: 'lastName', label: 'Nom'}
             - {property: 'firstName', label: 'prénom'}
             - {property: 'phoneNumber', label: 'Numéro de telephone', type: 'tel'}
-            - {property: 'avatarUrl', label: "Lien de l'avatar", type: image, base_path: '/img/'}
+            - {property: 'avatarUrl', label: "Lien de l'avatar", type: image, base_path: '/img/clients/'}
             - {property: 'confirmed', label: "Email confirmé"}
             - {property: 'roles', type: 'array'}
         edit:
