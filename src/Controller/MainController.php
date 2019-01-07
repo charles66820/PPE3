@@ -120,8 +120,26 @@ class MainController extends AbstractController
     /**
      * @Route("/test", name="test")
      */
-    public function test() {
-        //Votre commande
+    public function test(\Swift_Mailer $mailer) {
+        $message = (new \Swift_Message('Votre commande'))
+            ->setFrom('cornichon66820@gmail.com')
+            ->setTo('charles.goedefroit@gmail.com')
+            ->setBody(
+                $this->renderView(
+                    'emails/order.html.twig',
+                    ['name' => 'charles']
+                ),
+                'text/html'
+            )
+            ->addPart(
+                $this->renderView(
+                    'emails/order.txt.twig',
+                    ['name' => 'charles']
+                ),
+                'text/plain'
+            )
+
+        ;
         die();
     }
 }
