@@ -17,7 +17,7 @@
 
                             <i class="icon-ghost"></i>
                         </h1>
-                        <p class="text-center" style="font-size:21px;margin-top:21px;">
+                        <p class="text-center" style="font-size:3.5rem;margin-top:21px;">
                             Hey, bienvenue sur Ô'Tako ! <br>
                             Je suis Poulpi et je suis là pour te guider. <br>
                             {% if app.user %}
@@ -33,7 +33,7 @@
                            role="button"
                            href="{% if app.user %}{{ path("catalogC", { 'cat': 'all'}) }}{% else %}{{ path("register") }}{% endif %}"
                            data-bs-hover-animate="bounce"
-                           style="width:435px;font-size:27px;max-width:466px;margin-top:34px;"
+                           font-size:27px;max-width:435px;margin-top:34px;"
                         >
                             <i class="fa fa-hand-o-right"></i>
                             {% if app.user %}
