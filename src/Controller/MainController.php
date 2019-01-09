@@ -122,7 +122,7 @@ class MainController extends AbstractController
      */
     public function test(\Swift_Mailer $mailer) {
         $message = (new \Swift_Message('Votre commande'))
-            ->setFrom('poulpi@ppe.magicorp.com')
+            ->setFrom('poulpi@ppe.magicorp.fr')
             ->setTo('charles.goedefroit@gmail.com')
             ->setBody(
                 $this->renderView(
