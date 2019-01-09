@@ -10,7 +10,7 @@
             <div class="col-12 col-md-8" style="color:rgb(9,73,119);">
                 <div>
                     <div class="intro">
-                        <h1 class="text-center" style="font-size:59px;margin-top:74px;">
+                        <h1 class="text-center d-sm-block d-flex justify-content-center" style="font-size:3.5rem;margin-top:74px;">
                             <i class="icon-ghost"></i>
 
                             <strong><span style="text-decoration: underline;">Bienvenue</span></strong>
@@ -33,7 +33,7 @@
                            role="button"
                            href="{% if app.user %}{{ path("catalogC", { 'cat': 'all'}) }}{% else %}{{ path("register") }}{% endif %}"
                            data-bs-hover-animate="bounce"
-                           style="width:435px;font-size:27px;max-width:466px;margin-top:34px;"
+                           style="font-size:27px;max-width:435px;margin-top:34px;"
                         >
                             <i class="fa fa-hand-o-right"></i>
                             {% if app.user %}
