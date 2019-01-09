@@ -31,10 +31,17 @@ class CommandController extends AbstractController
     {
         $leClient = $this->getUser();
         if($leClient == null){
-            return $this->json([
-                'msg' => 'Client not found!',
-            ], 404);
+            return $this->render('error/404.html.twig', [
+                'title' => '404 le client n\'a pas été trouvé!',
+                'msgerr' => 'le client n\'a pas été trouvé!',
+            ]);
         }
+
+        $lesAddress = [];
+        foreach ($leClient->getAddress() as $address) {
+            $lesAddress[$address->getAddress()] = $address->getId();
+        }
+
         $form = $this->get('form.factory')
             ->createNamedBuilder('chooseAddress')
             ->add('deliveryAddress', EntityType::class, [
@@ -167,9 +174,10 @@ class CommandController extends AbstractController
     {
         $leClient = $this->getUser();
         if($leClient == null){
-            return $this->json([
-                'msg' => 'Client not found!',
-            ], 404);
+            return $this->render('error/404.html.twig', [
+                'title' => '404 le client n\'a pas été trouvé!',
+                'msgerr' => 'le client n\'a pas été trouvé!',
+            ]);
         }
 
         $apiContext = PayPalService::getPayPalApiContext();
