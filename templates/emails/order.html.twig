@@ -1,9 +1,79 @@
-{#{{ url('login') }}<img src="{{ absolute_url(asset('img/logo.png')) }}">#}
+<link rel="stylesheet" href="{{ absolute_url(asset('css/' ~ theme ~ '/bootstrap.min.css')) }}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <h3>Bienvenu sur Ô'Tako!</h3>
 Bonjour {{ name }}! Vous êtes inscrit avec succès.
 <br>
-Pour vous connecter cliquez <a href="{{ url('login') }}">ici</a>.
-<br>
-Merci!
+Consulter vos commandes<a href="{{ url('commands') }}">ici</a>.
 <br>
 <img src="{{ absolute_url(asset('img/logoPoulpe.png')) }}">
+<br>
+<div class="row">
+    <div class="hidden-xs-down col-sm-6 col-md-1 col-lg-1">
+        N° commande
+    </div>
+    <div class="hidden-xs-down col-sm-6 col-md-3 col-lg-3">
+        Date de la commande
+    </div>
+    <div class="hidden-sm-down col-md-1 col-lg-2">
+        TVA
+    </div>
+    <div class="hidden-sm-down col-md-3 col-lg-3">
+        Frais de port
+    </div>
+    <div class="hidden-sm-down col-md-3 col-lg-3">
+        Prix total
+    </div>
+</div>
+<div class="row rounded shadow-sm p-3">
+    <div class="col-12 col-sm-6 col-md-1 col-lg-1">
+        <span class="hidden-sm-up">N° commande : </span>{{ command.id }}
+    </div>
+    <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+        <span class="hidden-sm-up">Date de la commande : </span>{{ command.date|date("F d M Y \\à G:i") }}
+    </div>
+    <div class="col-12 col-sm-6 col-md-1 col-lg-2">
+        <span class="hidden-md-up">TVA : </span> {{ command.taxOnCommand|number_format(2, ',', ' ') }}€
+    </div>
+    <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+        <span class="hidden-md-up">Frais de port : </span> {{ command.shipping|number_format(2, ',', ' ') }}€
+    </div>
+    <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+        <span class="hidden-md-up">Prix total : </span> {{ command.totalHT|number_format(2, ',', ' ') }}€
+    </div>
+</div>
+<div class="col-12 col-sm-6">
+    <h2 class="col-12">Adresse de livraison</h2>
+    <div class="col-12">
+        Rue : {{ command.addressDelivery.way }}
+    </div>
+    <div class="col-12">
+        Complèment : {{ command.addressDelivery.complement }}
+    </div>
+    <div class="col-12">
+        Code postal : {{ command.addressDelivery.zipCode }}
+    </div>
+    <div class="col-12">
+        Ville : {{ command.addressDelivery.city }}
+    </div>
+    <div class="col-12">
+        Pays : {{ command.addressDelivery.country }}
+    </div>
+</div>
+<div class="col-12 col-sm-6" style="overflow:auto">
+    <table class="table table-striped">
+        <tr>
+            <th>Produit</th>
+            <th>Prix unitaire</th>
+            <th>Quantité</th>
+            <th>Réference</th>
+        </tr>
+        {% for commandContent in command.commandContents %}
+            <tr>
+                <td>{{ commandContent.product.title }}</td>
+                <td>{{ commandContent.unitPriceHT|number_format(2, ',', ' ') }}€</td>
+                <td>{{ commandContent.quantity }}</td>
+                <td>{{ commandContent.product.reference }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Command;
 use App\Form\CommentType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -121,13 +122,19 @@ class MainController extends AbstractController
      * @Route("/testmail", name="test")
      */
     public function test(\Swift_Mailer $mailer) {
+        $command = $this->getDoctrine()
+            ->getRepository(Command::class)
+            ->find(1);
         $message = (new \Swift_Message('Votre commande'))
             ->setFrom('poulpi@ppe.magicorp.fr')
             ->setTo('charles.goedefroit@gmail.com')
             ->setBody(
                 $this->renderView(
                     'emails/order.html.twig',
-                    ['name' => 'charles']
+                    [
+                        'name' => 'charles',
+                        'command' => $command,
+                    ]
                 ),
                 'text/html'
             )
@@ -142,7 +149,10 @@ class MainController extends AbstractController
         $mailer->send($message);
         return new Response('mail send'. $this->renderView(
                 'emails/order.html.twig',
-                ['name' => 'charles']
+                [
+                    'name' => 'charles',
+                    'command' => $command,
+                ]
             ));
     }
 }

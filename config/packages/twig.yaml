@@ -3,5 +3,6 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     globals:
+      theme: '%theme%'
       entityService: '@App\Services\TwigEntityService'
       paypalService: '@App\Services\PayPalService'
