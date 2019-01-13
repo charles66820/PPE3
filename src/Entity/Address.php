@@ -38,9 +38,7 @@ class Address
     /**
      * @var string|null
      * @Assert\Length(
-     *      min = 10,
      *      max = 100,
-     *      minMessage = "le complement adresse doit faire plus de {{ limit }} caractères de long",
      *      maxMessage = "le complement adresse ne doit pas faire plus de {{ limit }} caractères de long"
      * )
      * @ORM\Column(name="complement", type="string", length=100, nullable=true)
