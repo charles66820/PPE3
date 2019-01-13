@@ -1,79 +1,128 @@
 {% extends 'emails/base.html.twig' %}
 
 {% block content %}
-    Bonjour {{ name }}! Vous êtes inscrit avec succès.
-    <br>
-    Consulter vos commandes<a href="{{ url('commands') }}">ici</a>.
-    <br>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%">
+        <tbody>
+        <tr>
+            <td valign="top" style="padding-top:9px">
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%;min-width:100%" width="100%">
+                    <tbody>
+                    <tr>
+                        <td valign="top" style="padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px">
+                            Bonjour {{ name }}! Merci pour votre commande.
+                            <br>
+                            Vous pouvez consulter vos commandes <a href="{{ url('commands') }}">ici</a>.
+                            <br>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%">
+        <tbody>
+        <tr>
+            <td valign="top" style="padding-top:9px">
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%;min-width:100%" width="100%">
+                    <tbody>
+                    <tr>
+                        <td valign="top" style="padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px">
+                            <h2>Votre commande :</h2>
+                            <div style="padding:1rem;border-radius:0.25rem;box-shadow: 1px 0 5px 0 rgba(0,0,0,0.2);">
+                                <div>
+                                    <span>N° commande : </span>{{ command.id }}
+                                </div>
+                                <div>
+                                    <span>Date de la commande : </span>{{ command.date|date("F d M Y \\à G:i") }}
+                                </div>
+                                <div>
+                                    <span>TVA : </span> {{ command.taxOnCommand|number_format(2, ',', ' ') }}€
+                                </div>
+                                <div>
+                                    <span>Frais de port : </span> {{ command.shipping|number_format(2, ',', ' ') }}€
+                                </div>
+                                <div>
+                                    <span>Prix total : </span> {{ command.totalHT|number_format(2, ',', ' ') }}€
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%">
+        <tbody>
+        <tr>
+            <td valign="top" style="padding-top:9px">
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%;min-width:100%" width="100%">
+                    <tbody>
+                    <tr>
+                        <td valign="top" style="padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px">
+                            <h2>Adresse de livraison :</h2>
+                            <div style="padding:1rem;border-radius:0.25rem;box-shadow: 1px 0 5px 0 rgba(0,0,0,0.2);">
+                                <div>
+                                    Rue : {{ command.addressDelivery.way }}
+                                </div>
+                                <div>
+                                    Complèment : {{ command.addressDelivery.complement }}
+                                </div>
+                                <div>
+                                    Code postal : {{ command.addressDelivery.zipCode }}
+                                </div>
+                                <div>
+                                    Ville : {{ command.addressDelivery.city }}
+                                </div>
+                                <div>
+                                    Pays : {{ command.addressDelivery.country }}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%">
+        <tbody>
+        <tr>
+            <td valign="top" style="padding-top:9px">
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%;min-width:100%" width="100%">
+                    <tbody>
+                    <tr>
+                        <td valign="top" style="padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px">
+                            <h2>Contenu de la commande :</h2>
+                            <div style="overflow:auto">
+                                <table style="width:100%;margin-bottom:1rem;background-color:transparent;border-collapse:collapse;">
+                                    <tr>
+                                        <th style="padding:0.75rem;vertical-align:top;border-top:1px solid #dee2e6;background-color:#fff;">Produit</th>
+                                        <th style="padding:0.75rem;vertical-align:top;border-top:1px solid #dee2e6;background-color:#fff;">Prix unitaire</th>
+                                        <th style="padding:0.75rem;vertical-align:top;border-top:1px solid #dee2e6;background-color:#fff;">Quantité</th>
+                                        <th style="padding:0.75rem;vertical-align:top;border-top:1px solid #dee2e6;background-color:#fff;">Réference</th>
+                                    </tr>
+                                    {% for commandContent in command.commandContents %}
+                                        <tr>
+                                            <td style="padding:0.75rem;vertical-align:top;border-top:1px solid #dee2e6;background-color:#fff;">{{ commandContent.product.title }}</td>
+                                            <td style="padding:0.75rem;vertical-align:top;border-top:1px solid #dee2e6;background-color:#fff;">{{ commandContent.unitPriceHT|number_format(2, ',', ' ') }}€</td>
+                                            <td style="padding:0.75rem;vertical-align:top;border-top:1px solid #dee2e6;background-color:#fff;">{{ commandContent.quantity }}</td>
+                                            <td style="padding:0.75rem;vertical-align:top;border-top:1px solid #dee2e6;background-color:#fff;">{{ commandContent.product.reference }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-    <div class="row">
-        <div class="hidden-xs-down col-sm-6 col-md-1 col-lg-1">
-            N° commande
-        </div>
-        <div class="hidden-xs-down col-sm-6 col-md-3 col-lg-3">
-            Date de la commande
-        </div>
-        <div class="hidden-sm-down col-md-1 col-lg-2">
-            TVA
-        </div>
-        <div class="hidden-sm-down col-md-3 col-lg-3">
-            Frais de port
-        </div>
-        <div class="hidden-sm-down col-md-3 col-lg-3">
-            Prix total
-        </div>
-    </div>
-    <div class="row rounded shadow-sm p-3">
-        <div class="col-12 col-sm-6 col-md-1 col-lg-1">
-            <span class="hidden-sm-up">N° commande : </span>{{ command.id }}
-        </div>
-        <div class="col-12 col-sm-6 col-md-3 col-lg-3">
-            <span class="hidden-sm-up">Date de la commande : </span>{{ command.date|date("F d M Y \\à G:i") }}
-        </div>
-        <div class="col-12 col-sm-6 col-md-1 col-lg-2">
-            <span class="hidden-md-up">TVA : </span> {{ command.taxOnCommand|number_format(2, ',', ' ') }}€
-        </div>
-        <div class="col-12 col-sm-6 col-md-3 col-lg-3">
-            <span class="hidden-md-up">Frais de port : </span> {{ command.shipping|number_format(2, ',', ' ') }}€
-        </div>
-        <div class="col-12 col-sm-6 col-md-3 col-lg-3">
-            <span class="hidden-md-up">Prix total : </span> {{ command.totalHT|number_format(2, ',', ' ') }}€
-        </div>
-    </div>
-    <div class="col-12 col-sm-6">
-        <h2 class="col-12">Adresse de livraison</h2>
-        <div class="col-12">
-            Rue : {{ command.addressDelivery.way }}
-        </div>
-        <div class="col-12">
-            Complèment : {{ command.addressDelivery.complement }}
-        </div>
-        <div class="col-12">
-            Code postal : {{ command.addressDelivery.zipCode }}
-        </div>
-        <div class="col-12">
-            Ville : {{ command.addressDelivery.city }}
-        </div>
-        <div class="col-12">
-            Pays : {{ command.addressDelivery.country }}
-        </div>
-    </div>
-    <div class="col-12 col-sm-6" style="overflow:auto">
-        <table class="table table-striped">
-            <tr>
-                <th>Produit</th>
-                <th>Prix unitaire</th>
-                <th>Quantité</th>
-                <th>Réference</th>
-            </tr>
-            {% for commandContent in command.commandContents %}
-                <tr>
-                    <td>{{ commandContent.product.title }}</td>
-                    <td>{{ commandContent.unitPriceHT|number_format(2, ',', ' ') }}€</td>
-                    <td>{{ commandContent.quantity }}</td>
-                    <td>{{ commandContent.product.reference }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
 {% endblock %}

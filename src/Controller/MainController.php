@@ -140,7 +140,7 @@ class MainController extends AbstractController
             )
             ->addPart(
                 $this->renderView(
-                    'emails/order.txt.twig',
+                    'emails/base.txt.twig',
                     ['name' => 'charles']
                 ),
                 'text/plain'
