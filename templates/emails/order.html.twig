@@ -9,7 +9,7 @@
                     <tbody>
                     <tr>
                         <td valign="top" style="padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px">
-                            Bonjour {{ name }}! Merci pour votre commande.
+                            Bonjour {{ app.user.login }}! Merci pour votre commande.
                             <br>
                             Vous pouvez consulter vos commandes <a href="{{ url('commands') }}">ici</a>.
                             <br>
