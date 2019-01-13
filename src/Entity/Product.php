@@ -127,6 +127,11 @@ class Product
         return $this;
     }
 
+    public function getUnitPrice(): ?float
+    {
+        return $this->unitPriceHT * ((TwigEntityService::getTax()/100)+1);
+    }
+
     public function getUnitPriceHT(): ?float
     {
         return $this->unitPriceHT;

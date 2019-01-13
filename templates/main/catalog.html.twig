@@ -75,7 +75,7 @@
                             </div>
                             <div class="articleStars stars {{ entityService.getStarsClass(product.avgstars) }}"></div>
                             <div class="articlePrix">
-                                {{ product.unitPriceHT }}€
+                                {{ (product.unitPriceHT * ((entityService.getTax()/100)+1))|number_format(2, ',')  }}€
                             </div>
                         </a>
                     {% endfor %}
