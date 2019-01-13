@@ -1,0 +1,9 @@
+{% extends 'emails/base.html.twig' %}
+
+{% block content %
+    Bonjour {{ name }}! Vous êtes inscrit avec succès.
+    <br>
+    Pour vous connecter cliquez <a href="{{ url('login') }}">ici</a>.
+    <br>
+    Merci!
+{% endblock %}

@@ -8,6 +8,7 @@ parameters:
     clients_directory: '%kernel.project_dir%/public/img/clients/'
     app.path.product_images: /img/products
     completUrl: 'http://%env(TRUSTED_HOSTS)%'
+    theme: sketchy
 
 
 services:

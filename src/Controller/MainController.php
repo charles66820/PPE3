@@ -3,10 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Command;
 use App\Form\CommentType;
 use Doctrine\Common\Persistence\ObjectManager;
-use Swift_Mailer;
-use Swift_SmtpTransport;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -122,29 +121,38 @@ class MainController extends AbstractController
     /**
      * @Route("/testmail", name="test")
      */
-    public function test(Swift_Mailer $mailer) {
+    public function test(\Swift_Mailer $mailer) {
+        $command = $this->getDoctrine()
+            ->getRepository(Command::class)
+            ->find(1);
         $message = (new \Swift_Message('Votre commande'))
-            ->setFrom('charles@magicorp.fr')
+            ->setFrom('poulpi@ppe.magicorp.fr')
             ->setTo('charles.goedefroit@gmail.com')
             ->setBody(
                 $this->renderView(
                     'emails/order.html.twig',
-                    ['name' => 'charles']
+                    [
+                        'name' => 'charles',
+                        'command' => $command,
+                    ]
                 ),
                 'text/html'
             )
-//            ->addPart(
-//                $this->renderView(
-//                    'emails/order.txt.twig',
-//                    ['name' => 'charles']
-//                ),
-//                'text/plain'
-//            )
+            ->addPart(
+                $this->renderView(
+                    'emails/order.txt.twig',
+                    ['name' => 'charles']
+                ),
+                'text/plain'
+            )
         ;
         $mailer->send($message);
         return new Response('mail send'. $this->renderView(
                 'emails/order.html.twig',
-                ['name' => 'charles']
+                [
+                    'name' => 'charles',
+                    'command' => $command,
+                ]
             ));
     }
 }
