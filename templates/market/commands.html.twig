@@ -79,7 +79,7 @@
                             {% for commandContent in command.commandContents %}
                                 <tr>
                                     <td>{{ commandContent.product.title }}</td>
-                                    <td>{{ commandContent.unitPriceHT|number_format(2, ',', ' ') }}€</td>
+                                    <td>{{ commandContent.unitPrice|number_format(2, ',', ' ') }}€</td>
                                     <td>{{ commandContent.quantity }}</td>
                                     <td>{{ commandContent.product.reference }}</td>
                                 </tr>

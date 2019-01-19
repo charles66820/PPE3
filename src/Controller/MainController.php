@@ -122,25 +122,21 @@ class MainController extends AbstractController
      * @Route("/testmail", name="test")
      */
     public function test(\Swift_Mailer $mailer) {
-        $command = $this->getDoctrine()
-            ->getRepository(Command::class)
-            ->find(1);
         $message = (new \Swift_Message('Votre commande'))
             ->setFrom('poulpi@ppe.magicorp.fr')
             ->setTo('charles.goedefroit@gmail.com')
             ->setBody(
                 $this->renderView(
-                    'emails/order.html.twig',
+                    'emails/registed.html.twig',
                     [
                         'name' => 'charles',
-                        'command' => $command,
                     ]
                 ),
                 'text/html'
             )
             ->addPart(
                 $this->renderView(
-                    'emails/order.txt.twig',
+                    'emails/base.txt.twig',
                     ['name' => 'charles']
                 ),
                 'text/plain'
@@ -148,10 +144,9 @@ class MainController extends AbstractController
         ;
         $mailer->send($message);
         return new Response('mail send'. $this->renderView(
-                'emails/order.html.twig',
+                'emails/registed.html.twig',
                 [
                     'name' => 'charles',
-                    'command' => $command,
                 ]
             ));
     }

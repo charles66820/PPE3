@@ -19,7 +19,7 @@
                             <label class="col-form-label" style="word-break: break-word;">{{ cartLine.product.title }}</label>
                         </div>
                         <div class="col-2 col-sm-1 col-md-1 col-lg-1">
-                            <label class="col-form-label">{{ cartLine.product.unitPriceHT|number_format(2, ',') }}€</label>
+                            <label class="col-form-label">{{ cartLine.product.unitPrice|number_format(2, ',') }}€</label>
                         </div>
                         <div class="col-2 col-sm-2 col-md-2 col-lg-1">
                             <label class="col-form-label pull-right m-1">{{ cartLine.quantity }}</label>

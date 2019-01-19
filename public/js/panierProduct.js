@@ -10,7 +10,16 @@ $('#addCartForm').on('submit', function (e) {
         method: "get",
         contentType: false,
         success: function (result) {
-            $('#cartnumber').text(result.lineCount);
+            if (result.lineCount) {
+                $('#btndone').text('Voire le panier');
+                $('#confirme').modal('show');
+                $('#modalbody').html('<p>'+result.msg+'<p>');
+                $('#cartnumber').text(result.lineCount);
+            } else {
+                $('#btndone').text('Se connecté');
+                $('#modalbody').html('<p>Pour ajouter des articles panier connectez-vous<p>');
+                $('#confirme').modal('show');
+            }
         },
         error: function (error) {
             console.error(error.responseText);

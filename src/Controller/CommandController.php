@@ -170,7 +170,7 @@ class CommandController extends AbstractController
     /**
      * @Route("/command/paymentdone", name="paymentdone")
      */
-    public function getPaymentDone(Request $request, ObjectManager $manager)
+    public function getPaymentDone(Request $request, ObjectManager $manager, \Swift_Mailer $mailer)
     {
         $leClient = $this->getUser();
         if($leClient == null){
@@ -249,6 +249,27 @@ class CommandController extends AbstractController
             $manager->remove($cartLine);
         }
         $manager->flush();
+
+        $message = (new \Swift_Message('Votre commande'))
+            ->setFrom('poulpi@ppe.magicorp.fr')
+            ->setTo($leClient->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'emails/order.html.twig',
+                    [
+                        'command' => $command,
+                    ]
+                ),
+                'text/html'
+            )
+            ->addPart(
+                $this->renderView(
+                    'emails/base.txt.twig'
+                ),
+                'text/plain'
+            )
+        ;
+        $mailer->send($message);
 
         return $this->redirectToRoute('commands');
     }

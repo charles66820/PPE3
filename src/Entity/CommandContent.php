@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Services\TwigEntityService;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -75,6 +76,11 @@ class CommandContent
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUnitPrice(): ?float
+    {
+        return $this->unitPriceHT * ((TwigEntityService::getTax()/100)+1);
     }
 
     public function getUnitPriceHT()

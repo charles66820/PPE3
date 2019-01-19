@@ -14,7 +14,7 @@
                                         <p class="col-9">{{ a.way }} {{ a.complement }} <br> {{ a.zipCode }} {{ a.city }}, {{ a.country }}</p>
                                         <div class="col-3">
                                             <form method="POST" style="display:initial;" action="{{ path('removeAddress', { id:a.id }) }}">
-                                                <button type="submit" class="btn btn-danger float-right" onclick="if (confirm('Êtes-vous sur de vouloir supprimer cette adresse ?')) {return true;}else {return false;}">✗</button>
+                                                <button type="submit" class="btn btn-danger float-right" data-toggle="modal" data-target="#delconfirme" onclick="return false">✗</button>
                                             </form>
                                         </div>
                                     </div>
@@ -54,4 +54,33 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="delconfirme">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Supprimer une adresse</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" id="modalbody">êtes-vous bien sûr de vouloir supprimer cette adresse?</div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger btn-lg" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-success btn-lg float-right" id="btndone">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(() => {
+            let currentSelectFormDelAddr;
+            $('#delconfirme').on('show.bs.modal', function (e) {
+                currentSelectFormDelAddr = $(e.relatedTarget).parent();
+            });
+            $('#btndone').on('click', function (e) {
+                currentSelectFormDelAddr.submit();
+            })
+        })
+    </script>
 {% endblock %}
