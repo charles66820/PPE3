@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Client;
 use App\Entity\Command;
 use App\Form\CommentType;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Comment;
 use App\Entity\Product;
+use function Symfony\Component\VarDumper\Dumper\esc;
 
 
 class MainController extends AbstractController
@@ -119,35 +121,36 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/testmail", name="test")
+     * @Route("/confirm/{id}/{token}", name="confirm")
      */
-    public function test(\Swift_Mailer $mailer) {
-        $message = (new \Swift_Message('Votre commande'))
-            ->setFrom('poulpi@ppe.magicorp.fr')
-            ->setTo('charles.goedefroit@gmail.com')
-            ->setBody(
-                $this->renderView(
-                    'emails/registed.html.twig',
-                    [
-                        'name' => 'charles',
-                    ]
-                ),
-                'text/html'
-            )
-            ->addPart(
-                $this->renderView(
-                    'emails/base.txt.twig',
-                    ['name' => 'charles']
-                ),
-                'text/plain'
-            )
-        ;
-        $mailer->send($message);
-        return new Response('mail send'. $this->renderView(
-                'emails/registed.html.twig',
-                [
-                    'name' => 'charles',
-                ]
-            ));
+    public function confirm(Client $client = null, $token, ObjectManager $manager){
+        if($client == null){
+            return $this->render('error/404.html.twig', [
+                'title' => '404 le client n\'existe pas!',
+                'msgerr' => 'Le client n\'existe pas!',
+            ]);
+        }
+
+        if($token == null || $token == ''){
+            return $this->render('error/400.html.twig', [
+                'title' => '400 token manquant!',
+                'msgerr' => 'Le token n\'a pas été renseigné!',
+            ]);
+        }
+
+        if ($client->getToken() == $token) {
+            $client->setConfirmed(true);
+            $manager->persist($client);
+            $manager->flush();
+
+            return $this->render('security/confirm.html.twig', [
+                'title' => 'Votre compte est validé!',
+            ]);
+        } else {
+            return $this->render('error/400.html.twig', [
+                'title' => '400 token non valide!',
+                'msgerr' => 'Le token n\'est pas été valide!',
+            ]);
+        }
     }
 }
