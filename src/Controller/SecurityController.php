@@ -234,5 +234,34 @@ class SecurityController extends AbstractController
         // uniqid(), which is based on timestamps
         return md5(uniqid());
     }
+
+    /**
+     * @Route("/profile/sendEmailConfirm", name="sendEmailConfirm")
+     */
+    public function sendEmailConfirm(\Swift_Mailer $mailer){
+        $message = (new \Swift_Message('Confirmation de votre compte'))
+            ->setFrom('poulpi@ppe.magicorp.fr')
+            ->setTo($this->getUser()->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'emails/confirm.html.twig',
+                    [
+                        'client' => $this->getUser(),
+                    ]
+                ),
+                'text/html'
+            )
+            ->addPart(
+                $this->renderView(
+                    'emails/base.txt.twig'
+                ),
+                'text/plain'
+            )
+        ;
+        $mailer->send($message);
+
+        return $this->redirectToRoute('order');
+    }
+
 }
 

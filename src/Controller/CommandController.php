@@ -72,12 +72,23 @@ class CommandController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($leClient->getConfirmed() == false) {
+                return $this->render('market/order.html.twig', [
+                    'title' => 'Commander',
+                    'form' => $form->createView(),
+                    'notifOrder' => [
+                        'msg' => 'Erreur votre compte n\'est pas confirmé. Cliquez <a href="'.$this->generateUrl('sendEmailConfirm').'">ici</a> pour envoyer un mail de confirmation',
+                        'class' => 'alert-danger',
+                    ]
+                ]);
+            }
+
             if ($leClient->getCartLines()->Count() <=0) {
                 return $this->render('market/order.html.twig', [
                     'title' => 'Commander',
                     'form' => $form->createView(),
                     'notifOrder' => [
-                        'msg' => 'Erreur vous aver 0 produit dans votre commande',
+                        'msg' => 'Erreur vous avez 0 produit dans votre commande',
                         'class' => 'alert-danger',
                     ]
                 ]);
