@@ -134,7 +134,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/register", name="register")
     */
-    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder, ObjectManager $manager)
+    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder, ObjectManager $manager, \Swift_Mailer $mailer)
     {
         $newClient = new Client();
 
@@ -145,15 +145,40 @@ class SecurityController extends AbstractController
             $password = $passwordEncoder->encodePassword($newClient, $newClient->getPlainPassword());
             $newClient->setPassword($password);
             $newClient->setCreationDate(new \DateTime());
-
+            $newClient->setToken(md5(uniqid()));
             $manager->persist($newClient);
             $manager->flush();
+
+            $message = (new \Swift_Message('Confirmation de votre inscription'))
+                ->setFrom('poulpi@ppe.magicorp.fr')
+                ->setTo($newClient->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'emails/registed.html.twig',
+                        [
+                            'client' => $newClient,
+                        ]
+                    ),
+                    'text/html'
+                )
+                ->addPart(
+                    $this->renderView(
+                        'emails/base.txt.twig'
+                    ),
+                    'text/plain'
+                )
+            ;
+            $mailer->send($message);
 
             return $this->redirectToRoute('login');
         }
         return $this->render('security/register.html.twig', [
             'title' => 'Connexion',
             'form' => $form->createView(),
+            'test' => [
+                md5(uniqid()),
+
+            ]
         ]);
     }
 
@@ -209,5 +234,34 @@ class SecurityController extends AbstractController
         // uniqid(), which is based on timestamps
         return md5(uniqid());
     }
+
+    /**
+     * @Route("/profile/sendEmailConfirm", name="sendEmailConfirm")
+     */
+    public function sendEmailConfirm(\Swift_Mailer $mailer){
+        $message = (new \Swift_Message('Confirmation de votre compte'))
+            ->setFrom('poulpi@ppe.magicorp.fr')
+            ->setTo($this->getUser()->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'emails/confirm.html.twig',
+                    [
+                        'client' => $this->getUser(),
+                    ]
+                ),
+                'text/html'
+            )
+            ->addPart(
+                $this->renderView(
+                    'emails/base.txt.twig'
+                ),
+                'text/plain'
+            )
+        ;
+        $mailer->send($message);
+
+        return $this->redirectToRoute('order');
+    }
+
 }
 

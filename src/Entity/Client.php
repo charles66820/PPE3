@@ -137,12 +137,12 @@ class Client implements UserInterface, \Serializable
      *
      * @ORM\Column(name="confirmed", type="boolean", nullable=false)
      */
-    private $confirmed = true;
+    private $confirmed = false;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="token", type="string", length=40, nullable=true)
+     * @ORM\Column(name="token", type="string", length=40, nullable=false)
      */
     private $token;
 

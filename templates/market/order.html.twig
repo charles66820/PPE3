@@ -4,7 +4,7 @@
     <div class="container">
         {% if notifOrder %}
             <div class="alert {{ notifOrder.class }} alert-dismissible">
-                <span class="form-error-message">{{ notifOrder.msg }}</span>
+                <span class="form-error-message">{{ notifOrder.msg|raw }}</span>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
