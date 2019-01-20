@@ -9,9 +9,11 @@
                     <tbody>
                     <tr>
                         <td valign="top" style="padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px">
-                            <b>Bonjour {{ name }}</b>,
+                            <b>Bonjour {{ cleint.login }}</b>,
                             <br><br>
                             Vous êtes inscrit avec succès.
+                            <br><br>
+                            veuillez confirmer votre compte en cliquant <a href="{{ url('confirm', { id: cleint.id, token: cleint.token}) }}">ici</a>
                             <br><br>
                             Pour vous connecter cliquez <a href="{{ url('login') }}">ici</a>.
                             <br><br>
