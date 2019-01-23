@@ -88,84 +88,98 @@
                 {{ product.description }}
             </div>
         </div>
-        <div class="p-2 col-xl-8 col-lg-12 mt-3 shadow-sm">
-            {% if app.user %}
-                {% if app.user.alreadyOrdered(product) %}
-                    <h2 style="display: inline-block">notée le produit : </h2>
-                    {% if app.user.getOpinion(product) %}
-                        {% set currentscore = app.user.getOpinion(product).score %}
-                    {% else %}
-                        {% set currentscore = 0 %}
+        {% if product.comments|length >= 1 or app.user %}
+            <div class="p-2 col-xl-8 col-lg-12 mt-3 shadow-sm">
+                {% if app.user %}
+                    {% if app.user.alreadyOrdered(product) %}
+                        <h2 style="display: inline-block">notée le produit : </h2>
+                        {% if app.user.getOpinion(product) %}
+                            {% set currentscore = app.user.getOpinion(product).score %}
+                        {% else %}
+                            {% set currentscore = 0 %}
+                        {% endif %}
+                        <div id="starsselecteur" class="stars{{ currentscore }}">
+                            <img src="/img/empty_star.png" alt="1 étoiles" height="28" width="28" data-star="1">
+                            <img src="/img/empty_star.png" alt="2 étoiles" height="28" width="28" data-star="2">
+                            <img src="/img/empty_star.png" alt="3 étoiles" height="28" width="28" data-star="3">
+                            <img src="/img/empty_star.png" alt="4 étoiles" height="28" width="28" data-star="4">
+                            <img src="/img/empty_star.png" alt="5 étoiles" height="28" width="28" data-star="5">
+                            <input type="hidden" name="avis" value="{{ currentscore }}">
+                        </div>
                     {% endif %}
-                    <div id="starsselecteur" class="stars{{ currentscore }}">
-                        <img src="/img/empty_star.png" alt="1 étoiles" height="28" width="28" data-star="1">
-                        <img src="/img/empty_star.png" alt="2 étoiles" height="28" width="28" data-star="2">
-                        <img src="/img/empty_star.png" alt="3 étoiles" height="28" width="28" data-star="3">
-                        <img src="/img/empty_star.png" alt="4 étoiles" height="28" width="28" data-star="4">
-                        <img src="/img/empty_star.png" alt="5 étoiles" height="28" width="28" data-star="5">
-                        <input type="hidden" name="avis" value="{{ currentscore }}">
+                {% endif %}
+                {% if form %}
+                    <div class="comment-box mb-4">
+                        {{ form_start(form) }}
+                            <h2>écrivée un comantaire : </h2>
+                            <br>
+                            {{ form_widget(form.title) }}
+                            {% if form_errors(form.title) is not empty %}
+                                <div class="errsform">{{ form_errors(form.title) }}</div>
+                            {% endif %}
+                            <br>
+                            {{ form_widget(form.content) }}
+                            {% if form_errors(form.content) is not empty %}
+                                <div class="errsform">{{ form_errors(form.content) }}</div>
+                            {% endif %}
+                            <br>
+                            {{ form_widget(form.submit) }}
+                        {{ form_end(form) }}
                     </div>
                 {% endif %}
-            {% endif %}
-            {% if form %}
-                <div class="comment-box mb-4">
-                    {{ form_start(form) }}
-                        <h2>écrivée un comantaire : </h2>
-                        <br>
-                        {{ form_widget(form.title) }}
-                        {% if form_errors(form.title) is not empty %}
-                            <div class="errsform">{{ form_errors(form.title) }}</div>
-                        {% endif %}
-                        <br>
-                        {{ form_widget(form.content) }}
-                        {% if form_errors(form.content) is not empty %}
-                            <div class="errsform">{{ form_errors(form.content) }}</div>
-                        {% endif %}
-                        <br>
-                        {{ form_widget(form.submit) }}
-                    {{ form_end(form) }}
-                </div>
-            {% endif %}
-            <div id="comments">
-                {% for comment in product.comments %}
-                <div class='comment-box mt-3'>
-                    <div class="form-row">
-                        <p class="text-justify" style="margin-top:8px;">Commentaire fait le {{ comment.date|date("d/m/Y à h:i:s") }} par {{ comment.Client.login }}</p>
+                {% if product.comments|length >= 1 %}
+                    <div id="comments">
+                        {% for comment in product.comments %}
+                        <div class='comment-box mt-3'>
+                            <div class="form-row">
+                                <p class="text-justify" style="margin-top:8px;">Commentaire fait le {{ comment.date|date("d/m/Y à h:i:s") }} par {{ comment.Client.login }}</p>
+                            </div>
+                            <h4 style="word-break:break-word;">{{ comment.title }}</h4>
+                            <div class="textarea-avis">
+                                {{ comment.content|nl2br }}
+                            </div>
+                            {% if comment.client == app.user %}
+                            <form style="position: absolute;top: 20px;right: 20px;" method='POST' action="{{ path('removeComment', { id:comment.id }) }}">
+                                <button type='submit' class="btn btn-dark" name='commentDelete'>Supprimer</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
                     </div>
-                    <h4 style="word-break:break-word;">{{ comment.title }}</h4>
-                    <div class="textarea-avis">
-                        {{ comment.content|nl2br }}
-                    </div>
-                    {% if comment.client == app.user %}
-                    <form style="position: absolute;top: 20px;right: 20px;" method='POST' action="{{ path('removeComment', { id:comment.id }) }}">
-                        <button type='submit' class="btn btn-dark" name='commentDelete'>Supprimer</button>
-                    </form>
-                    {% endif %}
-                </div>
-                {% endfor %}
+                {% endif %}
             </div>
-        </div>
+        {% endif %}
         <div class="col-md-push-2 d-flex flex-wrap justify-content-center justify-content-lg-start mt-5">
-            {% if product.category and product.category.products|length >= 4  %}
+            {% if product.category is defined and product.category.products|length >= 5  %}
                 {% set products = product.category.products %}
             {% else %}
                 {% set products = entityService.getAllProduct() %}
             {% endif %}
-            {% if products|length >= 4 %}
-                {% for i in 0..3 %}
-                    <div class="articleElm rounded m-2" style="height: 348px;">
-                        <div class="articleNom">
-                            {{ products[i].title }}
+            {% if products|length >= 5 %}
+                {% set pEqual = false %}
+                {% set pNext = true %}
+                {% for p in products|slice(0, 5) %}
+                    {% if p == product %}
+                        {% set pEqual = true %}
+                    {% endif %}
+                    {% if not pEqual and loop.last %}
+                        {% set pNext = false %}
+                    {% endif %}
+                    {% if not (p.id == product.id) and pNext %}
+                        <div class="articleElm rounded m-2" style="height: 348px;">
+                            <div class="articleNom">
+                                {{ p.title }}
+                            </div>
+                            <div class="imgBox">
+                                <img src="/img/{% if p.pictures.count != 0 %}products/{{ p.pictures[0].pictureName }}{% else %}{{ 'defaultproduitimg.png' }}{% endif %}" alt="">
+                            </div>
+                            <div class="articleStars stars {{ p.GetStarsClass() }}"></div>
+                            <div class="articlePrix">
+                                {{ p.unitPrice|number_format(2, ',') }}€
+                            </div>
+                            <a class="btn btn-primary btn-lg" href="{{ path("product", {'id':p.id}) }}" style="width:233px;margin:0 8px;height:50px;color:#fff;">Voir le produit</a>
                         </div>
-                        <div class="imgBox">
-                            <img src="/img/{% if products[i].pictures.count != 0 %}products/{{ products[i].pictures[0].pictureName }}{% else %}{{ 'defaultproduitimg.png' }}{% endif %}" alt="">
-                        </div>
-                        <div class="articleStars stars {{ product.GetStarsClass() }}"></div>
-                        <div class="articlePrix">
-                            {{ products[i].unitPrice|number_format(2, ',') }}€
-                        </div>
-                        <a class="btn btn-primary btn-lg" href="{{ path("product", {'id':products[i].id}) }}" style="width:233px;margin:0 8px;height:50px;color:#fff;">Voir le produit</a>
-                    </div>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
         </div>
