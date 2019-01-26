@@ -47,6 +47,19 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        //add admin
+        $admin = new Client();
+        $admin->setConfirmed(true);
+        $admin->setEmail('charles.goedefroit@gmail.com');
+        $admin->setToken(md5(uniqid()));
+        $admin->setCreationDate(new \DateTime());
+        $admin->setLogin('admin');
+        $password = $this->encoder->encodePassword($admin, '123456');
+        $admin->setPassword($password);
+        $admin->setRoles(["ROLE_ADMIN"]);
+        $manager->persist($admin);
+        echo "Admin created\n";
+
         //les variable
         $nbCat = 6;
         $nbProductByCat = 30;
