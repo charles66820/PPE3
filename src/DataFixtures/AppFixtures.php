@@ -48,8 +48,8 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         //les variable
-        $nbCat = 30;
-        $nbProductByCat = 300;
+        $nbCat = 6;
+        $nbProductByCat = 30;
         $nbClient = 20;
         $nbMaxCommand = 4;
         $nbMaxCommandContent = 6;
@@ -74,11 +74,11 @@ class AppFixtures extends Fixture
             //les produit
             for ($j = 0; $j < $nbProductByCat; $j++) {
                 $product = new Product();
-                $product->setTitle('Produit n°'.$j);
+                $product->setTitle('Produit n°'.$j.$i);
                 $product->setQuantity(rand(1,100));
                 $product->setUnitPriceHT(rand(10,50));
                 $product->setCategory($cat);
-                $product->setDescription('Une description du produit '.$j);
+                $product->setDescription('Une description du produit '.$j.$i);
                 $product->setReference(uniqid());
                 $manager->persist($product);
 
