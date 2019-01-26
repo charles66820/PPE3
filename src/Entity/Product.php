@@ -180,18 +180,6 @@ class Product
         return $this;
     }
 
-    public function getCategorie(): ?Category
-    {
-        return $this->categorie;
-    }
-
-    public function setCategorie(?Category $categorie): self
-    {
-        $this->categorie = $categorie;
-
-        return $this;
-    }
-
     /**
      * @return Collection|ProductPicture[]
      */
