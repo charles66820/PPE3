@@ -12,6 +12,7 @@ class TwigEntityService
 {
     private static $manager;
     private static $container;
+    private static $tax;
     public function __construct(ContainerInterface $container)
     {
         self::$container = $container;
@@ -19,6 +20,9 @@ class TwigEntityService
             throw new \LogicException('The DoctrineBundle is not registered in your application. Try running "composer require symfony/orm-pack".');
         }
         self::$manager = self::$container->get('doctrine');
+
+        self::$tax = self::$manager->getRepository(Tax::class)
+            ->findAll()[0]->getTax();
     }
 
     public static function getAllCategorys()
@@ -35,8 +39,7 @@ class TwigEntityService
 
     public static function getTax()
     {
-        return self::$manager->getRepository(Tax::class)
-            ->findAll()[0]->getTax();
+        return self::$tax;
     }
 
 
