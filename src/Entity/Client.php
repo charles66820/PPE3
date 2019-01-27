@@ -156,7 +156,7 @@ class Client implements UserInterface, \Serializable
      *
      * @ORM\ManyToOne(targetEntity="Address")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_default_address", referencedColumnName="id_address", nullable=true)
+     *   @ORM\JoinColumn(name="id_default_address", referencedColumnName="id_address", nullable=true, onDelete="SET NULL")
      * })
      */
     private $defaultAddress;
