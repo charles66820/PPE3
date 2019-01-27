@@ -38,7 +38,7 @@ class Comment
      *      maxMessage = "le titre ne doit pas faire plus de {{ limit }} caractères de long"
      * )
      * @Assert\NotBlank()
-     * @ORM\Column(name="title", type="string", length=1000, nullable=false)
+     * @ORM\Column(name="title", type="string", length=100, nullable=false)
      */
     private $title;
 
@@ -48,7 +48,7 @@ class Comment
      *      max = 1000,
      *      maxMessage = "le commantaire ne doit pas faire plus de {{ limit }} caractères de long"
      * )
-     * @ORM\Column(name="content", type="string", length=100, nullable=true)
+     * @ORM\Column(name="content", type="string", length=1000, nullable=true)
      */
     private $content;
 
