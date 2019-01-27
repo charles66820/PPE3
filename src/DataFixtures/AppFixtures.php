@@ -38,6 +38,14 @@ class AppFixtures extends Fixture
         );
     }
 
+    private function p($msg, $b = false) {
+        return $b? print "   \033[33m> \033[32m".$msg."\033[0m" : "   \033[33m> \033[32m".$msg."\033[0m";
+    }
+
+    private function pr($msg, $row = 1) {
+        print "\033[".$row."A\r".$this->p($msg)."\033[100D\033[".$row."B";
+    }
+
     private function alreadyInCommand(Command $command, Product $product) {
         foreach ($command->getCommandContents() as $commandContent) {
             if ($commandContent->getProduct() === $product) return true;
@@ -47,6 +55,15 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        //les variable
+        $nbCat = 6;
+        $nbProductByCat = 30;
+        $nbClient = 20;
+        $nbMaxCommand = 4;
+        $nbMaxCommandContent = 6;
+        $v = true;
+        $products = [];
+
         //add admin
         $admin = new Client();
         $admin->setConfirmed(true);
@@ -58,24 +75,16 @@ class AppFixtures extends Fixture
         $admin->setPassword($password);
         $admin->setRoles(["ROLE_ADMIN"]);
         $manager->persist($admin);
-        echo "Admin created\n";
-
-        //les variable
-        $nbCat = 6;
-        $nbProductByCat = 30;
-        $nbClient = 20;
-        $nbMaxCommand = 4;
-        $nbMaxCommandContent = 6;
-        $products = [];
+        if ($v) $this->p("Admin created\n", true);
 
         //la taxe
         $tax = new Tax();
         $tax->setTax(20);
         $manager->persist($tax);
 
-        echo "Tax 100%\n";
-        echo "Category 0%\n";
-        echo "Product 0%\n";
+        if ($v) $this->p("Tax 100%\n", true);
+        if ($v) $this->p("Category 0%\n", true);
+        if ($v) $this->p("Product 0%\n", true);
 
         //les categori
         for ($i = 0; $i < $nbCat; $i++) {
@@ -96,25 +105,15 @@ class AppFixtures extends Fixture
                 $manager->persist($product);
 
                 $products[] = $product;
-                echo "\033[1A";
-                echo "\rProducts ".round(($j / $nbCat) * 100 / ($nbProductByCat * $nbCat))."%";
-                echo "\033[100D";
-                echo "\033[1B";
+
+                if ($v) $this->pr("Products ".round(($j + ($nbProductByCat * $i)) * 100 / ($nbProductByCat * $nbCat))."% | (".($j + ($nbProductByCat * $i))."/".($nbProductByCat * $nbCat).")");
             }
-            echo "\033[2A";
-            echo "\rCategories ".round($i * 100 / $nbCat)."%";
-            echo "\033[100D";
-            echo "\033[2B";
+            if ($v) $this->pr("Categories ".round(($i * 100) / $nbCat)."% | (".$i."/".$nbCat.")",2);
         }
-        echo "\033[2A";
-        echo "\rCategories 100%";
-        echo "\033[100D";
-        echo "\033[1B";
-        echo "\rProducts 100%\n";
-        echo "\033[100D";
-        echo "\033[1B";
-        echo "Client 0%\n";
-        echo "\033[100D";
+        if ($v) $this->pr("Categories 100% | (".$nbCat."/".$nbCat.")",2);
+        if ($v) $this->pr("Products 100% | (".($nbProductByCat * $nbCat)."/".($nbProductByCat * $nbCat).")");
+
+        if ($v) $this->p("Client 0%\n", true);
 
         //les clients
         for ($i = 0; $i < $nbClient; $i++) {
@@ -198,15 +197,9 @@ class AppFixtures extends Fixture
                 $command->setTotalHT($totalPrice + $command->getShipping());
                 $manager->persist($command);
             }
-            echo "\033[1A";
-            echo "\rClient ".round($i * 100 / $nbClient)."%";
-            echo "\033[100D";
-            echo "\033[1B";
+            if ($v) $this->pr("Client ".round($i * 100 / $nbClient)."% | (".$i."/".$nbClient.")");
         }
-        echo "\033[1A";
-        echo "\rClient 100%";
-        echo "\033[100D";
-        echo "\033[1B";
+        if ($v) $this->pr("Client 100% | (".$nbClient."/".$nbClient.")");
 
         $manager->flush();
     }
