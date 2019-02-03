@@ -88,7 +88,7 @@
                 {% endif %}
             </div>
             {% set nbPage = (nbProduct/20)|round(0, 'floor')|number_format(0) %}
-            {% if nbPage >= 1 %}
+            {% if nbPage > 1 %}
                 <div class="container mt-4" style="overflow: auto">
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center" style="display: -webkit-box;">
