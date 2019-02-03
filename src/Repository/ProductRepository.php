@@ -18,6 +18,7 @@ class ProductRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Product::class);
     }
+
     public function findAllBySQL(string $cat = null, string $q = null, string $mprice = null, int $stars = null, $page = null)
     {
         $conn = $this->getEntityManager()->getConnection();
@@ -51,9 +52,12 @@ class ProductRepository extends ServiceEntityRepository
             $sql .= 'ORDER BY product_title ASC ';
         }
 
-        if ($page !== null) {
-            $sql .= 'LIMIT 20 OFFSET '.(20 * $page).' ';
+        $sqlCount = $sql;
+
+        if ($page !== null && $page !== '') {
+            $sql .= 'LIMIT 20 OFFSET '.(20 * abs($page)).' ';
         }
+        $conn->beginTransaction();
 
         $stmt = $conn->prepare($sql);
         $index = 0;
@@ -62,6 +66,17 @@ class ProductRepository extends ServiceEntityRepository
         }
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        $allp = $conn->prepare($sqlCount);
+        $index = 0;
+        foreach ($execParam as $p) {
+            $allp->bindValue(array_keys($execParam)[$index++], $p);
+        }
+        $allp->execute();
+        $conn->commit();
+
+        $data = [];
+        $data['products'] = $stmt->fetchAll();
+        $data['nbProduct'] = $allp->rowCount();
+        return $data;
     }
 }
