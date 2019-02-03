@@ -18,7 +18,7 @@ class ProductRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Product::class);
     }
-    public function findAllBySQL(string $cat = null, string $q = null, string $mprice = null, int $stars = null)
+    public function findAllBySQL(string $cat = null, string $q = null, string $mprice = null, int $stars = null, $page = null)
     {
         $conn = $this->getEntityManager()->getConnection();
         $execParam = [];
@@ -44,11 +44,15 @@ class ProductRepository extends ServiceEntityRepository
         }
 
         if ($mprice == 'DESC') {
-            $sql .= 'ORDER BY unit_price_HT, product_title DESC';
+            $sql .= 'ORDER BY unit_price_HT, product_title DESC ';
         } else if ($mprice == 'ASC') {
-            $sql .= 'ORDER BY unit_price_HT, product_title ASC';
+            $sql .= 'ORDER BY unit_price_HT, product_title ASC ';
         } else {
-            $sql .= 'ORDER BY product_title ASC';
+            $sql .= 'ORDER BY product_title ASC ';
+        }
+
+        if ($page !== null) {
+            $sql .= 'LIMIT 20 OFFSET '.(20 * $page).' ';
         }
 
         $stmt = $conn->prepare($sql);

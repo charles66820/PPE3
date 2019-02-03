@@ -47,6 +47,7 @@
                     {% if app.request.query.get('stars')  %}
                         <input type="hidden" name="stars" value="{{ app.request.query.get('stars') }}">
                     {% endif %}
+                    <input type="hidden" name="p" value="1">
                 </form>
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item">
@@ -55,9 +56,9 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">Categories</a>
                         <div class="dropdown-menu" role="menu">
-                            <a class="dropdown-item" href="{{ path("catalogC", { 'cat': 'all'}) }}">Tous les produits</a>
+                            <a class="dropdown-item" href="{{ path("catalogC", { 'cat': 'all'}) }}?p=1">Tous les produits</a>
                             {% for category in entityService.getAllCategorys() %}
-                                <a class="dropdown-item" href="{{ path("catalogC", { 'cat': category.name_category}) }}">{{ category.title_category }}</a>
+                                <a class="dropdown-item" href="{{ path("catalogC", { 'cat': category.name_category}) }}?p=1">{{ category.title_category }}</a>
                             {% endfor %}
                         </div>
                     </li>
