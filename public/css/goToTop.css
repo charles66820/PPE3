@@ -30,5 +30,4 @@
 
 .hideBtnGoToTop {
     animation: hideGoToTop linear 0.1s forwards;
-    animation-fill-mode: forwards;
 }

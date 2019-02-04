@@ -53,7 +53,7 @@ class ProductRepository extends ServiceEntityRepository
         }
 
         $sqlCount = $sql;
-
+        $page -=1;
         if ($page !== null && $page !== '') {
             $sql .= 'LIMIT 20 OFFSET '.(20 * abs($page)).' ';
         }
