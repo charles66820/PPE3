@@ -42,7 +42,11 @@ class TwigEntityService
         return self::$tax;
     }
 
-
+    public static function getProductCount()
+    {
+        return self::$manager->getRepository(Product::class)
+            ->findAll();
+    }
 
     public static function getStarsClass($moyenneStars)
     {

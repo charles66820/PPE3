@@ -1,0 +1,33 @@
+#btnGoToTop {
+    position: fixed;
+    bottom: 40px;
+    right: -60px;
+    z-index: 99;
+    background-color: var(--white);
+}
+#btnGoToTop:hover {
+    background-color: var(--primary);
+}
+
+@keyframes showGoToTop {
+    0%{right: -60px;}
+    80%{right: 34px;}
+    90%{right: 26px;}
+    95%{right: 32px;}
+    97%{right: 28px;}
+    100%{right: 30px;}
+}
+
+@keyframes hideGoToTop {
+    0%{right: 30px;}
+    50%{right: 0px;}
+    100%{right: -60px;}
+}
+
+.showBtnGoToTop {
+    animation: showGoToTop ease-in 0.5s forwards;
+}
+
+.hideBtnGoToTop {
+    animation: hideGoToTop linear 0.1s forwards;
+}

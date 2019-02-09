@@ -8,10 +8,12 @@
         <link rel="stylesheet" href="/css/{{ theme }}/bootstrap.min.css">
         <link rel="stylesheet" href="/css/hideshow.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
         <link rel="stylesheet" href="/fonts/font-awesome.min.css">
         <link rel="stylesheet" href="/fonts/simple-line-icons.min.css">
         <link rel="stylesheet" href="/css/animate.min.css">
         <link rel="stylesheet" href="/css/footer.css">
+        <link rel="stylesheet" href="/css/goToTop.css">
         {% block stylesheet %}{% endblock %}
     </head>
     <body>
@@ -45,6 +47,7 @@
                     {% if app.request.query.get('stars')  %}
                         <input type="hidden" name="stars" value="{{ app.request.query.get('stars') }}">
                     {% endif %}
+                    <input type="hidden" name="p" value="1">
                 </form>
                 <ul class="nav navbar-nav ml-auto">
                     <li class="nav-item">
@@ -53,9 +56,9 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">Categories</a>
                         <div class="dropdown-menu" role="menu">
-                            <a class="dropdown-item" href="{{ path("catalogC", { 'cat': 'all'}) }}">Tous les produits</a>
+                            <a class="dropdown-item" href="{{ path("catalogC", { 'cat': 'all'}) }}?p=1">Tous les produits</a>
                             {% for category in entityService.getAllCategorys() %}
-                                <a class="dropdown-item" href="{{ path("catalogC", { 'cat': category.name_category}) }}">{{ category.title_category }}</a>
+                                <a class="dropdown-item" href="{{ path("catalogC", { 'cat': category.name_category}) }}?p=1">{{ category.title_category }}</a>
                             {% endfor %}
                         </div>
                     </li>
@@ -96,6 +99,7 @@
     <div class="mt-2">
         {% block content %}{% endblock %}
     </div>
+    <button id="btnGoToTop" class="btn btn-outline-primary" title="Go to top"><i class="fas fa-arrow-alt-circle-up"></i></button>
     <footer style="background-color:rgb(23,50,77);">
         <div class="row">
             <div class="col-sm-6 col-md-4 footer-navigation">
@@ -129,6 +133,7 @@
     </footer>
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/goToTop.js"></script>
     <script src="/js/BSanimation.js"></script>
     {% block javascripts %}{% endblock %}
 </body>

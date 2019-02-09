@@ -31,7 +31,7 @@
                     <div class="buttons">
                         <a class="btn btn-info btn-lg d-block float-none justify-content-center align-items-center align-content-center align-self-center order-4 mx-auto"
                            role="button"
-                           href="{% if app.user %}{{ path("catalogC", { 'cat': 'all'}) }}{% else %}{{ path("register") }}{% endif %}"
+                           href="{% if app.user %}{{ path("catalogC", { 'cat': 'all'}) }}?p=0{% else %}{{ path("register") }}{% endif %}"
                            data-bs-hover-animate="bounce"
                            style="font-size:27px;max-width:435px;margin-top:34px;"
                         >

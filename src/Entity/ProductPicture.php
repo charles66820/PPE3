@@ -25,7 +25,7 @@ class ProductPicture
     private $id;
 
     /**
-     * @ORM\Column(name="picture_name", type="string", length=100, nullable=true)
+     * @ORM\Column(name="picture_name", type="string", length=100, nullable=false)
      */
     private $pictureName;
 
@@ -46,7 +46,7 @@ class ProductPicture
     private $imageFile;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=false)
      * @var \DateTime
      */
     private $updatedAt;
