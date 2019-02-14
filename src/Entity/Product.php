@@ -46,7 +46,7 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="reference", type="string", length=255, nullable=false, unique=true)
+     * @ORM\Column(name="reference", type="string", length=100, nullable=false, unique=true)
      */
     private $reference;
 
