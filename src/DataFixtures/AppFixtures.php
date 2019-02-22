@@ -10,7 +10,6 @@ use App\Entity\CommandContent;
 use App\Entity\Comment;
 use App\Entity\Opinion;
 use App\Entity\Product;
-use App\Entity\Tax;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -64,14 +63,8 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         $nbMaxCommandContent = 6;
         $v = true;
         $products = [];
+        $tax = $this->getReference(TaxFixtures::TAX_REFERENCE);
 
-
-        //la taxe
-        $tax = new Tax();
-        $tax->setTax(20);
-        $manager->persist($tax);
-
-        if ($v) $this->p("Tax 100%\n", true);
         if ($v) $this->p("Category 0%\n", true);
         if ($v) $this->p("Product 0%\n", true);
 
