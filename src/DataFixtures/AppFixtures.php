@@ -10,12 +10,12 @@ use App\Entity\CommandContent;
 use App\Entity\Comment;
 use App\Entity\Opinion;
 use App\Entity\Product;
-use App\Entity\Tax;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class AppFixtures extends Fixture
+class AppFixtures extends Fixture implements DependentFixtureInterface
 {
     private $encoder;
 
@@ -63,26 +63,8 @@ class AppFixtures extends Fixture
         $nbMaxCommandContent = 6;
         $v = true;
         $products = [];
+        $tax = $this->getReference(TaxFixtures::TAX_REFERENCE);
 
-        //add admin
-        $admin = new Client();
-        $admin->setConfirmed(true);
-        $admin->setEmail('charles.goedefroit@gmail.com');
-        $admin->setToken(md5(uniqid()));
-        $admin->setCreationDate(new \DateTime());
-        $admin->setLogin('admin');
-        $password = $this->encoder->encodePassword($admin, '123456');
-        $admin->setPassword($password);
-        $admin->setRoles(["ROLE_ADMIN"]);
-        $manager->persist($admin);
-        if ($v) $this->p("Admin created\n", true);
-
-        //la taxe
-        $tax = new Tax();
-        $tax->setTax(20);
-        $manager->persist($tax);
-
-        if ($v) $this->p("Tax 100%\n", true);
         if ($v) $this->p("Category 0%\n", true);
         if ($v) $this->p("Product 0%\n", true);
 
@@ -202,5 +184,13 @@ class AppFixtures extends Fixture
         if ($v) $this->pr("Client 100% | (".$nbClient."/".$nbClient.")");
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            AdminFixtures::class,
+            TaxFixtures::class,
+        ];
     }
 }
