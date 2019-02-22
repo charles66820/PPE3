@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\DataFixtures\AdminFixtures;
 use App\Entity\Address;
 use App\Entity\Category;
 use App\Entity\Client;
@@ -197,7 +196,8 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            \App\DataFixtures\AdminFixtures::class,
+            AdminFixtures::class,
+            TaxFixtures::class,
         ];
     }
 }

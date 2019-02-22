@@ -5,20 +5,14 @@ namespace App\DataFixtures;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\ProductPicture;
-use App\Entity\Tax;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class DataFixtures extends Fixture
+class DataFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        //*la taxe
-        $tax = new Tax();
-        $tax->setTax(20);
-        $manager->persist($tax);
-        //*/
-
         $categories = json_decode(@file_get_contents(__DIR__."/dbData.json"));
         if ($categories == null) {
             print "   \033[33m> \033[31m\"dbData.json\" not found!\033[0m\n";
@@ -52,5 +46,12 @@ class DataFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            TaxFixtures::class,
+        ];
     }
 }
