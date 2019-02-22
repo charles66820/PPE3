@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\DataFixtures\AdminFixtures;
 use App\Entity\Address;
 use App\Entity\Category;
 use App\Entity\Client;
@@ -13,9 +14,10 @@ use App\Entity\Product;
 use App\Entity\Tax;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class AppFixtures extends Fixture
+class AppFixtures extends Fixture implements DependentFixtureInterface
 {
     private $encoder;
 
@@ -64,18 +66,6 @@ class AppFixtures extends Fixture
         $v = true;
         $products = [];
 
-        //add admin
-        $admin = new Client();
-        $admin->setConfirmed(true);
-        $admin->setEmail('charles.goedefroit@gmail.com');
-        $admin->setToken(md5(uniqid()));
-        $admin->setCreationDate(new \DateTime());
-        $admin->setLogin('admin');
-        $password = $this->encoder->encodePassword($admin, '123456');
-        $admin->setPassword($password);
-        $admin->setRoles(["ROLE_ADMIN"]);
-        $manager->persist($admin);
-        if ($v) $this->p("Admin created\n", true);
 
         //la taxe
         $tax = new Tax();
@@ -202,5 +192,12 @@ class AppFixtures extends Fixture
         if ($v) $this->pr("Client 100% | (".$nbClient."/".$nbClient.")");
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            \App\DataFixtures\AdminFixtures::class,
+        ];
     }
 }
