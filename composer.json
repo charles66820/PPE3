@@ -6,7 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "alterphp/easyadmin-extension-bundle": "^2.1",
-        "easycorp/easyadmin-bundle": "^2.0",
+        "easycorp/easyadmin-bundle": "^2.1",
         "paypal/rest-api-sdk-php": "*",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/apache-pack": "^1.0",
