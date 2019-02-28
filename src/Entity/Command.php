@@ -31,25 +31,32 @@ class Command
     private $date = 'CURRENT_TIMESTAMP';
 
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(name="total_HT", type="decimal", precision=15, scale=2, nullable=false)
      */
     private $totalHT;
 
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(name="shipping", type="decimal", precision=15, scale=2, nullable=false)
      */
     private $shipping;
 
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(name="tax_on_command", type="decimal", precision=30, scale=2, nullable=false)
      */
     private $taxOnCommand;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="integer", nullable=false, options={"default" : 0})
+     */
+    private $status;
 
     /**
      * @var \Address
@@ -187,6 +194,18 @@ class Command
                 $commandContent->setCommand(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
