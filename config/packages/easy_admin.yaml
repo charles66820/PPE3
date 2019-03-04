@@ -1,129 +1,157 @@
 easy_admin:
-    site_name: '<img width="75" height="70" src="/img/logoPoulpe.png">'
-    formats:
-      number: "%0.2f€"
-    design:
-      brand_color: 'rgba(26, 188, 156, 0.85)'
-      assets:
-        favicon: '/img/logoIcon.gif'
-        css:
-          - '/css/sketchy/bootstrap.min.css'
-          - '/css/admin.css'
-      menu:
-        - { entity: 'Product', icon: 'cube' }
-        - { entity: 'Client', icon: 'user' }
-        - { entity: 'Category', icon: 'tag' }
-        - { entity: 'ProductPicture', icon: 'image' }
-        - { entity: 'Order', icon: 'shopping-cart' }
-    list:
-      max_results: 10
-    show:
-      max_results: 10
-    entities:
-      Product:
-        label: 'Produits'
-        class: App\Entity\Product
-        list:
-          title: "Les produits"
-          actions: ['edit']
-          fields:
-            - id
-            - {property: 'title', label: 'Nom'}
-            - {property: 'unitPriceHT', label: 'Prix unitaire hors taxe'}
-            - reference
-            - {property: 'quantity', label: 'Quantité', type: 'text'}
-            - description
-            - {property: 'category.title', label: 'Categorie'}
-        form:
-          fields:
-            - {property: 'title', label: 'Nom'}
-            - {property: 'unitPriceHT', label: 'Prix unitaire hors taxe'}
-            - reference
-            - {property: 'quantity', label: 'Quantité'}
-            - description
-            - {property: 'category', type: 'entity', type_options: { class: 'App\Entity\category', choice_label: 'name'}}
-            - {property: 'pictures', type: 'collection', type_options: { entry_type: 'App\Form\ProductPictureType', by_reference: false }}
-        new:
-          title:  'Ajouter un produit'
-        edit:
-          title:  'Modifier le produit'
-      Category:
-        label: 'Categories'
-        class: App\Entity\Category
-        list:
-          title: "Les categories"
-          fields:
-            - id
-            - {property: 'name', label: 'Nom'}
-            - {property: 'title', label: 'Titre'}
-            - {property: 'products.count', label: 'Nombre de produit'}
-        form:
-          fields:
-            - {property: 'name', label: 'Nom', type: 'text'}
-            - {property: 'title', label: 'Titre', type: 'textarea'}
-        new:
-          title:  'Ajouter une categorie'
-        edit:
-          title:  'Modifier la categorie'
+  site_name: '<img width="75" height="70" src="/img/logoPoulpe.png">'
+  formats:
+    number: "%0.2f€"
+  design:
+    brand_color: 'rgba(26, 188, 156, 0.85)'
+    assets:
+      favicon: '/img/logoIcon.gif'
+      css:
+        - '/css/sketchy/bootstrap.min.css'
+        - '/css/admin.css'
+    menu:
+      -
+        entity: 'Product'
+        icon: 'cube'
+        children:
+          - { entity: 'Product', icon: 'cube', label: "List des produits"}
+          - { entity: 'ProductPicture', icon: 'image' }
+      - { entity: 'Category', icon: 'tag' }
+      - { entity: 'Client', icon: 'user' }
+      - { entity: 'Order', icon: 'shopping-cart' }
+  list:
+    max_results: 10
+  show:
+    max_results: 10
+  entities:
+    Product:
+      label: 'Produits'
+      class: App\Entity\Product
+      list:
+        title: "Les produits"
+        actions: ['edit']
+        fields:
+          - id
+          - {property: 'title', label: 'Nom'}
+          - {property: 'unitPriceHT', label: 'Prix unitaire hors taxe'}
+          - reference
+          - {property: 'quantity', label: 'Quantité', type: 'text'}
+          - description
+          - {property: 'category.title', label: 'Categorie'}
+      form:
+        fields:
+          - {property: 'title', label: 'Nom'}
+          - {property: 'unitPriceHT', label: 'Prix unitaire hors taxe'}
+          - reference
+          - {property: 'quantity', label: 'Quantité'}
+          - description
+          - {property: 'category', type: 'entity', type_options: { class: 'App\Entity\category', choice_label: 'name'}}
+          - {property: 'pictures', type: 'collection', type_options: { entry_type: 'App\Form\ProductPictureType', by_reference: false }}
+      new:
+        title:  'Ajouter un produit'
+      edit:
+        title:  'Modifier le produit'
 
-      Client:
-        label: 'Clients'
-        class: App\Entity\Client
-        disabled_actions: ['new']
-        list:
-          title: "Les clients"
-          fields:
-            - id
-            - {property: 'login', label: 'Identifiant'}
-            - {property: email, type: 'email'}
-            - {property: 'lastName', label: 'Nom'}
-            - {property: 'firstName', label: 'prénom'}
-            - {property: 'phoneNumber', label: 'Numéro de telephone', type: 'tel'}
-            - {property: 'avatarUrl', label: "Lien de l'avatar", type: image, base_path: '/img/clients/'}
-            - {property: 'confirmed', label: "Email confirmé"}
-            - {property: 'roles', type: 'array'}
-        edit:
-          title:  'Modifier le client'
-          form_options: { validation_groups: ['none'] }
-          fields:
-            - {property: 'login', label: 'Identifiant'}
-            - {property: email, type: 'email'}
-            - {property: 'lastName', label: 'Nom'}
-            - {property: 'firstName', label: 'prénom'}
-            - {property: 'phoneNumber', label: 'Numéro de telephone', type: 'tel'}
-            - {property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' }}}
+    Category:
+      label: 'Categories'
+      class: App\Entity\Category
+      list:
+        title: "Les categories"
+        fields:
+          - id
+          - {property: 'name', label: 'Nom'}
+          - {property: 'title', label: 'Titre'}
+          - {property: 'products.count', label: 'Nombre de produit'}
+      form:
+        fields:
+          - {property: 'name', label: 'Nom', type: 'text'}
+          - {property: 'title', label: 'Titre', type: 'textarea'}
+      new:
+        title:  'Ajouter une categorie'
+      edit:
+        title:  'Modifier la categorie'
 
-      ProductPicture:
-        label: 'Images des produits'
-        class: App\Entity\ProductPicture
-        list:
-          title: 'Les Images'
-          fields:
-            - id
-            - {property: 'pictureName', label: "L'image", type: image, base_path: '/img/products'}
-            - {property: 'product.title', label: 'Le produit'}
-          actions:
-            - { name: 'new', label: 'Ajouté une image'}
-        new:
-          title:  'Ajouté une image'
-          fields:
-            - {property: 'imageFile', type: vich_image, label: "l'image :"}
-            - {property: 'product', type: 'entity', type_options: { class: 'App\Entity\product', choice_label: 'title', required: true}}
-        edit:
-          title:  "Modifier l'image"
-          fields:
-            - {property: 'imageFile', type: vich_image, label: "l'image :"}
+    Client:
+      label: 'Clients'
+      class: App\Entity\Client
+      disabled_actions: ['new']
+      list:
+        title: "Les clients"
+        fields:
+          - id
+          - {property: 'login', label: 'Identifiant'}
+          - {property: email, type: 'email'}
+          - {property: 'lastName', label: 'Nom'}
+          - {property: 'firstName', label: 'prénom'}
+          - {property: 'phoneNumber', label: 'Numéro de telephone', type: 'tel'}
+          - {property: 'avatarUrl', label: "Lien de l'avatar", type: image, base_path: '/img/clients/'}
+          - {property: 'confirmed', label: "Email confirmé"}
+          - {property: 'roles', type: 'array'}
+      edit:
+        title:  'Modifier le client'
+        form_options: { validation_groups: ['none'] }
+        fields:
+          - {property: 'login', label: 'Identifiant'}
+          - {property: email, type: 'email'}
+          - {property: 'lastName', label: 'Nom'}
+          - {property: 'firstName', label: 'prénom'}
+          - {property: 'phoneNumber', label: 'Numéro de telephone', type: 'tel'}
+          - {property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' }}}
 
-      Order:
-        label: 'Les commandes'
-        class: App\Entity\Command
-        disabled_actions: ['new']
-        list:
-          title: 'Les commandes'
-          fields:
-            - id
-            - {property: 'date', label: 'Date commande effectuer'}
-            - {property: 'totalHT', label: 'Montant hore TVA'}
-            - {property: 'shipping', label: 'Montant de la livraison'}
-            - {property: 'taxOnCommand', label: 'Montant de la TVA'}
-            - {property: 'addressDelivery.address', label: 'Adresse de livraison'}
+    ProductPicture:
+      label: 'Images des produits'
+      class: App\Entity\ProductPicture
+      list:
+        title: 'Les Images'
+        fields:
+          - id
+          - {property: 'pictureName', label: "L'image", type: image, base_path: '/img/products'}
+          - {property: 'product.title', label: 'Le produit'}
+        actions:
+          - { name: 'new', label: 'Ajouté une image'}
+      new:
+        title:  'Ajouté une image'
+        fields:
+          - {property: 'imageFile', type: vich_image, label: "l'image :"}
+          - {property: 'product', type: 'entity', type_options: { class: 'App\Entity\product', choice_label: 'title', required: true}}
+      edit:
+        title:  "Modifier l'image"
+        fields:
+          - {property: 'imageFile', type: vich_image, label: "l'image :"}
+
+    Order:
+      label: 'Les commandes'
+      class: App\Entity\Command
+      disabled_actions: ['new', 'edit', 'delete']
+      list:
+        actions: ['show']
+        title: 'Les commandes'
+        fields:
+          - id
+          - {property: 'date', label: 'Date commande effectuer'}
+          - {property: 'totalHT', label: 'Montant hore TVA'}
+          - {property: 'shipping', label: 'Montant de la livraison'}
+          - {property: 'taxOnCommand', label: 'Montant de la TVA'}
+          - {property: 'addressDelivery.address', label: 'Adresse de livraison'}
+      show:
+        title: '%%entity_label%% (#%%entity_id%%)'
+        fields:
+          - id
+          - {property: 'date', label: 'Date commande effectuer'}
+          - {property: 'totalHT', label: 'Montant hore TVA'}
+          - {property: 'shipping', label: 'Montant de la livraison'}
+          - {property: 'taxOnCommand', label: 'Montant de la TVA'}
+          - {property: 'addressDelivery.address', label: 'Adresse de livraison'}
+#          - {property: 'commandContents', label: '', type: 'embedded_list', type_options: { entity: CommandContent, filters: { 'entity.command': 'form:parent.data.id' } }}
+
+    CommandContent:
+      class: App\Entity\CommandContent
+      disabled_actions: ['new', 'edit', 'delete']
+      list:
+        fields:
+          - id
+          - {property: 'unitPriceHT', label: 'Prix hore TVA'}
+          - {property: 'quantity', label: 'Quantité'}
+          - {property: 'product.title', label: 'Nom du produit'}
+          - {property: 'product.reference', label: 'Référence'}
+          - {property: 'product.category.title', label: 'Categorie'}
