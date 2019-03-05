@@ -4,12 +4,14 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * ProductPicture
  * 
  * @ORM\Table(name="product_picture", uniqueConstraints={@ORM\UniqueConstraint(name="FK_productPicture_picture", columns={"picture_name"})}, indexes={@ORM\Index(name="FK_productPicture_idProduct", columns={"id_product"})})
+ * @UniqueEntity("picture_name")
  * @ORM\Entity
  * @Vich\Uploadable
  */
@@ -25,7 +27,7 @@ class ProductPicture
     private $id;
 
     /**
-     * @ORM\Column(name="picture_name", type="string", length=100, nullable=false)
+     * @ORM\Column(name="picture_name", type="string", length=100, nullable=false, unique=true)
      */
     private $pictureName;
 

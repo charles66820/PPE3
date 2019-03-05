@@ -7,12 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Client
  *
  * @ORM\Table(name="client", indexes={@ORM\Index(name="FK_client_idDefaultAddress", columns={"id_default_address"})})
+ * @UniqueEntity("login")
  * @ORM\Entity
  */
 class Client implements UserInterface, \Serializable
@@ -36,7 +38,7 @@ class Client implements UserInterface, \Serializable
      * )
      * @Assert\Type("string")
      * @Assert\NotBlank()
-     * @ORM\Column(name="login", type="string", length=20, nullable=false)
+     * @ORM\Column(name="login", type="string", length=20, nullable=false, unique=true)
      */
     private $login;
 
