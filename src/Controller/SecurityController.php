@@ -70,7 +70,7 @@ class SecurityController extends AbstractController
                         }
                         return $this->render('error/500.html.twig', [
                             'title' => '500 erreur avec l\'envois du ficher!',
-                            'msgerr' => 'L\'envois du fichier ne peut ce faire car apache n\'a pas les droit en écriture sur le dossier /public/image/',
+                            'msgerr' => 'L\'envois du fichier ne peut ce faire car apache n\'a pas les droit en écriture sur le dossier /public/img/',
                         ]);
                     }
                     $client->setAvatarUrl($fileName);
