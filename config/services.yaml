@@ -6,6 +6,7 @@
 parameters:
     locale: 'fr'
     clients_directory: '%kernel.project_dir%/public/img/clients/'
+    products_directory: '%kernel.project_dir%/public/img/products/'
     app.path.product_images: /img/products
     completUrl: 'http://%env(TRUSTED_HOSTS)%'
     theme: sketchy

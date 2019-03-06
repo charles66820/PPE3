@@ -174,11 +174,7 @@ class SecurityController extends AbstractController
         }
         return $this->render('security/register.html.twig', [
             'title' => 'Connexion',
-            'form' => $form->createView(),
-            'test' => [
-                md5(uniqid()),
-
-            ]
+            'form' => $form->createView()
         ]);
     }
 

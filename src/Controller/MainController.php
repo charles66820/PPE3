@@ -65,6 +65,63 @@ class MainController extends AbstractController
     }
 
     /**
+     * @Route("/product/{id}/picture", name="productPicture")
+     */
+    public function addProductPicture(Product $product = null, Request $request){
+        if ($product == null){
+            return new Response("none");
+        }
+
+        if ($request->query->get("token") !== getenv("ACCESSTOKEN")) {
+            return new Response("none");
+        }
+
+        $file = $request->files->get('file');
+        $filename = md5(uniqid()).'.'.$file->guessExtension();
+        try {
+            $file->move(
+                $this->getParameter('products_directory'),
+                $filename
+            );
+            return new Response($filename);
+        } catch (\Exception $e) {
+            return new Response("none");
+        }
+    }
+
+    /**
+     * @Route("/product/picture", name="delProductPicture")
+     */
+    public function deleteProductImage(Request $request){
+
+        if ($request->query->get("token") !== getenv("ACCESSTOKEN")) {
+            return new Response("none");
+        }
+
+        if (!empty($request->query->get("name"))) {
+            @unlink($this->getParameter('products_directory').$request->query->get("name"));
+        }
+
+        return new Response("good");
+    }
+
+    /**
+     * @Route("/client/picture", name="delClientPicture")
+     */
+    public function deleteClientImage(Request $request){
+
+        if ($request->query->get("token") !== getenv("ACCESSTOKEN")) {
+            return new Response("none");
+        }
+
+        if (!empty($request->query->get("name"))) {
+            @unlink($this->getParameter('clients_directory').$request->query->get("name"));
+        }
+
+        return new Response("good");
+    }
+
+    /**
      * @Route("/product/{id}", name="product")
      */
     public function getProduct(Product $product = null, Request $request, ObjectManager $manager)
