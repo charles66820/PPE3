@@ -65,6 +65,41 @@ class MainController extends AbstractController
     }
 
     /**
+     * @Route("/product/{id}/picture", name="productPicture")
+     */
+    public function addProductPicture(Product $product = null, Request $request, ObjectManager $manager){
+        if($product == null){
+            return $this->json([
+                "error"=>true,
+                "msg" => "Product not found"
+            ]);
+        }
+
+        $file = $request->files->get('file');
+        $filename = md5(uniqid()).'.'.$file->guessExtension();
+        $file->move(
+            $this->getParameter('products_directory'),
+            $filename
+        );
+
+        return $this->json([
+            "error"=>true,
+            "name" => $filename
+        ]);
+    }
+
+    /**
+     * @Route("/product/picture", name="delProductPicture")
+     */
+    public function deleteProductImage(Request $request, ObjectManager $manager){
+        dump($request);
+
+
+            //@unlink($this->getParameter('clients_directory').$client->getAvatarUrl());
+
+    }
+
+    /**
      * @Route("/product/{id}", name="product")
      */
     public function getProduct(Product $product = null, Request $request, ObjectManager $manager)
