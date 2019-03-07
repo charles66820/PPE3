@@ -8,6 +8,7 @@ use App\Form\ClientType;
 use App\Repository\AddressRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -259,5 +260,200 @@ class SecurityController extends AbstractController
         return $this->redirectToRoute('order');
     }
 
+    /**
+     * @Route("/password/reset/{id}/{token}", name="resetPasswordAdmin")
+     */
+    public function resetPasswordAdmin(Client $client = null, $token, \Swift_Mailer $mailer){
+        if($token == null || $token == '' || $client == null || $token !== getenv("ACCESSTOKEN")){
+            return new Response("none");
+        }
+
+        $message = (new \Swift_Message('Réinitialiser votre mots de passe'))
+            ->setFrom('poulpi@ppe.magicorp.fr')
+            ->setTo($client->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'emails/resetPassword.html.twig',
+                    [
+                        'client' => $client,
+                    ]
+                ),
+                'text/html'
+            )
+            ->addPart(
+                $this->renderView(
+                    'emails/base.txt.twig'
+                ),
+                'text/plain'
+            )
+        ;
+        $mailer->send($message);
+        return new Response("good");
+    }
+
+    /**
+     * @Route("/login/reset", name="forgetPassword")
+     */
+    public function forgetPassword(Request $request, \Swift_Mailer $mailer){
+        $form = $this->get('form.factory')
+            ->createNamedBuilder(null)
+            ->add('username', TextType::class, [
+                'label' => 'Votre identifiant',
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => "Votre identifiant"
+                ],
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' =>'Réinitialiser le mots de passe',
+                'attr' => [
+                    'class' => 'btn btn-primary'
+                ],
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $client = $this->getDoctrine()
+                ->getRepository(Client::class)
+                ->findOneBy(
+                    [
+                        'login' => $form->getData()["username"]
+                    ]
+                );
+            if ($client == null) {
+                return $this->render('security/forgetPassword.html.twig', [
+                    'title' => 'Réinitialiser le mots de passe',
+                    'form' => $form->createView(),
+                    'error' => true,
+                    'msg' => null,
+                ]);
+            } else {
+                $message = (new \Swift_Message('Réinitialiser votre mots de passe'))
+                    ->setFrom('poulpi@ppe.magicorp.fr')
+                    ->setTo($client->getEmail())
+                    ->setBody(
+                        $this->renderView(
+                            'emails/resetPassword.html.twig',
+                            [
+                                'client' => $client,
+                            ]
+                        ),
+                        'text/html'
+                    )
+                    ->addPart(
+                        $this->renderView(
+                            'emails/base.txt.twig'
+                        ),
+                        'text/plain'
+                    )
+                ;
+                $mailer->send($message);
+
+                return $this->render('security/forgetPassword.html.twig', [
+                    'title' => 'Réinitialiser le mots de passe',
+                    'form' => $form->createView(),
+                    'error' => null,
+                    'msg' => 'Email de réinitialisation du mot de pass envoyé',
+                ]);
+            }
+        }
+
+        return $this->render('security/forgetPassword.html.twig', [
+            'title' => 'Réinitialiser le mots de passe',
+            'form' => $form->createView(),
+            'error' => null,
+            'msg' => null,
+        ]);
+    }
+
+    /**
+     * @Route("/login/reset/{id}/{token}", name="resetPassword")
+     */
+    public function resetPassword(Client $client = null, $token, UserPasswordEncoderInterface $passwordEncoder, Request $request, ObjectManager $manager){
+        if($token == null || $token == '' || $client == null || $token !== $client->getToken()){
+            dump($token,$client); die();
+            return new Response("none");
+        }
+
+        $form = $this->get('form.factory')
+            ->createNamedBuilder(null)
+            ->add('plainPassword', RepeatedType::class, [
+                'required' => true,
+                'invalid_message' => 'Le mots de passe et le mots de passe de confirmation doivent être identique.',
+                'type' => PasswordType::class,
+                'first_options'  => [
+                    'label' => 'Votre mot de passe',
+                    'attr' => [
+                        'class' => 'form-control',
+                        'placeholder' => "Votre mot de passe"
+                    ],
+                ],
+                'second_options' => [
+                    'label' => 'Confirmez votre mot de passe',
+                    'attr' => [
+                        'class' => 'form-control',
+                        'placeholder' => "Confirmez votre mot de passe"
+                    ],
+                ],
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' =>'Changer le mots de passe',
+                'attr' => [
+                    'class' => 'btn btn-primary'
+                ],
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $passwordEncoder->encodePassword($client, $form->getData()["plainPassword"]);
+            $client->setPassword($password);
+            $manager->persist($client);
+            $manager->flush();
+
+            return $this->redirectToRoute('login');
+        }
+
+        return $this->render('security/resetPassword.html.twig', [
+            'title' => 'Réinitialiser le mots de passe',
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/login/new/{id}/{token}", name="newClient")
+     */
+    public function newClient(Client $client = null, $token, \Swift_Mailer $mailer, ObjectManager $manager){
+        if($token == null || $token == '' || $client == null || $token !== getenv("ACCESSTOKEN")){
+            return new Response("none");
+        }
+
+        $client->setToken(md5(uniqid()));
+        $manager->persist($client);
+        $manager->flush();
+
+        $message = (new \Swift_Message('Confirmation de votre inscription'))
+            ->setFrom('poulpi@ppe.magicorp.fr')
+            ->setTo($client->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'emails/registed.html.twig',
+                    [
+                        'client' => $client,
+                    ]
+                ),
+                'text/html'
+            )
+            ->addPart(
+                $this->renderView(
+                    'emails/base.txt.twig'
+                ),
+                'text/plain'
+            )
+        ;
+        $mailer->send($message);
+        return new Response("good");
+    }
 }
 
