@@ -56,7 +56,7 @@ class Command
      *
      * @ORM\Column(name="status", type="integer", nullable=false, options={"default" : 0})
      */
-    private $status;
+    private $status = 0;
 
     /**
      * @var \Address
