@@ -15,7 +15,9 @@ use App\Entity\Comment;
 use App\Entity\Product;
 use function Symfony\Component\VarDumper\Dumper\esc;
 
-
+/**
+ * @Route("/", host="%domain%")
+ */
 class MainController extends AbstractController
 {
     /**

@@ -12,12 +12,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-
 /**
- * @Route("/api")
+ * @Route("/", host="api.%domain%")
  */
 class ProductApiController extends AbstractFOSRestController
 {
+    /**
+     * @Route("/")
+     */
+    public function index()
+    {
+        return $this->handleView($this->view(["message" => "Welcome to api"], 200));
+    }
+
     /**
      * @Rest\Get("/products")
      */

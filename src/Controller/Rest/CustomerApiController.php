@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api")
+ * @Route("/", host="api.%domain%")
  */
 class CustomerApiController extends AbstractFOSRestController
 {
