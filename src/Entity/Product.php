@@ -51,6 +51,13 @@ class Product
     private $reference;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="barcode", type="string", length=100, nullable=true, unique=true)
+     */
+    private $barcode;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="quantity", type="integer", nullable=false)
@@ -335,5 +342,17 @@ class Product
     {
         $moyenneStars = $this->GetAverageOpinion();
         return TwigEntityService::getStarsClass($moyenneStars);
+    }
+
+    public function getBarcode(): ?string
+    {
+        return $this->barcode;
+    }
+
+    public function setBarcode(?string $barcode): self
+    {
+        $this->barcode = $barcode;
+
+        return $this;
     }
 }

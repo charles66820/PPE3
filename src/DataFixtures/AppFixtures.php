@@ -84,6 +84,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
                 $product->setCategory($cat);
                 $product->setDescription('Une description du produit '.$j.$i);
                 $product->setReference(uniqid());
+                $product->setBarcode(rand(1000000000000,9999999999999));
                 $manager->persist($product);
 
                 $products[] = $product;
