@@ -415,6 +415,17 @@ class Client implements UserInterface, \Serializable
         return $this;
     }
 
+    public function getFullName(): ?string
+    {
+        if ($this->lastName == null && $this->firstName == null) {
+            return $this->login;
+        } else if ($this->lastName != null && $this->firstName != null) {
+            return $this->firstName." ".$this->lastName;
+        } else {
+            return $this->firstName." ".$this->lastName." (".$this->login.")";
+        }
+    }
+
     /**
      * @see UserInterface
      */
