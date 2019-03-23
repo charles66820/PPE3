@@ -18,7 +18,7 @@
                     Frais de port
                 </div>
                 <div class="hidden-sm-down col-md-2 col-lg-2">
-                    Prix total
+                    Prix total HT
                 </div>
                 <div class="hidden-sm-down col-md-1 col-lg-2"></div>
                 <div class="hidden-sm-down col-md-1 col-lg-1">
@@ -40,7 +40,7 @@
                         <span class="hidden-md-up">Frais de port : </span> {{ command.shipping|number_format(2, ',', ' ') }}€
                     </div>
                     <div class="col-12 col-sm-6 col-md-2 col-lg-2">
-                        <span class="hidden-md-up">Prix total : </span> {{ command.totalHT|number_format(2, ',', ' ') }}€
+                        <span class="hidden-md-up">Prix total HT : </span> {{ command.totalHT|number_format(2, ',', ' ') }}€
                     </div>
                     <div class="col-12 col-sm-12 col-md-1 col-lg-2 order-md-0 order-1 d-flex justify-content-end">
                         <a class="btn btn-secondary" data-toggle="collapse" data-target="#col{{ command.id }}" role="button" aria-expanded="true" aria-controls="42">⯆</a>
@@ -72,7 +72,7 @@
                         <table class="table table-striped">
                             <tr>
                                 <th>Produit</th>
-                                <th>Prix unitaire</th>
+                                <th>Prix unitaire HT</th>
                                 <th>Quantité</th>
                                 <th>Réference</th>
                             </tr>
