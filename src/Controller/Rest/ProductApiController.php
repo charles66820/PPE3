@@ -76,6 +76,40 @@ class ProductApiController extends AbstractFOSRestController
     }
 
     /**
+     * @Rest\Get("/products/barcode/{barcode}")
+     */
+    public function getProductsByBarcode($barcode = null)
+    {
+        if ($barcode == null) {
+            throw new HttpException(400, "Barcode not valid");
+        }
+
+        $repository = $this->getDoctrine()->getRepository(Product::class);
+        $product = $repository->findOneBy(["barcode" => $barcode]);
+
+        if ($product == null) {
+            throw new HttpException(404, "Product not found");
+        }
+
+        $productInfo = [
+            "id" => $product->getId(),
+            "title" => $product->getTitle(),
+            "priceTTC" => $product->getUnitPrice(),
+            "reference" => $product->getReference(),
+            "quantity" => $product->getQuantity(),
+            "pictures" => [],
+        ];
+
+        foreach ($product->getPictures() as $productPicture) {
+            $productInfo["pictures"][] = [
+                "fileName" => $productPicture->getPictureName(),
+            ];
+        }
+
+        return $this->handleView($this->view($productInfo, 200));
+    }
+
+    /**
      * @Rest\Patch("/products/{id}/quantity")
      */
     public function updateProductsById(Product $product = null, Request $request, ObjectManager $manager)
