@@ -46,7 +46,16 @@
                         <a class="btn btn-secondary" data-toggle="collapse" data-target="#col{{ command.id }}" role="button" aria-expanded="true" aria-controls="42">⯆</a>
                     </div>
                     <div class="col-12 col-sm-6 col-md-1 col-lg-1 order-md-1 order-0 d-md-flex justify-content-md-center">
-                        <span class="hidden-md-up">Statut :  </span> <i class="fa fa-spinner" data-toggle="tooltip" data-placement="right" title="traitement en cours"></i>
+                        <span class="hidden-md-up">Statut :  </span>
+                        {% if command.status == 0 %}
+                            <i class="fa fa-spinner" data-toggle="tooltip" data-placement="right" title="traitement en cours"></i>
+                        {% else %}
+                            {% if command.status == 1 %}
+                                <i class="fas fa-shipping-fast" data-toggle="tooltip" data-placement="right" title="traitement en cours"></i>
+                            {% else %}
+                                <i class="fas fa-check" data-toggle="tooltip" data-placement="right" title="traitement en cours"></i>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
                 <div class="row collapse p-3" id="col{{ command.id }}">
