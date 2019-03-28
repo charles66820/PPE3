@@ -57,8 +57,8 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
     {
         //les variable
         $nbCat = 6;
-        $nbProductByCat = 30;
-        $nbClient = 20;
+        $nbProductByCat = 100000;
+        $nbClient = 2500;
         $nbMaxCommand = 4;
         $nbMaxCommandContent = 6;
         $v = true;
@@ -129,7 +129,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
             for ($j = 0; $j < rand(0,4); $j++) {
                 $opinion = new Opinion();
                 $opinion->setDate(new \DateTime());
-                $opinion->setScore(rand(0,5));
+                $opinion->setScore(rand(1,5));
                 $opinion->setClient($client);
                 $opinion->setProduct($products[rand(0,count($products)-1)]);
                 $manager->persist($opinion);
