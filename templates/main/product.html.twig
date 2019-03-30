@@ -132,7 +132,7 @@
                         {% for comment in product.comments %}
                         <div class='comment-box mt-3'>
                             <div class="form-row">
-                                <p class="text-justify" style="margin-top:8px;">Commentaire fait le {{ comment.date|date("d/m/Y à h:i:s") }} par {{ comment.Client.login }}</p>
+                                <p class="text-justify" style="margin-top:8px;">Commentaire fait le {{ comment.date|date("d/m/Y à h:i:s") }} par {{ comment.Client.getFullName() }}</p>
                             </div>
                             <h4 style="word-break:break-word;">{{ comment.title }}</h4>
                             <div class="textarea-avis">

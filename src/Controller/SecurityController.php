@@ -23,6 +23,9 @@ use \Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use \Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * @Route("/", host="%domain%")
+ */
 class SecurityController extends AbstractController
 {
     /**

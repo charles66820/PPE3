@@ -33,6 +33,7 @@ class DataFixtures extends Fixture implements DependentFixtureInterface
                 $product->setQuantity($p->quantite);
                 $product->setDescription($p->description);
                 $product->setCategory($cat);
+                $product->setBarcode($p->barcode);
                 $manager->persist($product);
 
                 foreach ($p->photos as $picture) {

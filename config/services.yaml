@@ -8,7 +8,8 @@ parameters:
     clients_directory: '%kernel.project_dir%/public/img/clients/'
     products_directory: '%kernel.project_dir%/public/img/products/'
     app.path.product_images: /img/products
-    completUrl: 'http://%env(TRUSTED_HOSTS)%'
+    domain: '%env(TRUSTED_HOSTS)%'
+    completUrl: 'http://%domain%'
     theme: sketchy
 
 
