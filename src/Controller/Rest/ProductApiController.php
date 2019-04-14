@@ -45,7 +45,7 @@ class ProductApiController extends AbstractFOSRestController
             ];
         }
 
-        return $this->handleView($this->view($allProducts, 200));
+        return $this->handleView($this->view(["products" => $allProducts], 200));
     }
 
     /**

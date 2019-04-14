@@ -57,10 +57,10 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
     {
         //les variable
         $nbCat = 6;
-        $nbProductByCat = 100000;
-        $nbClient = 2500;
-        $nbMaxCommand = 4;
-        $nbMaxCommandContent = 6;
+        $nbProductByCat = 200;
+        $nbClient = 200;
+        $nbMaxCommand = 20;
+        $nbMaxCommandContent = 60;
         $v = true;
         $products = [];
         $tax = $this->getReference(TaxFixtures::TAX_REFERENCE);
