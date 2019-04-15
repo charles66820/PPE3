@@ -25,7 +25,7 @@ class OrderApiController extends AbstractFOSRestController
         $orderInfo = [
             "id" => $order->getId(),
             "total" => $order->getTotalHT() + $order->getTaxOnCommand(),
-            "shipping" => $order->getShipping(),
+            "shipping" => (float)$order->getShipping(),
             "deliveryAddress" => $order->getAddressDelivery()->getAddress(),
             "status" => $order->getStatus(),
             "orderedProduct" => [],
