@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrderApiController extends AbstractFOSRestController
 {
     /**
-     * @Rest\Get("/orders/{id}")
+     * @Rest\Get( "/orders/{id}" )
      */
     public function getOrderById(Command $order = null)
     {
