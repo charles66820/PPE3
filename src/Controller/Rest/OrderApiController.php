@@ -28,11 +28,11 @@ class OrderApiController extends AbstractFOSRestController
             "shipping" => (float)$order->getShipping(),
             "deliveryAddress" => $order->getAddressDelivery()->getAddress(),
             "status" => $order->getStatus(),
-            "orderedProduct" => [],
+            "orderedProducts" => [],
         ];
 
         foreach ($order->getCommandContents() as $orderContent) {
-            $orderInfo["orderedProduct"][] = [
+            $orderInfo["orderedProducts"][] = [
                 "id" => $orderContent->getId(),
                 "title" => $orderContent->getProduct()->getTitle(),
                 "reference" => $orderContent->getProduct()->getReference(),
