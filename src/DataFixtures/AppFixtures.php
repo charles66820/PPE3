@@ -57,10 +57,11 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
     {
         //les variable
         $nbCat = 6;
-        $nbProductByCat = 100000;
-        $nbClient = 2500;
-        $nbMaxCommand = 4;
-        $nbMaxCommandContent = 6;
+        $nbProductByCat = 200;
+        $nbClient = 200;
+        $nbMaxCommand = 60;
+        $nbMaxOpinion = 600;
+        $nbMaxCommandContent = 60;
         $v = true;
         $products = [];
         $tax = $this->getReference(TaxFixtures::TAX_REFERENCE);
@@ -126,7 +127,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
             }
 
             //avis du client
-            for ($j = 0; $j < rand(0,4); $j++) {
+            for ($j = 0; $j < rand(0,$nbMaxOpinion); $j++) {
                 $opinion = new Opinion();
                 $opinion->setDate(new \DateTime());
                 $opinion->setScore(rand(1,5));

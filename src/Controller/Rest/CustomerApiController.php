@@ -75,7 +75,7 @@ class CustomerApiController extends AbstractFOSRestController
             ];
         }
 
-        return $this->handleView($this->view($addresses, 200));
+        return $this->handleView($this->view(["addresses"=>$addresses], 200));
     }
 
     /**
@@ -92,12 +92,12 @@ class CustomerApiController extends AbstractFOSRestController
             $orders[] = [
                 "id" => $order->getId(),
                 "total" => $order->getTotalHT() + $order->getTaxOnCommand(),
-                "shipping" => $order->getShipping(),
+                "shipping" => (float)$order->getShipping(),
                 "deliveryAddress" => $order->getAddressDelivery()->getAddress(),
                 "status" => $order->getStatus(),
             ];
         }
 
-        return $this->handleView($this->view($orders, 200));
+        return $this->handleView($this->view(["orders"=>$orders], 200));
     }
 }

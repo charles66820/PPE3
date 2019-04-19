@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrderApiController extends AbstractFOSRestController
 {
     /**
-     * @Rest\Get("/orders/{id}")
+     * @Rest\Get( "/orders/{id}" )
      */
     public function getOrderById(Command $order = null)
     {
@@ -25,14 +25,14 @@ class OrderApiController extends AbstractFOSRestController
         $orderInfo = [
             "id" => $order->getId(),
             "total" => $order->getTotalHT() + $order->getTaxOnCommand(),
-            "shipping" => $order->getShipping(),
+            "shipping" => (float)$order->getShipping(),
             "deliveryAddress" => $order->getAddressDelivery()->getAddress(),
             "status" => $order->getStatus(),
-            "orderedProduct" => [],
+            "orderedProducts" => [],
         ];
 
         foreach ($order->getCommandContents() as $orderContent) {
-            $orderInfo["orderedProduct"][] = [
+            $orderInfo["orderedProducts"][] = [
                 "id" => $orderContent->getId(),
                 "title" => $orderContent->getProduct()->getTitle(),
                 "reference" => $orderContent->getProduct()->getReference(),
