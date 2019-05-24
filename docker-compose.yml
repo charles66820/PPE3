@@ -1,17 +1,26 @@
 version: '3'
 
 services:
+  db:
+    image: 'mysql:5.7'
+    volumes:
+      - './mysql_data:/var/lib/mysql'
+    environment:
+      MYSQL_DATABASE: 'PPE3'
+      MYSQL_ROOT_PASSWORD: '123456'
+    ports:
+      - '3306:3306'
+
+  phpmyadmin:
+    image: 'phpmyadmin/phpmyadmin:4.7'
+    environment:
+      PMA_HOST: 'db'
+    ports:
+      - '1000:80'
   web:
-    #image: 'php:7.2-apache'
     build: .
     volumes:
       - '.docker/vhosts:/etc/apache2/sites-enabled'
       - '.:/var/www/html'
     ports:
       - '80:80'
-    networks:
-      - backend
-networks:
-  backend:
-    external:
-      name: backend
