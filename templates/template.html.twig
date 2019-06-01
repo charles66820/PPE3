@@ -17,6 +17,14 @@
         {% block stylesheet %}{% endblock %}
     </head>
     <body>
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <p>Ce site web est un faux le site réalisé en (Projet Personnel Encadrée) lors du BTS (Services Informatiques aux Organisations).</p>
+        <hr>
+        <p class="mb-0">This website is a fake site made during the PPE (Framed Personal project) in BTS SIO (Higher Technician Certificate - IT Service to Organizations).</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <nav class="navbar navbar-light navbar-expand-md">
         <div class="container">
             <a class="navbar-brand" href="{{ path("home") }}">
