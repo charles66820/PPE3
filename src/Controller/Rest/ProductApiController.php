@@ -133,7 +133,7 @@ class ProductApiController extends AbstractFOSRestController
         $manager->persist($product);
         $manager->flush();
 
-        return $this->handleView($this->view(["message" => "quantity updated"], 200));
+        return $this->handleView($this->view(["message" => "quantity updated"], 201));
     }
 
     /**
