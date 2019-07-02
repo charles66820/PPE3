@@ -41,21 +41,28 @@ class StatApiController extends AbstractFOSRestController
         $stmt->execute();
         $nbCustomersOrdered = $stmt->fetch();
 
+        $date = new \DateTime();
+        $nbOrders = $nbOrders["nbOrders"];
+        $totalOrdersTTC = $totalOrdersTTC["totalOrdersTTC"];
+        $avgOrders = $totalOrdersTTC/$nbOrders;
+        $nbCustomers = $nbCustomers["nbCustomers"];
+        $nbCustomersOrdered = $nbCustomersOrdered["nbCustomersOrdered"];
+
         $stats = [
-            "date" => new \DateTime(),
-            "nbOrders" => $nbOrders["nbOrders"],
-            "totalOrdersTTC" => $totalOrdersTTC["totalOrdersTTC"],
-            "nbCustomers" => $nbCustomers["nbCustomers"],
-            "nbCustomersOrdered" => $nbCustomersOrdered["nbCustomersOrdered"],
+            "date" => $date->format("Y-m-d H:i:s"),
+            "nbOrders" => $nbOrders,
+            "totalOrdersTTC" => $totalOrdersTTC,
+            "avgOrders" => $avgOrders,
+            "nbCustomers" => $nbCustomers,
+            "nbCustomersOrdered" => $nbCustomersOrdered,
         ];
+
+        $this->postStats($date, $nbOrders, $totalOrdersTTC, $avgOrders, $nbCustomers, $nbCustomersOrdered, $manager);
 
         return $this->handleView($this->view($stats, 200));
     }
 
-    /**
-     * @Rest\Post( "/stats" )
-     */
-    public function postStats(Request $request, ObjectManager $manager)
+    public function postStats(\DateTime $date, $nbOrders, $totalOrdersTTC, $avgOrders, $nbCustomers, $nbCustomersOrdered, ObjectManager $manager)
     {
         $conn = $manager->getConnection();
 
@@ -64,30 +71,14 @@ class StatApiController extends AbstractFOSRestController
         $stmt->execute();
         $nbStats = $stmt->rowCount();
 
-        $date = new \DateTime($request->request->get("date"));
-        $nbOrders = $request->request->get("nbOrders");
-        $totalOrdersTTC = $request->request->get("totalOrdersTTC");
-        $nbCustomers = $request->request->get("nbCustomers");
-        $nbCustomersOrdered = $request->request->get("nbCustomersOrdered");
-
-        if ($date == null
-            || $nbOrders == null || !is_numeric($nbOrders)
-            || $totalOrdersTTC == null || !is_numeric($totalOrdersTTC)
-            || $nbCustomers == null || !is_numeric($nbCustomers)
-            || $nbCustomersOrdered == null || !is_numeric($nbCustomersOrdered)) {
-//            dump($date,$nbCustomersOrdered,$nbCustomers,$nbOrders,$totalOrdersTTC);
-//            die();
-            throw new HttpException(400, "Bad request");
-        }
-
         if ($nbStats < 1) {
             $sql = 'INSERT INTO stats (date, nb_orders, total_ttc, avgorder_cost, nb_clients, nb_client_have_order) VALUES (:date, :nb_orders, :total_ttc, :avgorder_cost, :nb_clients, :nb_client_have_order)';
             $stmt = $conn->prepare($sql);
             $stmt->execute([
-                "date" => $date->getTimestamp(),
+                "date" => $date->format("Y-m-d H:i:s"),
                 "nb_orders" => $nbOrders,
                 "total_ttc" => $totalOrdersTTC,
-                "avgorder_cost" => $totalOrdersTTC/$nbOrders,
+                "avgorder_cost" => $avgOrders,
                 "nb_clients" => $nbCustomers,
                 "nb_client_have_order" => $nbCustomersOrdered
             ]);
@@ -95,17 +86,15 @@ class StatApiController extends AbstractFOSRestController
             $sql = 'UPDATE stats SET date=:date, nb_orders=:nb_orders, total_ttc=:total_ttc, avgorder_cost=:avgorder_cost, nb_clients=:nb_clients, nb_client_have_order=:nb_client_have_order';
             $stmt = $conn->prepare($sql);
             $stmt->execute([
-                "date" => $date,
+                "date" => $date->format("Y-m-d H:i:s"),
                 "nb_orders" => $nbOrders,
                 "total_ttc" => $totalOrdersTTC,
-                "avgorder_cost" => $totalOrdersTTC/$nbOrders,
+                "avgorder_cost" => $avgOrders,
                 "nb_clients" => $nbCustomers,
                 "nb_client_have_order" => $nbCustomersOrdered
             ]);
         }
-
-
-
+        
         return $this->handleView($this->view(["message" => "stats updated"], 201));
     }
 }
