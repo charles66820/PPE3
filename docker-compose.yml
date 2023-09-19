@@ -15,6 +15,14 @@ services:
         - SERVER_ADMIN=support@magicorp.fr
     environment:
       docker: "true"
+    labels:
+      - "traefik.http.routers.ppe3.rule=Host(`ppe3.magicorp.fr`) || Host(`api.ppe3.magicorp.fr`)"
+      - traefik.http.routers.ppe3.middlewares=https-redirectscheme
+      - "traefik.http.routers.ppe3-secure.rule=Host(`ppe3.magicorp.fr`) || Host(`api.ppe3.magicorp.fr`)"
+      - traefik.http.routers.ppe3-secure.tls=true
+      - traefik.http.routers.ppe3-secure.tls.certresolver=sslresolver
+      - traefik.http.routers.ppe3-secure.tls.domains[0].main=ppe3.magicorp.fr
+      - traefik.http.routers.ppe3-secure.tls.domains[0].sans=api.ppe3.magicorp.fr
     networks:
       - backend
 
