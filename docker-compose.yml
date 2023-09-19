@@ -1,0 +1,24 @@
+version: '2'
+
+volumes:
+  logs:
+    driver: local
+
+services:
+  ppe3:
+    container_name: ppe3
+    #restart: always
+    build:
+      context: .
+      args:
+        - SERVER_NAME=ppe3.magicorp.fr
+        - SERVER_ADMIN=support@magicorp.fr
+    environment:
+      docker: "true"
+    networks:
+      - backend
+
+networks:
+  backend:
+    external:
+      name: backend
